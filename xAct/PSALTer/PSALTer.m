@@ -6,9 +6,9 @@
 (*------------------------------*)
 
 (*
-xAct`PSALTer`$Version={"0.0.0",{2022,11,4}};
+xAct`PSALTer`$Version={"0.0.1",{2022,11,4}};
 *)
-xAct`PSALTer`$Version={"0.0.0-developer",DateList@FileDate@$InputFileName~Drop~(-3)};
+xAct`PSALTer`$Version={"0.0.1-developer",DateList@FileDate@$InputFileName~Drop~(-3)};
 
 If[Unevaluated[xAct`xCore`Private`$LastPackage]===xAct`xCore`Private`$LastPackage,xAct`xCore`Private`$LastPackage="xAct`PSALTer`"];
 
