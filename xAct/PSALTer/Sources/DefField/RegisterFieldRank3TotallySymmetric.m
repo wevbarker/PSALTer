@@ -1,0 +1,172 @@
+(*======================================*)
+(*  RegisterFieldRank3TotallySymmetric  *)
+(*======================================*)
+
+xAct`PSALTer`Private`DefFiducialField[Rank3TotallySymmetric[-a,-b,-c],Symmetric[{-a,-b,-c}]];
+xAct`PSALTer`Private`DefSO3Irrep[Rank3TotallySymmetricSymmPerpT0p[],xAct`PSALTer`Private`Spin->0,xAct`PSALTer`Private`Parity->xAct`PSALTer`Private`Even];
+xAct`PSALTer`Private`DefSO3Irrep[Rank3TotallySymmetricSymmPerpT1m[-i],xAct`PSALTer`Private`Spin->1,xAct`PSALTer`Private`Parity->xAct`PSALTer`Private`Odd];
+xAct`PSALTer`Private`DefSO3Irrep[Rank3TotallySymmetricSymmPara0p[],xAct`PSALTer`Private`Spin->0,xAct`PSALTer`Private`Parity->xAct`PSALTer`Private`Even];
+xAct`PSALTer`Private`DefSO3Irrep[Rank3TotallySymmetricSymmPara2p[-i,-j],Symmetric[{-i,-j}],xAct`PSALTer`Private`Spin->2,xAct`PSALTer`Private`Parity->xAct`PSALTer`Private`Even];
+xAct`PSALTer`Private`DefSO3Irrep[Rank3TotallySymmetricSymmParaT1m[-i],xAct`PSALTer`Private`Spin->1,xAct`PSALTer`Private`Parity->xAct`PSALTer`Private`Odd];
+xAct`PSALTer`Private`DefSO3Irrep[Rank3TotallySymmetricSymmPara3m[-i,-j,-a],Symmetric[{-i,-j,-a}],xAct`PSALTer`Private`Spin->3,xAct`PSALTer`Private`Parity->xAct`PSALTer`Private`Odd];
+
+DefTensor[Rank3TotallySymmetricSymm[-i,-j,-a],M4, Symmetric[{-i,-j}],Dagger->Complex];
+DefTensor[SourceRank3TotallySymmetricSymm[-i,-j,-a],M4,Symmetric[{-i,-j}],Dagger->Complex];
+Rank3TotallySymmetricToRank3TotallySymmetricSymm=Join[
+	MakeRule[{Rank3TotallySymmetric[-c,-a,-b],Evaluate[Rank3TotallySymmetricSymm[-a,-b,-c]]},MetricOn->All,ContractMetrics->True],
+	MakeRule[{Evaluate@Dagger@Rank3TotallySymmetric[-c,-a,-b],Evaluate@Dagger[Rank3TotallySymmetricSymm[-a,-b,-c]]},MetricOn->All,ContractMetrics->True]];
+SourceRank3TotallySymmetricToSourceRank3TotallySymmetricSymm=Join[
+	MakeRule[{SourceRank3TotallySymmetric[-c,-a,-b],Evaluate[SourceRank3TotallySymmetricSymm[-a,-b,-c]]},MetricOn->All,ContractMetrics->True],
+	MakeRule[{Evaluate@Dagger@SourceRank3TotallySymmetric[-c,-a,-b],Evaluate@Dagger[SourceRank3TotallySymmetricSymm[-a,-b,-c]]},MetricOn->All,ContractMetrics->True]];
+Rank3TotallySymmetricSymmToRank3TotallySymmetric=Join[
+	MakeRule[{Rank3TotallySymmetricSymm[-a,-b,-c],Evaluate[(1/2)*(Rank3TotallySymmetric[-c,-a,-b]+Rank3TotallySymmetric[-c,-b,-a])]},MetricOn->All,ContractMetrics->True],
+	MakeRule[{Evaluate@Dagger@Rank3TotallySymmetricSymm[-a,-b,-c],Evaluate@Dagger[(1/2)*(Rank3TotallySymmetric[-c,-a,-b]+Rank3TotallySymmetric[-c,-b,-a])]},MetricOn->All,ContractMetrics->True]];
+SourceRank3TotallySymmetricSymmToSourceRank3TotallySymmetric=Join[
+	MakeRule[{SourceRank3TotallySymmetricSymm[-a,-b,-c],Evaluate[(1/2)*(SourceRank3TotallySymmetric[-c,-a,-b]+SourceRank3TotallySymmetric[-c,-b,-a])]},MetricOn->All,ContractMetrics->True],
+	MakeRule[{Evaluate@Dagger@SourceRank3TotallySymmetricSymm[-a,-b,-c],Evaluate@Dagger[(1/2)*(SourceRank3TotallySymmetric[-c,-a,-b]+SourceRank3TotallySymmetric[-c,-b,-a])]},MetricOn->All,ContractMetrics->True]];
+DefTensor[totsymRank3TotallySymmetricSymmSourceRank3TotallySymmetricSymm[k,l,b,-i,-j,-a],M4];
+DefTensor[remsymRank3TotallySymmetricSymmSourceRank3TotallySymmetricSymm[k,l,b,-i,-j,-a],M4];
+AutomaticRules[totsymRank3TotallySymmetricSymmSourceRank3TotallySymmetricSymm,MakeRule[{totsymRank3TotallySymmetricSymmSourceRank3TotallySymmetricSymm[k,l,b,-i,-j,-a],Evaluate[(1/3)G[k,-i]G[l,-j]G[b,-a] +(1/3)G[k,-j]G[l,-a]G[b,-i] +(1/3)G[k,-i]G[l,-a]G[b,-j]]},MetricOn->All,ContractMetrics->True]];
+AutomaticRules[remsymRank3TotallySymmetricSymmSourceRank3TotallySymmetricSymm,MakeRule[{remsymRank3TotallySymmetricSymmSourceRank3TotallySymmetricSymm[k,l,b,-i,-j,-a],Evaluate[(2/3)G[k,-i]G[l,-j]G[b,-a] -(1/3)G[k,-j]G[l,-a]G[b,-i] -(1/3)G[k,-i]G[l,-a]G[b,-j]]},MetricOn->All,ContractMetrics->True]];
+DefTensor[ProjPerp[-a,-b],M4,Symmetric[{-a,-b}]];
+DefTensor[ProjPara[-a,-b],M4,Symmetric[{-a,-b}]];
+ProjPerpParaToVG=Join[
+	MakeRule[{ProjPerp[-a,b],Evaluate[V[-a]V[b]]},MetricOn->All,ContractMetrics->True],
+	MakeRule[{ProjPara[-a,b],Evaluate[G[-a,b]-V[-a]V[b]]},MetricOn->All,ContractMetrics->True]];
+AutomaticRules[ProjPerp,MakeRule[{ProjPerp[-a,b],Evaluate[V[-a]V[b]]},MetricOn->All,ContractMetrics->True]];
+AutomaticRules[ProjPara,MakeRule[{ProjPara[-a,b],Evaluate[G[-a,b]-V[-a]V[b]]},MetricOn->All,ContractMetrics->True]];
+DefTensor[ProjFPerp[-a,d,e],M4];
+DefTensor[ProjFPara[-a,-b,d,e],M4];
+ProjRank3TotallySymmetricFPerpParaToVG=Join[
+	MakeRule[{ProjFPerp[-a,d,e],Evaluate[
+		V[d]G[-a,e]/.ProjPerpParaToVG//ToCanonical]},MetricOn->All,ContractMetrics->True],
+	MakeRule[{ProjFPara[-a,-b,d,e],Evaluate[
+		ProjPara[-a,d]G[-b,e]/.ProjPerpParaToVG//ToCanonical]},MetricOn->All,ContractMetrics->True]];
+DefTensor[Rank3TotallySymmetricSymmPerpT0pF[-i,-j,-a],M4,Symmetric[{-i,-j,-a}],Dagger->Complex];
+DefTensor[Rank3TotallySymmetricSymmPerpT1mF[-i,-j,-a],M4,Symmetric[{-i,-j,-a}],Dagger->Complex];
+DefTensor[Rank3TotallySymmetricSymmPara0pF[-i,-j,-a],M4,Symmetric[{-i,-j,-a}],Dagger->Complex];
+DefTensor[Rank3TotallySymmetricSymmPara2pF[-i,-j,-a],M4,Symmetric[{-i,-j,-a}],Dagger->Complex];
+DefTensor[Rank3TotallySymmetricSymmParaT1mF[-i,-j,-a],M4,Symmetric[{-i,-j,-a}],Dagger->Complex];
+DefTensor[Rank3TotallySymmetricSymmPara3mF[-i,-j,-a],M4,Symmetric[{-i,-j,-a}],Dagger->Complex];
+DefTensor[SourceRank3TotallySymmetricSymmPerpT0pF[-i,-j,-a],M4,Symmetric[{-i,-j,-a}],Dagger->Complex];
+DefTensor[SourceRank3TotallySymmetricSymmPerpT1mF[-i,-j,-a],M4,Symmetric[{-i,-j,-a}],Dagger->Complex];
+DefTensor[SourceRank3TotallySymmetricSymmPara0pF[-i,-j,-a],M4,Symmetric[{-i,-j,-a}],Dagger->Complex];
+DefTensor[SourceRank3TotallySymmetricSymmPara2pF[-i,-j,-a],M4,Symmetric[{-i,-j,-a}],Dagger->Complex];
+DefTensor[SourceRank3TotallySymmetricSymmParaT1mF[-i,-j,-a],M4,Symmetric[{-i,-j,-a}],Dagger->Complex];
+DefTensor[SourceRank3TotallySymmetricSymmPara3mF[-i,-j,-a],M4,Symmetric[{-i,-j,-a}],Dagger->Complex];
+ExpandRank3TotallySymmetricSymmSourceRank3TotallySymmetricSymmtoF=Join[
+	MakeRule[{Rank3TotallySymmetricSymm[-i,-j,-a],Evaluate[Rank3TotallySymmetricSymmPerpT0pF[-i,-j,-a]+Rank3TotallySymmetricSymmPerpT1mF[-i,-j,-a]+Rank3TotallySymmetricSymmPara0pF[-i,-j,-a]+Rank3TotallySymmetricSymmPara2pF[-i,-j,-a]+Rank3TotallySymmetricSymmParaT1mF[-i,-j,-a]+Rank3TotallySymmetricSymmPara3mF[-i,-j,-a]]},MetricOn->All,ContractMetrics->True],
+	MakeRule[{SourceRank3TotallySymmetricSymm[-i,-j,-a],Evaluate[SourceRank3TotallySymmetricSymmPerpT0pF[-i,-j,-a]+SourceRank3TotallySymmetricSymmPerpT1mF[-i,-j,-a]+SourceRank3TotallySymmetricSymmPara0pF[-i,-j,-a]+SourceRank3TotallySymmetricSymmPara2pF[-i,-j,-a]+SourceRank3TotallySymmetricSymmParaT1mF[-i,-j,-a]+SourceRank3TotallySymmetricSymmPara3mF[-i,-j,-a]]},MetricOn->All,ContractMetrics->True],	
+	MakeRule[{Evaluate@Dagger@Rank3TotallySymmetricSymm[-i,-j,-a],Evaluate[Dagger@(Rank3TotallySymmetricSymmPerpT0pF[-i,-j,-a]+Rank3TotallySymmetricSymmPerpT1mF[-i,-j,-a]+Rank3TotallySymmetricSymmPara0pF[-i,-j,-a]+Rank3TotallySymmetricSymmPara2pF[-i,-j,-a]+Rank3TotallySymmetricSymmParaT1mF[-i,-j,-a]+Rank3TotallySymmetricSymmPara3mF[-i,-j,-a])]},MetricOn->All,ContractMetrics->True],
+	MakeRule[{Evaluate@Dagger@SourceRank3TotallySymmetricSymm[-i,-j,-a],Evaluate[Dagger@(SourceRank3TotallySymmetricSymmPerpT0pF[-i,-j,-a]+SourceRank3TotallySymmetricSymmPerpT1mF[-i,-j,-a]+SourceRank3TotallySymmetricSymmPara0pF[-i,-j,-a]+SourceRank3TotallySymmetricSymmPara2pF[-i,-j,-a]+SourceRank3TotallySymmetricSymmParaT1mF[-i,-j,-a]+SourceRank3TotallySymmetricSymmPara3mF[-i,-j,-a])]},MetricOn->All,ContractMetrics->True]
+];
+ExpandRank3TotallySymmetricSymmFtoReduced=Join[
+	MakeRule[{Rank3TotallySymmetricSymmPerpT0pF[-i,-j,-a],Evaluate[(V[-i]V[-j]V[-a]Rank3TotallySymmetricSymmPerpT0p[])//ToCanonical]},MetricOn->All,ContractMetrics->True],
+	MakeRule[{Evaluate@Dagger@Rank3TotallySymmetricSymmPerpT0pF[-i,-j,-a],Evaluate@Dagger[(V[-i]V[-j]V[-a]Rank3TotallySymmetricSymmPerpT0p[])//ToCanonical]},MetricOn->All,ContractMetrics->True],	
+	MakeRule[{Rank3TotallySymmetricSymmPerpT1mF[-i,-j,-a],Evaluate[(totsymRank3TotallySymmetricSymmSourceRank3TotallySymmetricSymm[k,l,b,-i,-j,-a]V[-k]V[-l]Rank3TotallySymmetricSymmPerpT1m[-b])//ToCanonical]},MetricOn->All,ContractMetrics->True],
+	MakeRule[{Evaluate@Dagger@Rank3TotallySymmetricSymmPerpT1mF[-i,-j,-a],Evaluate@Dagger[(totsymRank3TotallySymmetricSymmSourceRank3TotallySymmetricSymm[k,l,b,-i,-j,-a]V[-k]V[-l]Rank3TotallySymmetricSymmPerpT1m[-b])//ToCanonical]},MetricOn->All,ContractMetrics->True],	
+	MakeRule[{Rank3TotallySymmetricSymmPara0pF[-i,-j,-a],Evaluate[((Rank3TotallySymmetricSymmPara0p[]/3)totsymRank3TotallySymmetricSymmSourceRank3TotallySymmetricSymm[k,l,b,-i,-j,-a]ProjPara[-k,-l]V[-b])//ToCanonical]},MetricOn->All,ContractMetrics->True],
+	MakeRule[{Evaluate@Dagger@Rank3TotallySymmetricSymmPara0pF[-i,-j,-a],Evaluate@Dagger[((Rank3TotallySymmetricSymmPara0p[]/3)totsymRank3TotallySymmetricSymmSourceRank3TotallySymmetricSymm[k,l,b,-i,-j,-a]ProjPara[-k,-l]V[-b])//ToCanonical]},MetricOn->All,ContractMetrics->True],	
+	MakeRule[{Rank3TotallySymmetricSymmPara2pF[-i,-j,-a],Evaluate[(totsymRank3TotallySymmetricSymmSourceRank3TotallySymmetricSymm[k,l,b,-i,-j,-a]Rank3TotallySymmetricSymmPara2p[-k,-l]V[-b])//ToCanonical]},MetricOn->All,ContractMetrics->True],
+	MakeRule[{Evaluate@Dagger@Rank3TotallySymmetricSymmPara2pF[-i,-j,-a],Evaluate@Dagger[(totsymRank3TotallySymmetricSymmSourceRank3TotallySymmetricSymm[k,l,b,-i,-j,-a]Rank3TotallySymmetricSymmPara2p[-k,-l]V[-b])//ToCanonical]},MetricOn->All,ContractMetrics->True],	
+	MakeRule[{Rank3TotallySymmetricSymmParaT1mF[-i,-j,-a],Evaluate[((1/5)totsymRank3TotallySymmetricSymmSourceRank3TotallySymmetricSymm[k,l,b,-i,-j,-a]ProjPara[-k,-l]Rank3TotallySymmetricSymmParaT1m[-b])//ToCanonical]},MetricOn->All,ContractMetrics->True],
+	MakeRule[{Evaluate@Dagger@Rank3TotallySymmetricSymmParaT1mF[-i,-j,-a],Evaluate@Dagger[((1/5)totsymRank3TotallySymmetricSymmSourceRank3TotallySymmetricSymm[k,l,b,-i,-j,-a]ProjPara[-k,-l]Rank3TotallySymmetricSymmParaT1m[-b])//ToCanonical]},MetricOn->All,ContractMetrics->True],	
+	MakeRule[{Rank3TotallySymmetricSymmPara3mF[-i,-j,-a],Evaluate[Rank3TotallySymmetricSymmPara3m[-i,-j,-a]]},MetricOn->All,ContractMetrics->True],
+	MakeRule[{Evaluate@Dagger@Rank3TotallySymmetricSymmPara3mF[-i,-j,-a],Evaluate@Dagger[Rank3TotallySymmetricSymmPara3m[-i,-j,-a]]},MetricOn->All,ContractMetrics->True]
+];
+ExpandSourceRank3TotallySymmetricSymmFtoReduced=Join[
+	MakeRule[{SourceRank3TotallySymmetricSymmPerpT0pF[-i,-j,-a],Evaluate[(V[-i]V[-j]V[-a]SourceRank3TotallySymmetricSymmPerpT0p[])//ToCanonical]},MetricOn->All,ContractMetrics->True],
+	MakeRule[{Evaluate@Dagger@SourceRank3TotallySymmetricSymmPerpT0pF[-i,-j,-a],Evaluate@Dagger[(V[-i]V[-j]V[-a]SourceRank3TotallySymmetricSymmPerpT0p[])//ToCanonical]},MetricOn->All,ContractMetrics->True],	
+	MakeRule[{SourceRank3TotallySymmetricSymmPerpT1mF[-i,-j,-a],Evaluate[(totsymRank3TotallySymmetricSymmSourceRank3TotallySymmetricSymm[k,l,b,-i,-j,-a]V[-k]V[-l]SourceRank3TotallySymmetricSymmPerpT1m[-b])//ToCanonical]},MetricOn->All,ContractMetrics->True],
+	MakeRule[{Evaluate@Dagger@SourceRank3TotallySymmetricSymmPerpT1mF[-i,-j,-a],Evaluate@Dagger[(totsymRank3TotallySymmetricSymmSourceRank3TotallySymmetricSymm[k,l,b,-i,-j,-a]V[-k]V[-l]SourceRank3TotallySymmetricSymmPerpT1m[-b])//ToCanonical]},MetricOn->All,ContractMetrics->True],	
+	MakeRule[{SourceRank3TotallySymmetricSymmPara0pF[-i,-j,-a],Evaluate[((SourceRank3TotallySymmetricSymmPara0p[]/3)totsymRank3TotallySymmetricSymmSourceRank3TotallySymmetricSymm[k,l,b,-i,-j,-a]ProjPara[-k,-l]V[-b])//ToCanonical]},MetricOn->All,ContractMetrics->True],
+	MakeRule[{Evaluate@Dagger@SourceRank3TotallySymmetricSymmPara0pF[-i,-j,-a],Evaluate@Dagger[((SourceRank3TotallySymmetricSymmPara0p[]/3)totsymRank3TotallySymmetricSymmSourceRank3TotallySymmetricSymm[k,l,b,-i,-j,-a]ProjPara[-k,-l]V[-b])//ToCanonical]},MetricOn->All,ContractMetrics->True],	
+	MakeRule[{SourceRank3TotallySymmetricSymmPara2pF[-i,-j,-a],Evaluate[(totsymRank3TotallySymmetricSymmSourceRank3TotallySymmetricSymm[k,l,b,-i,-j,-a]SourceRank3TotallySymmetricSymmPara2p[-k,-l]V[-b])//ToCanonical]},MetricOn->All,ContractMetrics->True],
+	MakeRule[{Evaluate@Dagger@SourceRank3TotallySymmetricSymmPara2pF[-i,-j,-a],Evaluate@Dagger[(totsymRank3TotallySymmetricSymmSourceRank3TotallySymmetricSymm[k,l,b,-i,-j,-a]SourceRank3TotallySymmetricSymmPara2p[-k,-l]V[-b])//ToCanonical]},MetricOn->All,ContractMetrics->True],	
+	MakeRule[{SourceRank3TotallySymmetricSymmParaT1mF[-i,-j,-a],Evaluate[((1/5)totsymRank3TotallySymmetricSymmSourceRank3TotallySymmetricSymm[k,l,b,-i,-j,-a]ProjPara[-k,-l]SourceRank3TotallySymmetricSymmParaT1m[-b])//ToCanonical]},MetricOn->All,ContractMetrics->True],
+	MakeRule[{Evaluate@Dagger@SourceRank3TotallySymmetricSymmParaT1mF[-i,-j,-a],Evaluate@Dagger[((1/5)totsymRank3TotallySymmetricSymmSourceRank3TotallySymmetricSymm[k,l,b,-i,-j,-a]ProjPara[-k,-l]SourceRank3TotallySymmetricSymmParaT1m[-b])//ToCanonical]},MetricOn->All,ContractMetrics->True],	
+	MakeRule[{SourceRank3TotallySymmetricSymmPara3mF[-i,-j,-a],Evaluate[SourceRank3TotallySymmetricSymmPara3m[-i,-j,-a]]},MetricOn->All,ContractMetrics->True],
+	MakeRule[{Evaluate@Dagger@SourceRank3TotallySymmetricSymmPara3mF[-i,-j,-a],Evaluate@Dagger[SourceRank3TotallySymmetricSymmPara3m[-i,-j,-a]]},MetricOn->All,ContractMetrics->True]
+];
+DecomposeRank3TotallySymmetricSymmReducedtoRank3TotallySymmetricSymm=Join[
+	MakeRule[{Rank3TotallySymmetricSymmPerpT0p[],Evaluate[V[i]V[j]V[a]Rank3TotallySymmetricSymm[-i,-j,-a]]},MetricOn->All,ContractMetrics->True],
+	MakeRule[{Evaluate@Dagger@Rank3TotallySymmetricSymmPerpT0p[],Evaluate@Dagger[V[i]V[j]V[a]Rank3TotallySymmetricSymm[-i,-j,-a]]},MetricOn->All,ContractMetrics->True],	
+	MakeRule[{Rank3TotallySymmetricSymmPerpT1m[-i],Evaluate[(3ProjPara[m,-i]V[n]V[c]totsymRank3TotallySymmetricSymmSourceRank3TotallySymmetricSymm[k,l,b,-m,-n,-c]Rank3TotallySymmetricSymm[-k,-l,-b])//ToCanonical]},MetricOn->All,ContractMetrics->True],
+	MakeRule[{Evaluate@Dagger@Rank3TotallySymmetricSymmPerpT1m[-i],Evaluate@Dagger[(3ProjPara[m,-i]V[n]V[c]totsymRank3TotallySymmetricSymmSourceRank3TotallySymmetricSymm[k,l,b,-m,-n,-c]Rank3TotallySymmetricSymm[-k,-l,-b])//ToCanonical]},MetricOn->All,ContractMetrics->True],
+	MakeRule[{Rank3TotallySymmetricSymmPara0p[],Evaluate[(3ProjPara[m,-z]ProjPara[n,z]V[c]totsymRank3TotallySymmetricSymmSourceRank3TotallySymmetricSymm[k,l,b,-m,-n,-c]Rank3TotallySymmetricSymm[-k,-l,-b])//ToCanonical]},MetricOn->All,ContractMetrics->True],
+	MakeRule[{Evaluate@Dagger@Rank3TotallySymmetricSymmPara0p[],Evaluate@Dagger[(3ProjPara[m,-z]ProjPara[n,z]V[c]totsymRank3TotallySymmetricSymmSourceRank3TotallySymmetricSymm[k,l,b,-m,-n,-c]Rank3TotallySymmetricSymm[-k,-l,-b])//ToCanonical]},MetricOn->All,ContractMetrics->True],
+	MakeRule[{Rank3TotallySymmetricSymmPara2p[-i,-j],Evaluate[((3ProjPara[m,-i]ProjPara[n,-j]-ProjPara[-i,-j]ProjPara[m,-z]ProjPara[n,z])V[c]totsymRank3TotallySymmetricSymmSourceRank3TotallySymmetricSymm[k,l,b,-m,-n,-c]Rank3TotallySymmetricSymm[-k,-l,-b])//ToCanonical]},MetricOn->All,ContractMetrics->True],
+	MakeRule[{Evaluate@Dagger@Rank3TotallySymmetricSymmPara2p[-i,-j],Evaluate@Dagger[((3ProjPara[m,-i]ProjPara[n,-j]-ProjPara[-i,-j]ProjPara[m,-z]ProjPara[n,z])V[c]totsymRank3TotallySymmetricSymmSourceRank3TotallySymmetricSymm[k,l,b,-m,-n,-c]Rank3TotallySymmetricSymm[-k,-l,-b])//ToCanonical]},MetricOn->All,ContractMetrics->True],
+	MakeRule[{Rank3TotallySymmetricSymmParaT1m[-i],Evaluate[(3ProjPara[m,-i]ProjPara[n,z]ProjPara[c,-z]totsymRank3TotallySymmetricSymmSourceRank3TotallySymmetricSymm[k,l,b,-m,-n,-c]Rank3TotallySymmetricSymm[-k,-l,-b])//ToCanonical]},MetricOn->All,ContractMetrics->True],
+	MakeRule[{Evaluate@Dagger@Rank3TotallySymmetricSymmParaT1m[-i],Evaluate@Dagger[(3ProjPara[m,-i]ProjPara[n,z]ProjPara[c,-z]totsymRank3TotallySymmetricSymmSourceRank3TotallySymmetricSymm[k,l,b,-m,-n,-c]Rank3TotallySymmetricSymm[-k,-l,-b])//ToCanonical]},MetricOn->All,ContractMetrics->True],
+	MakeRule[{Rank3TotallySymmetricSymmPara3m[-i,-j,-a],Evaluate[((ProjPara[m,-i]ProjPara[n,-j]ProjPara[c,-a]-(1/5)(ProjPara[-i,-j]ProjPara[m,-z]ProjPara[n,z]ProjPara[c,-a]+ProjPara[-j,-a]ProjPara[m,-i]ProjPara[n,z]ProjPara[c,-z]+ProjPara[-i,-a]ProjPara[m,-z]ProjPara[n,-j]ProjPara[c,z]))totsymRank3TotallySymmetricSymmSourceRank3TotallySymmetricSymm[k,l,b,-m,-n,-c]Rank3TotallySymmetricSymm[-k,-l,-b])//ToCanonical]},MetricOn->All,ContractMetrics->True],
+	MakeRule[{Evaluate@Dagger@Rank3TotallySymmetricSymmPara3m[-i,-j,-a],Evaluate@Dagger[((ProjPara[m,-i]ProjPara[n,-j]ProjPara[c,-a]-(1/5)(ProjPara[-i,-j]ProjPara[m,-z]ProjPara[n,z]ProjPara[c,-a]+ProjPara[-j,-a]ProjPara[m,-i]ProjPara[n,z]ProjPara[c,-z]+ProjPara[-i,-a]ProjPara[m,-z]ProjPara[n,-j]ProjPara[c,z]))totsymRank3TotallySymmetricSymmSourceRank3TotallySymmetricSymm[k,l,b,-m,-n,-c]Rank3TotallySymmetricSymm[-k,-l,-b])//ToCanonical]},MetricOn->All,ContractMetrics->True]
+];
+DecomposeSourceRank3TotallySymmetricSymmReducedtoSourceRank3TotallySymmetricSymm=Join[
+	MakeRule[{SourceRank3TotallySymmetricSymmPerpT0p[],Evaluate[V[i]V[j]V[a]SourceRank3TotallySymmetricSymm[-i,-j,-a]]},MetricOn->All,ContractMetrics->True],
+	MakeRule[{Evaluate@Dagger@SourceRank3TotallySymmetricSymmPerpT0p[],Evaluate@Dagger[V[i]V[j]V[a]SourceRank3TotallySymmetricSymm[-i,-j,-a]]},MetricOn->All,ContractMetrics->True],	
+	MakeRule[{SourceRank3TotallySymmetricSymmPerpT1m[-i],Evaluate[(3ProjPara[m,-i]V[n]V[c]totsymRank3TotallySymmetricSymmSourceRank3TotallySymmetricSymm[k,l,b,-m,-n,-c]SourceRank3TotallySymmetricSymm[-k,-l,-b])//ToCanonical]},MetricOn->All,ContractMetrics->True],
+	MakeRule[{Evaluate@Dagger@SourceRank3TotallySymmetricSymmPerpT1m[-i],Evaluate@Dagger[(3ProjPara[m,-i]V[n]V[c]totsymRank3TotallySymmetricSymmSourceRank3TotallySymmetricSymm[k,l,b,-m,-n,-c]SourceRank3TotallySymmetricSymm[-k,-l,-b])//ToCanonical]},MetricOn->All,ContractMetrics->True],
+	MakeRule[{SourceRank3TotallySymmetricSymmPara0p[],Evaluate[(3ProjPara[m,-z]ProjPara[n,z]V[c]totsymRank3TotallySymmetricSymmSourceRank3TotallySymmetricSymm[k,l,b,-m,-n,-c]SourceRank3TotallySymmetricSymm[-k,-l,-b])//ToCanonical]},MetricOn->All,ContractMetrics->True],
+	MakeRule[{Evaluate@Dagger@SourceRank3TotallySymmetricSymmPara0p[],Evaluate@Dagger[(3ProjPara[m,-z]ProjPara[n,z]V[c]totsymRank3TotallySymmetricSymmSourceRank3TotallySymmetricSymm[k,l,b,-m,-n,-c]SourceRank3TotallySymmetricSymm[-k,-l,-b])//ToCanonical]},MetricOn->All,ContractMetrics->True],
+	MakeRule[{SourceRank3TotallySymmetricSymmPara2p[-i,-j],Evaluate[((3ProjPara[m,-i]ProjPara[n,-j]-ProjPara[-i,-j]ProjPara[m,-z]ProjPara[n,z])V[c]totsymRank3TotallySymmetricSymmSourceRank3TotallySymmetricSymm[k,l,b,-m,-n,-c]SourceRank3TotallySymmetricSymm[-k,-l,-b])//ToCanonical]},MetricOn->All,ContractMetrics->True],
+	MakeRule[{Evaluate@Dagger@SourceRank3TotallySymmetricSymmPara2p[-i,-j],Evaluate@Dagger[((3ProjPara[m,-i]ProjPara[n,-j]-ProjPara[-i,-j]ProjPara[m,-z]ProjPara[n,z])V[c]totsymRank3TotallySymmetricSymmSourceRank3TotallySymmetricSymm[k,l,b,-m,-n,-c]SourceRank3TotallySymmetricSymm[-k,-l,-b])//ToCanonical]},MetricOn->All,ContractMetrics->True],
+	MakeRule[{SourceRank3TotallySymmetricSymmParaT1m[-i],Evaluate[(3ProjPara[m,-i]ProjPara[n,z]ProjPara[c,-z]totsymRank3TotallySymmetricSymmSourceRank3TotallySymmetricSymm[k,l,b,-m,-n,-c]SourceRank3TotallySymmetricSymm[-k,-l,-b])//ToCanonical]},MetricOn->All,ContractMetrics->True],
+	MakeRule[{Evaluate@Dagger@SourceRank3TotallySymmetricSymmParaT1m[-i],Evaluate@Dagger[(3ProjPara[m,-i]ProjPara[n,z]ProjPara[c,-z]totsymRank3TotallySymmetricSymmSourceRank3TotallySymmetricSymm[k,l,b,-m,-n,-c]SourceRank3TotallySymmetricSymm[-k,-l,-b])//ToCanonical]},MetricOn->All,ContractMetrics->True],
+	MakeRule[{SourceRank3TotallySymmetricSymmPara3m[-i,-j,-a],Evaluate[((ProjPara[m,-i]ProjPara[n,-j]ProjPara[c,-a]-(1/5)(ProjPara[-i,-j]ProjPara[m,-z]ProjPara[n,z]ProjPara[c,-a]+ProjPara[-j,-a]ProjPara[m,-i]ProjPara[n,z]ProjPara[c,-z]+ProjPara[-i,-a]ProjPara[m,-z]ProjPara[n,-j]ProjPara[c,z]))totsymRank3TotallySymmetricSymmSourceRank3TotallySymmetricSymm[k,l,b,-m,-n,-c]SourceRank3TotallySymmetricSymm[-k,-l,-b])//ToCanonical]},MetricOn->All,ContractMetrics->True],
+	MakeRule[{Evaluate@Dagger@SourceRank3TotallySymmetricSymmPara3m[-i,-j,-a],Evaluate@Dagger[((ProjPara[m,-i]ProjPara[n,-j]ProjPara[c,-a]-(1/5)(ProjPara[-i,-j]ProjPara[m,-z]ProjPara[n,z]ProjPara[c,-a]+ProjPara[-j,-a]ProjPara[m,-i]ProjPara[n,z]ProjPara[c,-z]+ProjPara[-i,-a]ProjPara[m,-z]ProjPara[n,-j]ProjPara[c,z]))totsymRank3TotallySymmetricSymmSourceRank3TotallySymmetricSymm[k,l,b,-m,-n,-c]SourceRank3TotallySymmetricSymm[-k,-l,-b])//ToCanonical]},MetricOn->All,ContractMetrics->True]
+];
+
+ExpandFieldsRules=Flatten@Map[MakeRule[{#,Evaluate@Module[{Expr=#},
+	Expr//=xAct`PSALTer`Private`ToNewCanonical;
+	Expr//=CollectTensors;
+	Expr=Expr/.DecomposeRank3TotallySymmetricSymmReducedtoRank3TotallySymmetricSymm;
+	Expr//=xAct`PSALTer`Private`ToNewCanonical;
+	Expr//=CollectTensors;	
+	Expr//=xAct`PSALTer`Private`ToNewCanonical;
+	Expr=Expr/.ProjRank3TotallySymmetricFPerpParaToVG;
+	Expr//=xAct`PSALTer`Private`ToNewCanonical;
+	Expr=Expr/.ProjPerpParaToVG;
+	Expr//=xAct`PSALTer`Private`ToNewCanonical;
+	Expr//=CollectTensors;
+	Expr=Expr/.Rank3TotallySymmetricSymmToRank3TotallySymmetric;
+	Expr//=xAct`PSALTer`Private`ToNewCanonical;
+	Expr//=CollectTensors;
+	Expr]},
+	MetricOn->All,ContractMetrics->True]&,{Rank3TotallySymmetricSymmPerpT0p[],Rank3TotallySymmetricSymmPerpT1m[-i],Rank3TotallySymmetricSymmPara0p[],Rank3TotallySymmetricSymmPara2p[-i,-j],Rank3TotallySymmetricSymmParaT1m[-i],Rank3TotallySymmetricSymmPara3m[-i,-j,-a],Dagger@Rank3TotallySymmetricSymmPerpT0p[],Dagger@Rank3TotallySymmetricSymmPerpT1m[-i],Dagger@Rank3TotallySymmetricSymmPara0p[],Dagger@Rank3TotallySymmetricSymmPara2p[-i,-j],Dagger@Rank3TotallySymmetricSymmParaT1m[-i],Dagger@Rank3TotallySymmetricSymmPara3m[-i,-j,-a]}];
+
+ExpandSourcesRules=Flatten@Map[MakeRule[{#,Evaluate@Module[{Expr=#},
+	Expr//=xAct`PSALTer`Private`ToNewCanonical;
+	Expr=Expr/.DecomposeSourceRank3TotallySymmetricSymmReducedtoSourceRank3TotallySymmetricSymm;
+	Expr//=xAct`PSALTer`Private`ToNewCanonical;
+	Expr//=CollectTensors;	
+	Expr//=xAct`PSALTer`Private`ToNewCanonical;
+	Expr=Expr/.ProjRank3TotallySymmetricFPerpParaToVG;
+	Expr//=xAct`PSALTer`Private`ToNewCanonical;
+	Expr=Expr/.ProjPerpParaToVG;
+	Expr//=xAct`PSALTer`Private`ToNewCanonical;
+	Expr=Expr/.SourceRank3TotallySymmetricSymmToSourceRank3TotallySymmetric;
+	Expr//=xAct`PSALTer`Private`ToNewCanonical;
+	Expr//=CollectTensors;
+	Expr]},
+	MetricOn->All,ContractMetrics->True]&,{SourceRank3TotallySymmetricSymmPerpT0p[],SourceRank3TotallySymmetricSymmPerpT1m[-i],SourceRank3TotallySymmetricSymmPara0p[],SourceRank3TotallySymmetricSymmPara2p[-i,-j],SourceRank3TotallySymmetricSymmParaT1m[-i],SourceRank3TotallySymmetricSymmPara3m[-i,-j,-a],Dagger@SourceRank3TotallySymmetricSymmPerpT0p[],Dagger@SourceRank3TotallySymmetricSymmPerpT1m[-i],Dagger@SourceRank3TotallySymmetricSymmPara0p[],Dagger@SourceRank3TotallySymmetricSymmPara2p[-i,-j],Dagger@SourceRank3TotallySymmetricSymmParaT1m[-i],Dagger@SourceRank3TotallySymmetricSymmPara3m[-i,-j,-a]}];
+
+DecomposeFieldsRules=Flatten@Map[MakeRule[{#,Evaluate@Module[{Expr=#},
+	Expr//=xAct`PSALTer`Private`ToNewCanonical;
+	Expr//=CollectTensors;
+	Expr=Expr/.Rank3TotallySymmetricToRank3TotallySymmetricSymm;
+	Expr//=xAct`PSALTer`Private`ToNewCanonical;
+	Expr//=CollectTensors;
+	Expr=Expr/.ExpandRank3TotallySymmetricSymmSourceRank3TotallySymmetricSymmtoF/.ExpandRank3TotallySymmetricSymmFtoReduced;
+	Expr//=xAct`PSALTer`Private`ToNewCanonical;
+	Expr//=CollectTensors;
+	Expr//=xAct`PSALTer`Private`ToNewCanonical;
+	Expr//=CollectTensors;
+	Expr//=xAct`PSALTer`Private`ToNewCanonical;
+	Expr//=CollectTensors;
+	Expr]},
+	MetricOn->All,ContractMetrics->True]&,{Rank3TotallySymmetric[-a,-b,-c],Dagger@Rank3TotallySymmetric[-a,-b,-c]}];
+
+xAct`PSALTer`Private`CombineRules[ExpandFieldsRules,
+			ExpandSourcesRules,
+			DecomposeFieldsRules];

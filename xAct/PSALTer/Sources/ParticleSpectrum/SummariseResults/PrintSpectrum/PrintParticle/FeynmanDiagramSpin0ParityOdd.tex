@@ -1,0 +1,24 @@
+%%========%%
+%%  Odd0  %%
+%%========%%
+
+\documentclass[crop,tikz]{standalone}
+\input{Preamble.tex}
+\feynmandiagram[medium,horizontal=a to b]{
+i1[particle=\LARGE?,black] --[thick,black] a [blob],
+i2[particle=\LARGE?,black] --[thick,black] a,
+
+a --[blue,scalar,thick] b[blob],
+a --[draw=none,
+	blue,
+	momentum'={[arrow style=blue]\LARGE$k^{\mu}$}] b,
+a --[draw=none,
+	blue,
+	half left,
+	looseness=0.3,
+	edge label = {\LARGE$J^{P}=0^-$\vspace{1cm}}] b,
+
+b --[thick,black] f1[particle=\LARGE?,black],
+b --[thick,black] f2[particle=\LARGE?,black],
+b --[thick,black] f3[particle=\LARGE?,black]};
+\end{document}

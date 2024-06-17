@@ -1,0 +1,49 @@
+(*======================*)
+(*  RegisterFieldRank1  *)
+(*======================*)
+
+xAct`PSALTer`Private`DefFiducialField[Rank1[-a]];
+xAct`PSALTer`Private`DefSO3Irrep[Rank10p[],xAct`PSALTer`Private`Spin->0,xAct`PSALTer`Private`Parity->xAct`PSALTer`Private`Even];
+xAct`PSALTer`Private`DefSO3Irrep[Rank11m[-a],xAct`PSALTer`Private`Spin->1,xAct`PSALTer`Private`Parity->xAct`PSALTer`Private`Odd];
+
+DefTensor[ProjPerp[-a,-b],M4,Symmetric[{-a,-b}]];
+DefTensor[ProjPara[-a,-b],M4,Symmetric[{-a,-b}]];
+ProjPerpParaToVG=Join[
+	MakeRule[{ProjPerp[-a,b],Evaluate[V[-a]V[b]]},MetricOn->All,ContractMetrics->True],
+	MakeRule[{ProjPara[-a,b],Evaluate[G[-a,b]-V[-a]V[b]]},MetricOn->All,ContractMetrics->True]];
+
+ExpandFieldsRules=Join[
+	MakeRule[{Rank10p[],Evaluate[V[a]Rank1[-a]]},
+		MetricOn->All,ContractMetrics->True],
+	MakeRule[{Rank11m[-a],Evaluate[
+		ProjPara[-a,b]Rank1[-b]/.ProjPerpParaToVG//ToCanonical]},
+		MetricOn->All,ContractMetrics->True],
+	MakeRule[{Evaluate@Dagger@Rank10p[],Evaluate@Dagger[V[a]Rank1[-a]]},
+		MetricOn->All,ContractMetrics->True],
+	MakeRule[{Evaluate@Dagger@Rank11m[-a],Evaluate@Dagger[
+		ProjPara[-a,b]Rank1[-b]/.ProjPerpParaToVG//ToCanonical]},
+		MetricOn->All,ContractMetrics->True]];
+ExpandSourcesRules=Join[
+	MakeRule[{SourceRank10p[],Evaluate[V[a]SourceRank1[-a]]},
+		MetricOn->All,ContractMetrics->True],
+	MakeRule[{SourceRank11m[-a],Evaluate[
+		ProjPara[-a,b]SourceRank1[-b]/.ProjPerpParaToVG//ToCanonical]},
+		MetricOn->All,ContractMetrics->True],
+	MakeRule[{Evaluate@Dagger@SourceRank10p[],Evaluate@Dagger[V[a]SourceRank1[-a]]},
+		MetricOn->All,ContractMetrics->True],
+	MakeRule[{Evaluate@Dagger@SourceRank11m[-a],Evaluate@Dagger[
+		ProjPara[-a,b]SourceRank1[-b]/.ProjPerpParaToVG//ToCanonical]},
+		MetricOn->All,ContractMetrics->True]];
+DecomposeFieldsRules=Join[
+	MakeRule[{Rank1[-a],Evaluate[V[-a]Rank10p[]+Rank11m[-a]]},
+		MetricOn->All,ContractMetrics->True],
+	MakeRule[{Evaluate@Dagger@Rank1[-a],Evaluate@Dagger[V[-a]Rank10p[]+Rank11m[-a]]},
+		MetricOn->All,ContractMetrics->True]];
+DecomposeSourcesRules=Join[
+	MakeRule[{SourceRank1[-a],Evaluate[V[-a]SourceRank10p[]+SourceRank11m[-a]]},
+		MetricOn->All,ContractMetrics->True],
+	MakeRule[{Evaluate@Dagger@SourceRank1[-a],Evaluate@Dagger[V[-a]SourceRank10p[]+SourceRank11m[-a]]},
+		MetricOn->All,ContractMetrics->True]];
+xAct`PSALTer`Private`CombineRules[ExpandFieldsRules,
+			ExpandSourcesRules,
+			DecomposeFieldsRules];

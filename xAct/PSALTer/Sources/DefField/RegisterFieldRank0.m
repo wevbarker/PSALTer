@@ -1,0 +1,29 @@
+(*======================*)
+(*  RegisterFieldRank0  *)
+(*======================*)
+
+xAct`PSALTer`Private`DefFiducialField[Rank0[]];
+xAct`PSALTer`Private`DefSO3Irrep[Rank00p[],xAct`PSALTer`Private`Spin->0,xAct`PSALTer`Private`Parity->xAct`PSALTer`Private`Even];
+ExpandFieldsRules=Join[
+	MakeRule[{Rank00p[],Rank0[]},
+		MetricOn->All,ContractMetrics->True],
+	MakeRule[{Evaluate@Dagger@Rank00p[],Evaluate@Dagger[Rank0[]]},
+		MetricOn->All,ContractMetrics->True]];
+ExpandSourcesRules=Join[
+	MakeRule[{SourceRank00p[],SourceRank0[]},
+		MetricOn->All,ContractMetrics->True],
+	MakeRule[{Evaluate@Dagger@SourceRank00p[],Evaluate@Dagger[SourceRank0[]]},
+		MetricOn->All,ContractMetrics->True]];
+DecomposeFieldsRules=Join[
+	MakeRule[{Rank0[],Rank00p[]},
+		MetricOn->All,ContractMetrics->True],
+	MakeRule[{Evaluate@Dagger@Rank0[],Evaluate@Dagger[Rank00p[]]},
+		MetricOn->All,ContractMetrics->True]];
+DecomposeSourcesRules=Join[
+	MakeRule[{SourceRank0[],SourceRank00p[]},
+		MetricOn->All,ContractMetrics->True],
+	MakeRule[{Evaluate@Dagger@SourceRank0[],Evaluate@Dagger[SourceRank00p[]]},
+		MetricOn->All,ContractMetrics->True]];
+xAct`PSALTer`Private`CombineRules[ExpandFieldsRules,
+			ExpandSourcesRules,
+			DecomposeFieldsRules];

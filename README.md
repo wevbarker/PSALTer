@@ -1,488 +1,248 @@
-<img src="xAct/PSALTer/Documentation/Logo/GitHubLogo.png" width="1000">
+![license](https://img.shields.io/github/license/wevbarker/PSALTer)
+[![arXiv](https://img.shields.io/badge/arXiv-2311.11790-b31b1b.svg)](https://arxiv.org/abs/2311.11790)
+[![arXiv](https://img.shields.io/badge/arXiv-2402.07641-b31b1b.svg)](https://arxiv.org/abs/2402.07641)
+[![arXiv](https://img.shields.io/badge/arXiv-2402.14917-b31b1b.svg)](https://arxiv.org/abs/2402.14917)
+[![arXiv](https://img.shields.io/badge/arXiv-2406.09500-b31b1b.svg)](https://arxiv.org/abs/2406.09500)
+<img src="xAct/PSALTer/Logos/GitHubLogo.png" width="1000">
 
-# Particle Spectrum for Any Tensor Lagrangian (PSALTer)
-## Version 0.0.1-developer
+# _PSALTer_: Particle Spectrum for Any Tensor Lagrangian
+## Version 1.0.0
 
-- Pre-release version, pending completion of pre-print and docs.
-- Functionality for Weyl gauge theory and metric affine gravity removed due to ongoing collaborations with Tallinn and Tartu.
-- Improved README
+- Initial release to accompany pre-print and documentation.
 
 ## License
 
-Copyright © 2022 Will E. V. Barker
+Copyright © 2022 Will Barker, Carlo Marzo and Claire Rigouzzo.
 
-PSALTer is distributed as free software under the [GNU General Public License (GPL)](https://www.gnu.org/licenses/gpl-3.0.en.html).
+_PSALTer_ is distributed as free software under the [GNU General Public License (GPL)](https://www.gnu.org/licenses/gpl-3.0.en.html).
 
-PSALTer is provided without warranty, or the implied warranty of merchantibility or fitness for a particular purpose.
+_PSALTer_ is provided without warranty, or the implied warranty of merchantibility or fitness for a particular purpose.
 
 ## About
 
-PSALTer is an (unofficial) part of the [xAct bundle](http://www.xact.es/). 
-
-PSALTer is designed to predict the propagating quantum particle states in any tensorial field theory, including (but not limited to) just about any theory of gravity. The _free_ action $S_{\text{F}}$ must have the structure
+_PSALTer_ is a software package for _Mathematica_ designed to predict the propagating quantum particle states in any tensorial field theory, including (but not limited to) just about any theory of gravity. The free action $S_{\text{F}}$ must have the structure
 ```math
 S_{\text{F}}=\int\mathrm{d}^4x\ \zeta(x)^{\text{T}}\cdot\Big[\mathcal{O}(\partial)\cdot\zeta(x)-j(x)\Big],
 ```
 where the ingredients are:
-- The dynamical fields $\zeta$ are real tensors, which may be a collection of distinct fields, each field having some collection of spacetime indices, perhaps with some symmetry among the indices. 
-- The wave operator $\mathcal{O}$ is a real, second-order (Ostrogradsky's theorem discourages higher-derivative operators, but even if it did not we note that the apparent order may always be lowered by the introduction of extra fields) differential operator constructed from the flat-space metric $\eta$ and partial derivative $\partial$ (but _not_ the totally antisymmetric $\epsilon$ tensor), linearly parameterised by a collection of coupling coefficients.
-- The source currents $j$ are conjugate to the fields $\zeta$. They encode all external interactions to second order in fields, whilst keeping the external dynamics completely anonymous.
+- The dynamical fields $\zeta(x)$ are real tensors, which may be a collection of distinct fields, each field having some collection of spacetime indices ($\mu$, $\nu$, etc.), perhaps with some symmetry among the indices. 
+- The wave operator $\mathcal{O}(\partial)$ is a real, second-order (Ostrogradsky's theorem discourages higher-derivative operators, but even if it did not we note that the apparent order may always be lowered by the introduction of extra fields) differential operator constructed from the flat-space metric $\eta_{\mu\nu}$ and partial derivative $\partial_\mu$ (but _not_ the totally antisymmetric $\epsilon^{\mu\nu\sigma\lambda}$ tensor), linearly parameterised by a collection of coupling coefficients.
+- The source currents $j(x)$ are conjugate to the fields $\zeta(x)$. They encode all external interactions to second order in fields, whilst keeping the external dynamics completely anonymous.
 
-For theories of this form, the _spin-projection operator_ (SPO) algorithm applies and the PSALTer package may be used. Of course, spectra can also be obtained for more exotic theories, but these require the algorithm to be modified beyond its minimal form.
+## Example: massive gravity 
 
-### Example: Melichev-Percacci theory
-
-As a demonstration, let's say our Lagrangian is the Kretschmann curvature scalar, plus the square of the torsion tensor
+As a demonstration, we consider the Fierz-Pauli linearised massive gravity theory
 ```math
-S_{\text{F}}=\int\mathrm{d}^4x\ \Big[\alpha_1\mathcal{R}^{\mu\nu\sigma\tau}\mathcal{R}_{\mu\nu\sigma\tau}+\beta_1\mathcal{T}^{\mu\nu\sigma}\mathcal{T}_{\mu\nu\sigma}+L_{\text{M}}\Big],
+S=\int\mathrm{d}^4x\ \Big[\alpha\big(-\partial^\mu h_{\mu\nu}\partial^nu h+\tfrac{1}{2}\partial_\mu h\partial^\mu h-\tfrac{1}{2}\partial_\sigma h^{\mu\nu}\partial_\sigma h_{\mu\nu}+\partial_\nu h^{\mu\nu}\partial^\sigma h_{\mu\sigma}\big)+\beta\big(h^{\mu\nu}h_{\mu\nu}-h^2\big)+h^{\mu\nu}T_{\mu\nu}\Big],
 ```
-where $L_{\text{M}}$ is the matter Lagrangian, and $\alpha_1$ (type `Alp1`) and $\beta_1$ (type `Bet1`) are coupling coefficients. The _free_ theory is the _linearisation_ of this action near Minkowski spacetime. Taking the perturbation of the tetrad field $f_{\mu\nu}$ (type `F[-m,-n]`) to be an _asymmetric_ rank-two tensor, and the perturbation of the independent connection field $A_{\mu\nu\sigma}$ (type `A[-m,-n,-s]`) to be a rank-three tensor _antisymmetric_ in the first two indices, we can expand the theory to quadratic order, with partial derivative `CD[-m]@`. Now in a notebook, load the package:
+where $\alpha$ and $\beta$ are coupling coefficients, $h_{\mu\nu}$ is the metric perturbation and $T^{\mu\nu}$ is the linearised stress-energy tensor of matter, which is the source conjugate to $h_{\mu\nu}$.
+
+In a fresh notebook we first load the package:
 ```
 <<xAct`PSALTer`;
 ```
-and plug the quadratic expansion directly into PSALTer:
+Next, we define Lagrangian couplings $\alpha$ and $\beta$ as `Coupling1` and `Coupling2` using the command `DefConstantSymbol` from _xAct_:
+```mathematica
+DefConstantSymbol[Coupling1,PrintAs->"\[Alpha]"];
+DefConstantSymbol[Coupling2,PrintAs->"\[Beta]"];
+```
+Next, we use the command `DefField` from _PSALTer_ to define the metric perturbation $h_{\mu\nu}$ as the symmetric, rank-two tensor field `MetricPerturbation`:
+```mathematica
+DefField[
+    MetricPerturbation[-a,-b],
+    Symmetric[{-a,-b}],
+    PrintAs->"\[ScriptH]",
+    PrintSourceAs->"\[ScriptCapitalT]"
+];
+```
+The output should look like:
+
+<img src="xAct/PSALTer/Logos/FieldKinematics.png" width="1000">
+
+To compute the spectrum, we plug the Lagrangian into the `ParticleSpectrum` function from _PSALTer_:
 ```mathematica
 ParticleSpectrum[
-    Alp1*A[-a,-b,-c]*CD[c]@F[a,b]+<many more terms>,
-    ClassName->"PoincareGaugeTheory",
-    TheoryName->"MelichevPercacciTheory",	
-    Method->"Hard",
+    Coupling1*(
+	(1/2)*CD[-b]@MetricPerturbation[a,-a]*CD[b]@MetricPerturbation[c,-c]
+	-CD[a]@MetricPerturbation[-a,-b]*CD[b]@MetricPerturbation[c,-c]
+	-(1/2)*CD[-c]@MetricPerturbation[a,b]*CD[c]@MetricPerturbation[-a,-b]
+	+CD[-b]@MetricPerturbation[a,b]*CD[c]@MetricPerturbation[-a,-c]
+    )
+    +Coupling2*(
+        MetricPerturbation[-a,-b]*MetricPerturbation[a,b]
+        -MetricPerturbation[a,-a]*MetricPerturbation[b,-b]
+    ),
+    TheoryName->"MassiveGravity",	
+    Method->"Easy",
     MaxLaurentDepth->3
 ];
 ```
-and execute the cell. Ten minutes later, and voilà:
+The output should look like:
 
-<img src="xAct/PSALTer/Documentation/English/MelichevPercacciTheory.png" width="1000">
+<img src="xAct/PSALTer/Logos/ParticleSpectrograph.png" width="1000">
 
-To summarise the physical information that is automatically computed:
-- *PSALTer results pannel:* The free action is quoted back to you.
-- *Wave operator:* The wave operator is presented as a hermitian matrix in $k$-space, block-decomposed over the $J^P$ sectors of definite spin $J$ and parity $P$.
-- *Saturated propagator:* The Moore-Penrose pseudoinverse of the wave operator is computed, and sandwiched between conserved source currents.
-- *Source constraints:* The null spaces of the wave operator blocks encode gauge symmetries of the theory, corresponding to conservation laws satisfied by the source currents, these are quoted.
-- *Massive spectrum:* There is listed the spectrum of massive states in the theory, with information about the square mass, pole residue, spin and parity of each state.
-- *Massless spectrum:* There is listed the spectrum of massless propagating polarisations. Also, the spectrum of (pathological) higher-order poles is computed, up to a depth specified by `MaxLaurentDepth`.
-- *Unitarity conditions:* From the requirement of positivity of the pole residues, and of the square masses, the inequality conditions on the parameters `Alp1` and `Bet1` needed to ensure unitarity of the S-matrix are computed (if the theory can be made to be unitary at all).
+## Documentation 
 
-### General use 
+The documentation notebook is at `PSALTer/xAct/PSALTer/Documentation/English/Documentation.nb`. It is recommended to also read [the paper](https://arxiv.org/abs/2406.09500).
 
-#### Function syntax 
+## General use 
 
-PSALTer defines _only one_ function:
+### Pre-defined geometry
 
+When you first run `` <<xAct`PSALTer` `` the software defines a Minkowski manifold with the ingredients:
+
+|Wolfram Language|Output format|Meaning|
+|---|---|---|
+|`a`, `b`, `c`, ..., `z`|$\alpha$, $\beta$, $\gamma$, ... $\zeta$|Cartesian coordinate indices|
+|`G[-m,-n]`|$\eta_{\mu\nu}$|Minkowski metric|
+|`CD[-m]@`|$\partial_{\mu}$|Partial derivative|
+
+### Provided functions 
+
+_PSALTer_ defines _two_ functions. To define a tensor field you use `DefField`, which has a very similar syntax to `DefTensor` in _xTensor_:
 ```mathematica
-ParticleSpectrum[
-    QuadraticLagrangian_,
-    ClassName->Classname_,
-    TheoryName->TheoryName_,
-    Method->Method_,
-    MaxLaurentDepth->MaxLaurentDepth_
+DefField[
+    FieldNameValue_[IndsValue___],
+    SymmValue_,
+    PrintAs->PrintAsValue_,
+    PrintSourceAs->PrintSourceAsValue_
 ];
 ```
-and the arguments and options are as follows:
-- `QuadraticLagrangian_` must be a valid linearised Lagrangian; do _not_ include the term coupling the fields to their conjugate sources, this will be automatically included by PSALTer.
-- `Classname_` must be a pre-defined string.
-- `TheoryName_` can be any string.
-- `Method_` can be `"Easy"` (default) or `"Hard"` (experimental, uses home-brewed implementations of the symbolic Moore-Penrose inverse and other innovations).
-- `MaxLaurentDepth_` can be `1`, `2` or `3`.
+The arguments and options are as follows:
+- `FieldNameValue` is the symbolic name of the new field.
+- `IndsValue` are the indices of `FieldNameValue`, if any.
+- `SymmValue` is the intended index-symmetry on `IndsValue`. The syntax is the same as in `DefTensor`.
+- `PrintAsValue` is the string that `FieldNameValue` will use as format. The syntax is the same as in `DefTensor`.
+- `PrintSourceAsValue` is the string that the source conjugate to `FieldNameValue` will use as format.
 
-For details about `QuadraticLagrangian_` and `Classname_`, keep reading.
+To compute a spectrum, use `ParticleSpectrum`:
+```mathematica
+ParticleSpectrum[
+    LagrangianValue_,
+    TheoryName->TheoryNameValue_,
+    Method->MethodValue_,
+    MaxLaurentDepth->MaxLaurentDepthValue_
+];
+```
+The arguments and options are as follows:
+- `LagrangianValue` must be a valid linearised Lagrangian density. The expression must be a Lorentz-scalar. Each term must be quadratic in the field(s) `FieldNameValue` defined using `DefField`. Each term must be linear in coupling constants defined using `DefConstantSymbol` from _xTensor_. Other allowed ingredients are `CD` acting on field(s) `FieldNameValue` and `G` used to contract indices. Do _not_ use an odd power of `epsilonG`, which will result in a parity-odd theory. Do _not_ include the term coupling the fields to their conjugate sources: this is automatically included.
+- `TheoryNameValue` can be any string. This is used for labelling the output files.
+- `MethodValue` can be either of the strings `"Easy"` (default) or `"Hard"` (experimental, uses home-brewed implementations of the symbolic Moore-Penrose inverse and other innovations).
+- `MaxLaurentDepthValue` can be `1`, `2` or `3`. This sets the maximum positive integer $n$ for which the $1/k^{2n}$ null pole residues are requested. The default is `1`, from which the massless spectrum can be obtained. Setting higher $n$ naturally leads to longer wallclock times, but also allows potential (pathological) higher-order/non-simple propagator poles to be identified, down to the requested depth.
 
-#### Basic geometry
-
-PSALTer pre-defines a flat, Minkowskian manifold with the following ingredients:
-
-|Object|LaTeX|
-|---|---|
-|`G[-m,-n]`|$\eta_{\mu\nu}$|
-|`CD[-m]@`|$\partial_{\mu}$|
-
-#### Theory classes, fields and couplings
-
-Five _theory classes_ (also called _theory modules_) are available, and these _must_ be passed to `ParticleSpectrum` via the option `ClassName`. For each module, you are only permitted to pass linearised Lagrangia which refer to the collection of fields and coupling constants defined by that module, as listed in the following table:
-
-|Class name|Fields|LaTeX|Coupling constants|LaTeX|
-|---|---|---|---|---|
-|`"ScalarTheory"`|``xAct`PSALTer`ScalarTheory`Phi[]``|$\phi$|``xAct`PSALTer`ScalarTheory`Coupling1``|$\alpha_1$|
-||||``xAct`PSALTer`ScalarTheory`Coupling2``|$\alpha_2$|
-||||``xAct`PSALTer`ScalarTheory`Coupling3``|$\alpha_3$|
-|`"VectorTheory"`|``xAct`PSALTer`VectorTheory`B[-m]``|$B_{\mu}$|``xAct`PSALTer`VectorTheory`Coupling1``|$\alpha_1$|
-||||``xAct`PSALTer`VectorTheory`Coupling2``|$\alpha_2$|
-||||``xAct`PSALTer`VectorTheory`Coupling3``|$\alpha_3$|
-|`"TensorTheory"`|``xAct`PSALTer`TensorTheory`LinearMetric[-m,-n]``|$h_{\mu\nu}$|``xAct`PSALTer`TensorTheory`Coupling1``|$\alpha_1$|
-||||``xAct`PSALTer`TensorTheory`Coupling2``|$\alpha_2$|
-||||``xAct`PSALTer`TensorTheory`Coupling3``|$\alpha_3$|
-|`"ScalarTensorTheory"`|``xAct`PSALTer`ScalarTensorTheory`LinearMetric[-m,-n]``|$h_{\mu\nu}$|``xAct`PSALTer`ScalarTensorTheory`Coupling1``|$\alpha_1$|
-||``xAct`PSALTer`ScalarTensorTheory`Phi[]``|$\phi$|...|...|
-||||``xAct`PSALTer`PoincareGaugeTheory`Coupling10``|$\alpha_{10}$|
-|`"PoincareGaugeTheory"`|``xAct`PSALTer`PoincareGaugeTheory`F[-m,-n]``|$f_{\mu\nu}$|``xAct`PSALTer`PoincareGaugeTheory`kLambda``|$\lambda$|
-||``xAct`PSALTer`PoincareGaugeTheory`A[-m,-n,-s]``|$A_{\mu\nu\sigma}$|``xAct`PSALTer`PoincareGaugeTheory`kR1``|$r_1$|
-||||...|...|
-||||``xAct`PSALTer`PoincareGaugeTheory`kR6``|$r_6$|
-||||``xAct`PSALTer`PoincareGaugeTheory`kT1``|$t_1$|
-||||``xAct`PSALTer`PoincareGaugeTheory`kT2``|$t_2$|
-||||``xAct`PSALTer`PoincareGaugeTheory`kT3``|$t_3$|
-||||``xAct`PSALTer`PoincareGaugeTheory`Alp0``|$\alpha_0$|
-||||...|...|
-||||``xAct`PSALTer`PoincareGaugeTheory`Alp6``|$\alpha_6$|
-||||``xAct`PSALTer`PoincareGaugeTheory`Bet1``|$\beta_1$|
-||||``xAct`PSALTer`PoincareGaugeTheory`Bet2``|$\beta_2$|
-||||``xAct`PSALTer`PoincareGaugeTheory`Bet3``|$\beta_3$|
-
-## Installation
+## Quickstart 
 
 ### Requirements 
 
-PSALTer has been tested in the following environment(s):
-- Linux x86 (64-bit) (specifically Manjaro and Arch)
-- Mathematica v 13.1.0.0
-- xAct v 1.2.0
-- MaTeX v 1.7.9
-- xPlain v 0.0.0-developer (if running the Calibration notebook)
+#### Basic hardware requirements
 
-### Install 
+- A multi-core processor (recommended, note that most modern PCs are multi-core)
+- An internet connection (recommended for _PSALTer_ to interrogate the [Wolfram Function Repository](https://resources.wolframcloud.com/FunctionRepository))
 
-1. Make sure you have [installed xAct](http://www.xact.es/download.html).
-2. Make sure you have [installed MaTeX](http://szhorvat.net/pelican/latex-typesetting-in-mathematica.html).
-3. Download PSALTer:
-	```bash, git
-	git clone https://github.com/wevbarker/PSALTer-devel
-	cd PSALTer-devel 
-	```
-4. Place the `./xAct/PSALTer` directory relative to your xAct install. A global install might have ended up at: 
-	```bash
-	/usr/share/Mathematica/Applications/xAct
-	```
-## Quickstart 
+#### Operating systems
 
-1. In the cloned PSALTer repository, open the example notebook at `./xAct/PSALTer/Documentation/English/Calibration.nb`, scroll through *without running* to understand the capabilities and scope of PSALTer.
-2. Make sure you have [installed xPlain](https://github.com/wevbarker/xPlain) if you want to run `Calibration.nb`, then simply execute the single line of code in the first (and only) input cell (you should first delete all the output using `Cell -> Delete All Output` in the Mathematica front-end).
-3. The first time you run `Calibration.nb` after a fresh install, PSALTer will rebuild certain binary files. This may take some time, especially on Windows machines.
-4. After the install completes successfully, delete the build output cells as before, and re-run the first input cell.
-5. To see how the examples are implemented, and to test your own theories, go to the Wolfram Language file at `./xAct/PSALTer/Documentation/English/Calibration.m`, and all the various sub-files referred to therein under the path `./xAct/PSALTer/Documentation/English/Calibration/`.
+- [_Linux_](https://www.linux.org/) (recommended, tested on _Linux v 6.9.1_ via [_Manjaro_](https://manjaro.org/), [_Arch_](https://archlinux.org/), [_RockyLinux 8 (RHEL8)_](https://rockylinux.org/) and [_CentOS7 (RHEL7)_](https://www.centos.org/))
+- [_macOS_](https://www.apple.com/uk/macos) (not recommended, tested on _macOS Monterey_)
+- [_Windows_](https://www.microsoft.com/en-gb/windows?r=1) (not recommended, tested on _Windows 10_)
+
+#### Software dependencies
+
+- [_Mathematica_](https://www.wolfram.com/mathematica/) (required, tested on _Mathematica v 14.0.0.0_)
+- [_xAct_](http://www.xact.es/) (required packages [_xTensor_](http://www.xact.es/xCoba/index.html), [_SymManipulator_](http://www.xact.es/SymManipulator/index.html), [_xPerm_](http://www.xact.es/xPerm/index.html), [_xCore_](http://www.xact.es/xCore/index.html), [_xTras_](http://www.xact.es/xTras/index.html) and [_xCoba_](http://www.xact.es/xCoba/index.html), tested on _xAct v 1.2.0_)
+- [_RectanglePacking_](https://resources.wolframcloud.com/PacletRepository/resources/JasonB/RectanglePacking/) (recommended, tested on _RectanglePacking v 1.0.0_)
+- [_Inkscape_](https://inkscape.org/) (recommended for _Linux_ and _macOS_ only, tested on _Inkscape v 1.3.2_)
+
+### Installation
+
+#### _Linux_
+
+1. ***Prepare.*** Make sure your system satisfies all the [requirements](#requirements).
+2. ***Download.*** You can download the latest release from the panel on the right, and unzip using:
+```console, bash
+[user@system ~]$ unzip ~/Downloads/PSALTer*
+[user@system ~]$ mv ~/PSALTer* ~/PSALTer
+```
+Alternatively, if you have _git_ installed, the following _bash_ command will download _PSALTer_ into the home directory:
+```console, bash, git
+[user@system ~]$ git clone https://github.com/wevbarker/PSALTer
+```
+
+3. ***Install.*** To perform the installation, the sources need only be copied to the location of the other _xAct_ sources. For a global installation of _xAct_ this may require:
+```console, bash
+[user@system ~]$ cd PSALTer/xAct
+[user@system xAct]$ sudo cp -r PSALTer /usr/share/Mathematica/Applications/xAct/
+```
+For a local installation of _xAct_, the path may be vary:
+```console, bash
+[user@system xAct]$ cp -r PSALTer ~/.Mathematica/Applications/xAct/
+```
+
+#### _macOS_
+
+1. ***Prepare.*** Make sure your system satisfies all the [requirements](#requirements).
+2. ***Download.*** You can download the latest release from the panel on the right, and unzip using:
+```console, zsh 
+user@system ~ % unzip ~/Downloads/PSALTer*
+user@system ~ % mv ~/PSALTer* ~/PSALTer
+```
+Alternatively, if you have _git_ installed, the following _zsh_ command will download _PSALTer_ into the home directory:
+```console, zsh, git
+user@system ~ % git clone https://github.com/wevbarker/PSALTer
+```
+
+3. ***Install.*** To perform the installation, the sources need only be copied to the location of the other _xAct_ sources. For a global installation of _xAct_ this may require:
+```console, zsh 
+user@system ~ % cd PSALTer/xAct
+user@system xAct % sudo cp -r PSALTer /Library/Mathematica/Applications/xAct/
+```
+For a local installation of _xAct_, the path may be vary:
+```console, zsh 
+user@system xAct % cp -r PSALTer ~/Library/Mathematica/Applications/xAct/
+```
+4. Make sure you've read the [known bugs](#known-bugs) that can affect _macOS_ users.
+
+#### _Microsoft Windows_
+
+1. ***Prepare.*** Make sure your system satisfies all the [requirements](#requirements).
+2. ***Download.*** You can download the latest release from the panel on the right, and unzip in _File Explorer_ using _right-click_ and _Extract All_. Alternatively, if you have _git_ installed, the following _cmd_ command will download _PSALTer_ into the home directory:
+```console, cmd, git
+C:\Users\user> git clone https://github.com/wevbarker/PSALTer
+```
+3. ***Install.*** To perform the installation, the sources need only be copied to the location of the other _xAct_ sources. For a global installation of _xAct_, you may need to open _File Explorer_ using _right-click_ and _Run as administrator_. Alternatively, use the following _cmd_ commands (again, opening _cmd_ using _Run as administrator_): 
+```console, cmd
+C:\Users\user> cd PSALTer
+C:\Users\user\PSALTer> xcopy /e /k /h /i xAct\ "C:\Program Files\Wolfram Research\Mathematica\14.0\AddOns\Applications\xAct\"
+```
+For a local installation of _xAct_, the path may be vary:
+```console, cmd 
+C:\Users\user\PSALTer> xcopy /e /k /h /i xAct\ "C:\Users\user\AppData\Roaming\Mathematica\Applications\xAct\"
+```
+4. Make sure you've read the [known bugs](#known-bugs) that can affect _Microsoft Windows_ users.
+
+## Known bugs 
+
+Currently, all the known bugs affect just the production of the final output graphic and PDF file. The process of producing a vectorised, publication-grade graphic is convoluted; information boxes have to be exported as temporary PDF files, converted to EPS files using _Inkscape_ (not on _Microsoft Windows_), and re-imported as vector graphics to be rectangle-packed and re-exported again. Currently, this is a process which works well only on _Linux_.
+
+:warning: **If you just want to get the science results, without the PDF, you should run in your notebook the line `` xAct`PSALTer`Private`$NoExport=True `` before using `DefField` or `ParticleSpectrum`. This is a temporary fix, and will result in a less compact form of final output graphic that is not exported to a PDF. You can still try to export this graphic manually using the drop-down menus.**
+
+If you decide to continue with the default behaviour, you may encounter the following errors:
+1. A reliable error on _macOS_ generating the messages `RunProcess::pnfd` and `Import::fmterr`. As suggested by the messages, check `Environment["PATH"]` in your notebook. The result should include the path of the directory containing the _Inkscape_ binary on your system. You can find out where that binary is located using `which inkscape` in _zsh_, and amend the path accordingly in the notebook using `SetEnvironment`.
+2. A sporadic error on all operating systems generating the messages `Transpose::nmtx`, `FindPermutation::norel`, `MapThread::mptd`, `Part::partw`. The cause of this is not clear.
+3. A reliable error on _macOS_ and _Microsoft Windows_ involving more-or-less misplaced glyphs in the output graphic. This happens when _PSALTer_ is unable to use _Inkscape_ on the system (the default case for _Microsoft Windows_), and so it defaults to re-importing the PDF graphics rather than converting to EPS. The _Mathematica_ PDF importer is well-known to have lots of problems, and so it usually corrupts the figure to some extent.
+4. A sporadic error on _Linux_ and _macOS_ involving missing or incorrect glyphs in the output graphic. This seems to happen when _Inkscape_ was only partially successful. On _Linux_, the problem has to do with installed fonts, and it may be solved by upgrading your system (and rebooting).
 
 ## Contribute
 
-Please do! I'm always responsive to emails (about science), so be sure to reach out at [wb263@cam.ac.uk](mailto:wb263@cam.ac.uk). I will also do my best to get your code working if you are just trying to use PSALTer.
+Please do! I'm always responsive to emails (about science), so be sure to reach out at [wb263@cam.ac.uk](mailto:wb263@cam.ac.uk).
 
 ## Acknowledgements
 
-This work was performed using resources provided by the Cambridge Service for Data Driven Discovery (CSD3) operated by the University of Cambridge Research Computing Service ([www.csd3.cam.ac.uk](www.csd3.cam.ac.uk)), provided by Dell EMC and Intel using Tier-2 funding from the Engineering and Physical Sciences Research Council (capital grant EP/T022159/1), and DiRAC funding from the Science and Technology Facilities Council ([www.dirac.ac.uk](www.dirac.ac.uk)).
+This work used the DiRAC Data Intensive service (CSD3 [www.csd3.cam.ac.uk](www.csd3.cam.ac.uk)) at the University of Cambridge, managed by the University of Cambridge University Information Services on behalf of the STFC DiRAC HPC Facility ([www.dirac.ac.uk](www.dirac.ac.uk)). The DiRAC component of CSD3 at Cambridge was funded by BEIS, UKRI and STFC capital funding and STFC operations grants. DiRAC is part of the UKRI Digital Research Infrastructure.
 
-This work was also performed using the Newton server, access to which was provisioned by Will Handley.
+This work also used the Newton server, access to which was provisioned by Will Handley using an ERC grant.
 
-PSALTer was improved by many useful discussions with Jaakko Annala, Stephanie Buttigieg, Mark Goodsell, Mike Hobson, Manuel Hohmann, Damianos Iosifidis, Georgios Karananas, Anthony Lasenby, Yun-Cherng Lin, Carlo Marzo, Vijay Nenmeli, Roberto Percacci, Syksy Räsänen, Cillian Rew, Claire Rigouzzo, Zhiyuan Wei, David Yallup, and Sebastian Zell.
+_PSALTer_ was improved by many useful discussions with Jaakko Annala, Stephanie Buttigieg, Will Handley, Mike Hobson, Manuel Hohmann, Damianos Iosifidis, Georgios Karananas, Anthony Lasenby, Yun-Cherng Lin, Oleg Melichev, Yusuke Mikura, Vijay Nenmeli, Roberto Percacci, Syksy Räsänen, Cillian Rew, Zhiyuan Wei, David Yallup, Haoyang Ye, and Sebastian Zell.
 
-I am grateful for the kind hospitality of Leiden University and the [Lorentz Institute](https://www.lorentz.leidenuniv.nl/), and am supported by [Girton College, Cambridge](https://www.girton.cam.ac.uk/).
-
-## Examples
-
-The theories which are tested in `./xAct/PSALTer/Documentation/English/Calibration.nb`, alongside a few other theories, are listed below. To understand the physical motivations, please refer to the notebook.
-
-### Metric-affine gravity
-
-#### Metric-affine Einstein-Hilbert theory 
-<img src="xAct/PSALTer/Documentation/English/MetricAffineEinsteinHilbertTheory.png" width="1000">
-
-#### Annala-Räsänen column one row one
-<img src="xAct/PSALTer/Documentation/English/AnnalaRasanenCol1Row1.png" width="1000">
-
-#### Annala-Räsänen column one row two
-<img src="xAct/PSALTer/Documentation/English/AnnalaRasanenCol1Row2.png" width="1000">
-
-#### Annala-Räsänen column one row three
-<img src="xAct/PSALTer/Documentation/English/AnnalaRasanenCol1Row3.png" width="1000">
-
-#### Annala-Räsänen column one row four
-<img src="xAct/PSALTer/Documentation/English/AnnalaRasanenCol1Row4.png" width="1000">
-
-#### Annala-Räsänen column one row five
-<img src="xAct/PSALTer/Documentation/English/AnnalaRasanenCol1Row5.png" width="1000">
-
-### Zero-torsion Palatini gravity
-
-#### Annala-Räsänen column three row one
-<img src="xAct/PSALTer/Documentation/English/AnnalaRasanenCol3Row1.png" width="1000">
-
-#### Annala-Räsänen column three row two
-<img src="xAct/PSALTer/Documentation/English/AnnalaRasanenCol3Row2.png" width="1000">
-
-#### Annala-Räsänen column three row two
-<img src="xAct/PSALTer/Documentation/English/AnnalaRasanenCol3Row3.png" width="1000">
-
-#### Annala-Räsänen column three row four
-<img src="xAct/PSALTer/Documentation/English/AnnalaRasanenCol3Row4.png" width="1000">
-
-### Scalar-tensor theory
-
-#### Massless Fierz-Pauli theory
-<img src="xAct/PSALTer/Documentation/English/FierzPauliTheory.png" width="1000">
-
-#### Massive Fierz-Pauli theory 
-<img src="xAct/PSALTer/Documentation/English/MassiveGravity.png" width="1000">
-
-#### Sick massless Fierz-Pauli theory
-<img src="xAct/PSALTer/Documentation/English/ThirdSickFierzPauliTheory.png" width="1000">
-
-#### Sick massless Fierz-Pauli theory
-<img src="xAct/PSALTer/Documentation/English/FirstSickFierzPauliTheory.png" width="1000">
-
-#### Sick massless Fierz-Pauli theory
-<img src="xAct/PSALTer/Documentation/English/FourthSickFierzPauliTheory.png" width="1000">
-
-#### Sick massless Fierz-Pauli theory
-<img src="xAct/PSALTer/Documentation/English/SecondSickFierzPauliTheory.png" width="1000">
-
-#### Marzo theory 
-<img src="xAct/PSALTer/Documentation/English/MarzoTheory.png" width="1000">
-
-#### Sick massive Fierz-Pauli theory
-<img src="xAct/PSALTer/Documentation/English/SickMassiveGravity.png" width="1000">
-
-#### Scalar-Fierz-Pauli theory
-<img src="xAct/PSALTer/Documentation/English/ScalarFierzPauliTheory.png" width="1000">
-
-#### Scalar-Einstein-Gauss-Bonnet theory
-<img src="xAct/PSALTer/Documentation/English/SpecialLambda1.png" width="1000">
-
-#### Scalar-Einstein-Gauss-Bonnet theory
-<img src="xAct/PSALTer/Documentation/English/SpecialLambda2.png" width="1000">
-
-#### Scalar-Einstein-Gauss-Bonnet theory
-<img src="xAct/PSALTer/Documentation/English/SpecialLambda3.png" width="1000">
-
-#### Scalar-Einstein-Gauss-Bonnet theory
-<img src="xAct/PSALTer/Documentation/English/GeneralLambda1.png" width="1000">
-
-#### Scalar-Einstein-Gauss-Bonnet theory
-<img src="xAct/PSALTer/Documentation/English/GeneralLambda2.png" width="1000">
-
-#### Scalar-Einstein-Gauss-Bonnet theory
-<img src="xAct/PSALTer/Documentation/English/GeneralLambda3.png" width="1000">
-
-### Scalar theory
-
-#### Massive Klein-Gordon theory 
-<img src="xAct/PSALTer/Documentation/English/MassiveScalarTheory.png" width="1000">
-
-#### Massless Klein-Gordon theory 
-<img src="xAct/PSALTer/Documentation/English/MasslessScalarTheory.png" width="1000">
-
-### Vector theory
-
-#### Longitudinal massless vector
-<img src="xAct/PSALTer/Documentation/English/LongitudinalMassless.png" width="1000">
-
-#### Maxwell theory 
-<img src="xAct/PSALTer/Documentation/English/MaxwellTheory.png" width="1000">
-
-#### Proca theory
-<img src="xAct/PSALTer/Documentation/English/ProcaTheory.png" width="1000">
-
-#### Sick Maxwell theory
-<img src="xAct/PSALTer/Documentation/English/SickMaxwellTheory.png" width="1000">
-
-#### Sick Proca theory
-<img src="xAct/PSALTer/Documentation/English/SickProcaTheory.png" width="1000">
-
-#### Longitudinal massive vector
-<img src="xAct/PSALTer/Documentation/English/LongitudinalMassive.png" width="1000">
-
-### Poincaré gauge theory
-
-#### Einstein-Cartan theory 
-<img src="xAct/PSALTer/Documentation/English/EinsteinCartanTheory.png" width="1000">
-
-#### General Poincaré gauge theory
-<img src="xAct/PSALTer/Documentation/English/GeneralPGT.png" width="1000">
-
-#### General relativity 
-<img src="xAct/PSALTer/Documentation/English/GeneralRelativity.png" width="1000">
-
-#### Poincaré gauge theory with massless even scalar
-<img src="xAct/PSALTer/Documentation/English/MinimalEvenScalar.png" width="1000">
-
-#### Poincaré gauge theory with massive odd scalar
-<img src="xAct/PSALTer/Documentation/English/MinimalMassiveOddScalar.png" width="1000">
-
-#### Poincaré gauge theory with massless odd scalar
-<img src="xAct/PSALTer/Documentation/English/MinimalMasslessOddScalar.png" width="1000">
-
-#### Melichev-Percacci theory 
-<img src="xAct/PSALTer/Documentation/English/MelichevPercacciTheory.png" width="1000">
-
-#### Annala-Räsänen column four 
-<img src="xAct/PSALTer/Documentation/English/AnnalaRasanenColumn4.png" width="1000">
-
-#### Lin-Hobson-Lasenby case 1
-<img src="xAct/PSALTer/Documentation/English/Case1.png" width="1000">
-
-#### Lin-Hobson-Lasenby case 2
-<img src="xAct/PSALTer/Documentation/English/Case2.png" width="1000">
-
-#### Lin-Hobson-Lasenby case 3
-<img src="xAct/PSALTer/Documentation/English/Case3.png" width="1000">
-
-#### Lin-Hobson-Lasenby case 4
-<img src="xAct/PSALTer/Documentation/English/Case4.png" width="1000">
-
-#### Lin-Hobson-Lasenby case 6
-<img src="xAct/PSALTer/Documentation/English/Case6.png" width="1000">
-
-#### Lin-Hobson-Lasenby case 7
-<img src="xAct/PSALTer/Documentation/English/Case7.png" width="1000">
-
-#### Lin-Hobson-Lasenby case 8
-<img src="xAct/PSALTer/Documentation/English/Case8.png" width="1000">
-
-#### Lin-Hobson-Lasenby case 9
-<img src="xAct/PSALTer/Documentation/English/Case9.png" width="1000">
-
-#### Lin-Hobson-Lasenby case 10
-<img src="xAct/PSALTer/Documentation/English/Case10.png" width="1000">
-
-#### Lin-Hobson-Lasenby case 12
-<img src="xAct/PSALTer/Documentation/English/Case11.png" width="1000">
-
-#### Lin-Hobson-Lasenby case 13
-<img src="xAct/PSALTer/Documentation/English/Case12.png" width="1000">
-
-#### Lin-Hobson-Lasenby case 13
-<img src="xAct/PSALTer/Documentation/English/Case13.png" width="1000">
-
-#### Lin-Hobson-Lasenby case 14
-<img src="xAct/PSALTer/Documentation/English/Case14.png" width="1000">
-
-#### Lin-Hobson-Lasenby case 15
-<img src="xAct/PSALTer/Documentation/English/Case15.png" width="1000">
-
-#### Lin-Hobson-Lasenby case 16
-<img src="xAct/PSALTer/Documentation/English/Case16.png" width="1000">
-
-#### Lin-Hobson-Lasenby case 17
-<img src="xAct/PSALTer/Documentation/English/Case17.png" width="1000">
-
-#### Lin-Hobson-Lasenby case 18
-<img src="xAct/PSALTer/Documentation/English/Case18.png" width="1000">
-
-#### Lin-Hobson-Lasenby case 19
-<img src="xAct/PSALTer/Documentation/English/Case19.png" width="1000">
-
-#### Lin-Hobson-Lasenby case 20
-<img src="xAct/PSALTer/Documentation/English/Case20.png" width="1000">
-
-#### Lin-Hobson-Lasenby case 21
-<img src="xAct/PSALTer/Documentation/English/Case21.png" width="1000">
-
-#### Lin-Hobson-Lasenby case 22
-<img src="xAct/PSALTer/Documentation/English/Case22.png" width="1000">
-
-#### Lin-Hobson-Lasenby case 23
-<img src="xAct/PSALTer/Documentation/English/Case23.png" width="1000">
-
-#### Lin-Hobson-Lasenby case 24
-<img src="xAct/PSALTer/Documentation/English/Case24.png" width="1000">
-
-#### Lin-Hobson-Lasenby case 25
-<img src="xAct/PSALTer/Documentation/English/Case25.png" width="1000">
-
-#### Lin-Hobson-Lasenby case 26
-<img src="xAct/PSALTer/Documentation/English/Case26.png" width="1000">
-
-#### Lin-Hobson-Lasenby case 27
-<img src="xAct/PSALTer/Documentation/English/Case27.png" width="1000">
-
-#### Lin-Hobson-Lasenby case 28
-<img src="xAct/PSALTer/Documentation/English/Case28.png" width="1000">
-
-#### Lin-Hobson-Lasenby case 29
-<img src="xAct/PSALTer/Documentation/English/Case29.png" width="1000">
-
-#### Lin-Hobson-Lasenby case 30
-<img src="xAct/PSALTer/Documentation/English/Case30.png" width="1000">
-
-#### Lin-Hobson-Lasenby case 31
-<img src="xAct/PSALTer/Documentation/English/Case31.png" width="1000">
-
-#### Lin-Hobson-Lasenby case 32
-<img src="xAct/PSALTer/Documentation/English/Case32.png" width="1000">
-
-#### Lin-Hobson-Lasenby case 33
-<img src="xAct/PSALTer/Documentation/English/Case33.png" width="1000">
-
-#### Lin-Hobson-Lasenby case 34
-<img src="xAct/PSALTer/Documentation/English/Case34.png" width="1000">
-
-#### Lin-Hobson-Lasenby case 35
-<img src="xAct/PSALTer/Documentation/English/Case35.png" width="1000">
-
-#### Lin-Hobson-Lasenby case 36
-<img src="xAct/PSALTer/Documentation/English/Case36.png" width="1000">
-
-#### Lin-Hobson-Lasenby case 37
-<img src="xAct/PSALTer/Documentation/English/Case37.png" width="1000">
-
-#### Lin-Hobson-Lasenby case 38
-<img src="xAct/PSALTer/Documentation/English/Case38.png" width="1000">
-
-#### Lin-Hobson-Lasenby case 39
-<img src="xAct/PSALTer/Documentation/English/Case39.png" width="1000">
-
-#### Lin-Hobson-Lasenby case 40
-<img src="xAct/PSALTer/Documentation/English/Case40.png" width="1000">
-
-#### Lin-Hobson-Lasenby case 41
-<img src="xAct/PSALTer/Documentation/English/Case41.png" width="1000">
-
-#### Lin-Hobson-Lasenby case 42
-<img src="xAct/PSALTer/Documentation/English/Case42.png" width="1000">
-
-#### Lin-Hobson-Lasenby case 43
-<img src="xAct/PSALTer/Documentation/English/Case43.png" width="1000">
-
-#### Lin-Hobson-Lasenby case 44
-<img src="xAct/PSALTer/Documentation/English/Case44.png" width="1000">
-
-#### Lin-Hobson-Lasenby case 45
-<img src="xAct/PSALTer/Documentation/English/Case45.png" width="1000">
-
-#### Lin-Hobson-Lasenby case 46
-<img src="xAct/PSALTer/Documentation/English/Case46.png" width="1000">
-
-#### Lin-Hobson-Lasenby case 47
-<img src="xAct/PSALTer/Documentation/English/Case47.png" width="1000">
-
-#### Lin-Hobson-Lasenby case 48
-<img src="xAct/PSALTer/Documentation/English/Case48.png" width="1000">
-
-#### Lin-Hobson-Lasenby case 49
-<img src="xAct/PSALTer/Documentation/English/Case49.png" width="1000">
-
-#### Lin-Hobson-Lasenby case 50
-<img src="xAct/PSALTer/Documentation/English/Case50.png" width="1000">
-
-#### Lin-Hobson-Lasenby case 51
-<img src="xAct/PSALTer/Documentation/English/Case51.png" width="1000">
-
-#### Lin-Hobson-Lasenby case 52
-<img src="xAct/PSALTer/Documentation/English/Case52.png" width="1000">
-
-#### Lin-Hobson-Lasenby case 53
-<img src="xAct/PSALTer/Documentation/English/Case53.png" width="1000">
-
-#### Lin-Hobson-Lasenby case 54
-<img src="xAct/PSALTer/Documentation/English/Case54.png" width="1000">
-
-#### Lin-Hobson-Lasenby case 55
-<img src="xAct/PSALTer/Documentation/English/Case55.png" width="1000">
-
-#### Lin-Hobson-Lasenby case 56
-<img src="xAct/PSALTer/Documentation/English/Case56.png" width="1000">
-
-#### Lin-Hobson-Lasenby case 57
-<img src="xAct/PSALTer/Documentation/English/Case57.png" width="1000">
-
-#### Lin-Hobson-Lasenby case 58
-<img src="xAct/PSALTer/Documentation/English/Case58.png" width="1000">
-
-#### Lin-Hobson-Lasenby case 59
-<img src="xAct/PSALTer/Documentation/English/Case5.png" width="1000">
+WB is grateful for the kind hospitality of Leiden University and the [Lorentz Institute](https://www.lorentz.leidenuniv.nl/), and the support of [Girton College, Cambridge](https://www.girton.cam.ac.uk/).
+The work of CM was supported by the Estonian Research Council grants PRG1677, RVTT3, RVTT7, and the CoE program TK202 "_Fundamental Universe_".
+CR  acknowledges support from a Science and Technology Facilities Council (STFC) Doctoral Training Grant.
