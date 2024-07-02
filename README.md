@@ -6,9 +6,9 @@
 <img src="xAct/PSALTer/Logos/GitHubLogo.png" width="1000">
 
 # _PSALTer_: Particle Spectrum for Any Tensor Lagrangian
-## Version 1.0.0
+## Version 1.0.1
 
-- Initial release to accompany pre-print and documentation.
+- Fixed the _Qt_ error in the (undocumented) command line interface.
 
 ## License
 
