@@ -6,7 +6,7 @@
 (*  Version  *)
 (*===========*)
 
-xAct`PSALTer`Private`$Version={"1.0.0",{2024,6,17}};
+xAct`PSALTer`Private`$Version={"1.0.2",{2024,7,2}};
 If[Unevaluated[xAct`xCore`Private`$LastPackage]===xAct`xCore`Private`$LastPackage,xAct`xCore`Private`$LastPackage="xAct`PSALTer`"];
 Off@(Solve::fulldim);
 
@@ -120,7 +120,7 @@ RereadSources[]:=(Off@Syntax::stresc;(Get@FileNameJoin@{$InstallDirectory,"Sourc
 RereadSources[];
 Begin["xAct`PSALTer`"];
 	xAct`PSALTer`Private`ReloadPackage[];
-	Quiet@If[$FrontEndSession==Null,
+	Quiet@If[$FrontEnd==Null,
 		xAct`PSALTer`Private`$CLI=True,
 		xAct`PSALTer`Private`$CLI=False,
 		xAct`PSALTer`Private`$CLI=False];
