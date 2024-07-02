@@ -3,12 +3,13 @@
 [![arXiv](https://img.shields.io/badge/arXiv-2402.07641-b31b1b.svg)](https://arxiv.org/abs/2402.07641)
 [![arXiv](https://img.shields.io/badge/arXiv-2402.14917-b31b1b.svg)](https://arxiv.org/abs/2402.14917)
 [![arXiv](https://img.shields.io/badge/arXiv-2406.09500-b31b1b.svg)](https://arxiv.org/abs/2406.09500)
+[![arXiv](https://img.shields.io/badge/arXiv-2406.12826-b31b1b.svg)](https://arxiv.org/abs/2406.12826)
 <img src="xAct/PSALTer/Logos/GitHubLogo.png" width="1000">
 
 # _PSALTer_: Particle Spectrum for Any Tensor Lagrangian
-## Version 1.0.1
+## Version 1.0.2
 
-- Fixed the _Qt_ error in the (undocumented) command line interface.
+- Updated `README.md`.
 
 ## License
 
@@ -17,6 +18,19 @@ Copyright © 2022 Will Barker, Carlo Marzo and Claire Rigouzzo.
 _PSALTer_ is distributed as free software under the [GNU General Public License (GPL)](https://www.gnu.org/licenses/gpl-3.0.en.html).
 
 _PSALTer_ is provided without warranty, or the implied warranty of merchantibility or fitness for a particular purpose.
+
+If _PSALTer_ was useful to your research, please **cite us** using the following _BibTeX_:
+```tex
+@article{Barker:2024juc,
+    author = "Barker, Will and Marzo, Carlo and Rigouzzo, Claire",
+    title = "{PSALTer: Particle Spectrum for Any Tensor Lagrangian}",
+    eprint = "2406.09500",
+    archivePrefix = "arXiv",
+    primaryClass = "hep-th",
+    month = "6",
+    year = "2024"
+}
+```
 
 ## About
 
@@ -33,9 +47,9 @@ where the ingredients are:
 
 As a demonstration, we consider the Fierz-Pauli linearised massive gravity theory
 ```math
-S=\int\mathrm{d}^4x\ \Big[\alpha\big(-\partial^\mu h_{\mu\nu}\partial^nu h+\tfrac{1}{2}\partial_\mu h\partial^\mu h-\tfrac{1}{2}\partial_\sigma h^{\mu\nu}\partial_\sigma h_{\mu\nu}+\partial_\nu h^{\mu\nu}\partial^\sigma h_{\mu\sigma}\big)+\beta\big(h^{\mu\nu}h_{\mu\nu}-h^2\big)+h^{\mu\nu}T_{\mu\nu}\Big],
+S=\int\mathrm{d}^4x\ \Big[\alpha\big(-\partial^\mu h_{\mu\nu}\partial^\nu h+\tfrac{1}{2}\partial_\mu h\partial^\mu h-\tfrac{1}{2}\partial_\sigma h^{\mu\nu}\partial_\sigma h_{\mu\nu}+\partial_\nu h^{\mu\nu}\partial^\sigma h_{\mu\sigma}\big)+\beta\big(h^{\mu\nu}h_{\mu\nu}-h^2\big)+h^{\mu\nu}T_{\mu\nu}\Big],
 ```
-where $\alpha$ and $\beta$ are coupling coefficients, $h_{\mu\nu}$ is the metric perturbation and $T^{\mu\nu}$ is the linearised stress-energy tensor of matter, which is the source conjugate to $h_{\mu\nu}$.
+where $\alpha$ and $\beta$ are coupling coefficients, $h_{\mu\nu}$ is the metric perturbation with trace $h\equiv h_{\mu}^{\mu}$, and $T^{\mu\nu}$ is the linearised stress-energy tensor of matter, which is the source conjugate to $h_{\mu\nu}$.
 
 In a fresh notebook we first load the package:
 ```
@@ -219,6 +233,13 @@ C:\Users\user\PSALTer> xcopy /e /k /h /i xAct\ "C:\Users\user\AppData\Roaming\Ma
 ```
 4. Make sure you've read the [known bugs](#known-bugs) that can affect _Microsoft Windows_ users.
 
+## Getting help 
+
+There are several ways to get help:
+- The [xAct google group](https://groups.google.com/g/xAct) contains a well established, highly active and very friendly community of researchers. Feel free to start a _New conversation_ by posting a minimal working example of your code.
+- For private correspondence, you can email us at [wb263@cam.ac.uk](mailto:wb263@cam.ac.uk).
+- Alternatively you may wish to raise a [_New issue_](https://github.com/wevbarker/PSALTer/issues) on _GitHub_.
+
 ## Known bugs 
 
 Currently, all the known bugs affect just the production of the final output graphic and PDF file. The process of producing a vectorised, publication-grade graphic is convoluted; information boxes have to be exported as temporary PDF files, converted to EPS files using _Inkscape_ (not on _Microsoft Windows_), and re-imported as vector graphics to be rectangle-packed and re-exported again. Currently, this is a process which works well only on _Linux_.
@@ -230,10 +251,6 @@ If you decide to continue with the default behaviour, you may encounter the foll
 2. A sporadic error on all operating systems generating the messages `Transpose::nmtx`, `FindPermutation::norel`, `MapThread::mptd`, `Part::partw`. The cause of this is not clear.
 3. A reliable error on _macOS_ and _Microsoft Windows_ involving more-or-less misplaced glyphs in the output graphic. This happens when _PSALTer_ is unable to use _Inkscape_ on the system (the default case for _Microsoft Windows_), and so it defaults to re-importing the PDF graphics rather than converting to EPS. The _Mathematica_ PDF importer is well-known to have lots of problems, and so it usually corrupts the figure to some extent.
 4. A sporadic error on _Linux_ and _macOS_ involving missing or incorrect glyphs in the output graphic. This seems to happen when _Inkscape_ was only partially successful. On _Linux_, the problem has to do with installed fonts, and it may be solved by upgrading your system (and rebooting).
-
-## Contribute
-
-Please do! I'm always responsive to emails (about science), so be sure to reach out at [wb263@cam.ac.uk](mailto:wb263@cam.ac.uk).
 
 ## Acknowledgements
 

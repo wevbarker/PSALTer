@@ -6,7 +6,7 @@
 (*  Version  *)
 (*===========*)
 
-xAct`PSALTer`Private`$Version={"1.0.1",{2024,7,2}};
+xAct`PSALTer`Private`$Version={"1.0.2",{2024,7,2}};
 If[Unevaluated[xAct`xCore`Private`$LastPackage]===xAct`xCore`Private`$LastPackage,xAct`xCore`Private`$LastPackage="xAct`PSALTer`"];
 Off@(Solve::fulldim);
 
