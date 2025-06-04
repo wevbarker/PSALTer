@@ -7,7 +7,7 @@ Options@DefSymbol={
 	Parity->Even,
 	Duplicate->1};
 
-DefSymbol[TensorSymbol_,OptionsPattern[]]:=Module[{
+DefSymbol[TensorSymbol_,OptionsPattern[]]~Y~Module[{
 	ParitySymbols=<|Even->"+",Odd->"-"|>,
 	ParitySymbol,
 	SpinSymbol,

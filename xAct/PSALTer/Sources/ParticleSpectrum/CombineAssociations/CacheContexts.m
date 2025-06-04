@@ -2,7 +2,7 @@
 (*  CacheContexts  *)
 (*=================*)
 
-CacheContexts[]:=Module[{NewContextList=$AllFieldContexts~Join~{
+CacheContexts[]~Y~Module[{NewContextList=$AllFieldContexts~Join~{
 	"xAct`PSALTer`",
 	"xAct`PSALTer`Private`",
 	"xAct`xTensor`",
@@ -23,7 +23,7 @@ CacheContexts[]:=Module[{NewContextList=$AllFieldContexts~Join~{
 			$LocalSummaryOfTheory=" ** LaunchKernels...";
 			CloseKernels[];
 			Off[LaunchKernels::nodef];
-			LaunchKernels[];	
+			LaunchKernels[$ProcessorCount];
 			On[LaunchKernels::nodef];
 
 			$LocalSummaryOfTheory=" ** Get...";
@@ -35,5 +35,4 @@ CacheContexts[]:=Module[{NewContextList=$AllFieldContexts~Join~{
 			360
 		];
 	];
-
 ];

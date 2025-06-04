@@ -2,10 +2,13 @@
 (*  FullyCanonicalise  *)
 (*=====================*)
 
-FullyCanonicalise[RawSector_]:=Module[{	
+FullyCanonicalise[RawSector_]~Y~Module[{	
 	Sector=RawSector},
 
 	Sector//=xAct`xCoba`SeparateBasis[AIndex];
+	Sector=Sector/.FromEps;
+	Sector//=NoScalar;
+	Sector//=ToNewCanonical;
 	Sector=Sector/.ToP;
 	Sector//=NoScalar;
 	Sector//=ToNewCanonical;

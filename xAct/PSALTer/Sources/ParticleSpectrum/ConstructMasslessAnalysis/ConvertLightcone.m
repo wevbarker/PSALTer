@@ -4,6 +4,7 @@
 
 IncludeHeader@"Repartition";
 IncludeHeader@"FullyExpandSources";
+IncludeHeader@"SourcesToComponents";
 IncludeHeader@"FullyCanonicalise";
 IncludeHeader@"ExpressInLightcone";
 IncludeHeader@"ConstrainInLightcone";
@@ -17,13 +18,12 @@ Options@ConvertLightcone={
 	};
 
 ConvertLightcone[ClassName_?StringQ,
-		ValuesSaturatedPropagator_,
 		ValuesUnscaledNullSpace_,
-		OptionsPattern[]]:=Module[{	
+		OptionsPattern[]]~Y~Module[{	
 	SaturatedPropagatorArray
 	},
 	$LocalMasslessSpectrum=" ** ConvertLightcone...";
-	LightconePropagator=ValuesSaturatedPropagator;
+	LightconePropagator=$ValuesSaturatedPropagator;
 	Diagnostic@LightconePropagator;
 
 	$LocalMasslessSpectrum=" ** Repartition...";
@@ -31,27 +31,7 @@ ConvertLightcone[ClassName_?StringQ,
 
 	$LocalMasslessSpectrum=" ** FullyExpandSources...";
 	LightconePropagator=Map[
-		(xAct`PSALTer`Private`NewParallelSubmit@(FullyExpandSources[ClassName,#]))&,
-		LightconePropagator];
-	LightconePropagator=MonitorParallel@LightconePropagator;
-	Diagnostic@LightconePropagator;
-
-	$LocalMasslessSpectrum=" ** Repartition...";
-	LightconePropagator//=Repartition[#,10,ExpandAll->False]&;
-
-	$LocalMasslessSpectrum=" ** FullyCanonicalise...";
-	LightconePropagator=Map[
-		(xAct`PSALTer`Private`NewParallelSubmit@(FullyCanonicalise[#]))&,
-		LightconePropagator];
-	LightconePropagator=MonitorParallel@LightconePropagator;
-	Diagnostic@LightconePropagator;
-
-	$LocalMasslessSpectrum=" ** Repartition...";
-	LightconePropagator//=Repartition[#,10,ExpandAll->False]&;
-
-	$LocalMasslessSpectrum=" ** ExpressInLightcone...";
-	LightconePropagator=Map[
-		(xAct`PSALTer`Private`NewParallelSubmit@(ExpressInLightcone[ClassName,#]))&,
+		(xAct`PSALTer`Private`NewParallelSubmit@(SourcesToComponents[ClassName,#]))&,
 		LightconePropagator];
 	LightconePropagator=MonitorParallel@LightconePropagator;
 	Diagnostic@LightconePropagator;

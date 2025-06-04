@@ -2,7 +2,7 @@
 (*  DefFreeSourceVariables  *)
 (*==========================*)
 
-DefFreeSourceVariables[Num_]:=Module[{},
+DefFreeSourceVariables[Num_]~Y~Module[{},
 	
 	$LocalMasslessSpectrum=" ** DefFreeSourceVariables...";
 	Begin["xAct`PSALTer`Private`"];

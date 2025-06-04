@@ -2,7 +2,7 @@
 (*  IntermediateRules  *)
 (*=====================*)
 
-IntermediateRules[FirstIntermediateSymbolsToCouplingConstants_,Couplings_]:=Module[{
+IntermediateRules[FirstIntermediateSymbolsToCouplingConstants_,Couplings_]~Y~Module[{
 	NewIndex,
 	FirstIntermediateSymbols,
 	FirstIntermediateSymbolsToSecondIntermediateSymbols,

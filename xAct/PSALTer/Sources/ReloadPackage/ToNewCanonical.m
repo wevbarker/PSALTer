@@ -2,7 +2,7 @@
 (*  ToNewCanonical  *)
 (*==================*)
 
-ToNewCanonical[Expr_]:=Module[{CanonicalisedExpr=Expr},
+ToNewCanonical[Expr_]~Y~Module[{CanonicalisedExpr=Expr},
 
 	CanonicalisedExpr//=NoScalar;
 	CanonicalisedExpr//=ToCanonical;

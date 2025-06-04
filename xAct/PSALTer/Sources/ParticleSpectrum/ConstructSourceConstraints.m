@@ -6,13 +6,11 @@ IncludeHeader@"ConjectureNullSpace";
 IncludeHeader@"NonTrivialDot";
 IncludeHeader@"ToCovariantForm";
 
-Options@ConstructSourceConstraints={
-	Method->"Easy"};
 ConstructSourceConstraints[ClassName_?StringQ,
 		CouplingAssumptions_,
 		Rescalings_,
 		RaisedIndexSources_,
-		MatrixLagrangian_,OptionsPattern[]]:=Module[{
+		MatrixLagrangian_]~Y~Module[{
 	SourceSpinParityTensorHeadsValue,
 	SymbolicLagrangian,
 	Symbols,
@@ -32,21 +30,10 @@ ConstructSourceConstraints[ClassName_?StringQ,
 	SourceSpinParityTensorHeadsValue=Class@SourceSpinParityTensorHeads;
 	Couplings=Class@LagrangianCouplings;
 
-	Switch[OptionValue@Method,
-		"Easy",
-		(
-			NullSpaces=Assuming[CouplingAssumptions,
-						NullSpace[Transpose[#]]&/@(MatrixLagrangian)];
-			Diagnostic@NullSpaces;
-		),
-		"Hard",
-		(
-			NullSpaces=ConjectureNullSpace[Transpose[#],
-						Couplings,
-						CouplingAssumptions]&/@(MatrixLagrangian);
-			Diagnostic@NullSpaces;
-		)
-	];
+	NullSpaces=ConjectureNullSpace[Transpose[#],
+				Couplings,
+				CouplingAssumptions]&/@(MatrixLagrangian);
+	Diagnostic@NullSpaces;
 
 	NullSpaces=((#)~FullSimplify~CouplingAssumptions)&/@NullSpaces;
 	Diagnostic@NullSpaces;

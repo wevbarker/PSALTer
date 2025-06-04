@@ -1,0 +1,212 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Wolfram 14.2' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       154,          7]
+NotebookDataLength[      7137,        204]
+NotebookOptionsPosition[      5913,        176]
+NotebookOutlinePosition[      6307,        192]
+CellTagsIndexPosition[      6264,        189]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["Examples", "Title",
+ CellChangeTimes->{{3.9579536591789103`*^9, 
+  3.957953660126248*^9}},ExpressionUUID->"7f56dae8-98e1-4832-8941-\
+449b5bc3b176"],
+
+Cell["First we load the package:", "Text",
+ CellChangeTimes->{{3.957953673956202*^9, 3.9579536793135433`*^9}, 
+   3.9579537788263273`*^9},ExpressionUUID->"cfcba61a-7d56-45b5-9222-\
+0ca969faf830"],
+
+Cell[BoxData[
+ RowBox[{"<<", "xAct`PSALTer`"}]], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{{3.957953700165028*^9, 
+  3.957953700165078*^9}},ExpressionUUID->"bc8f3ee7-e515-4f03-a6ef-\
+5976024d3bdb"],
+
+Cell["Next we define two Lagrangian coupling coefficients:", "Text",
+ CellChangeTimes->{{3.9579537631008797`*^9, 
+  3.957953787657426*^9}},ExpressionUUID->"842d545e-6fdc-4043-826c-\
+6f3b0ba3ff72"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"DefConstantSymbol", "[", 
+   RowBox[{"Coupling1", ",", 
+    RowBox[{"PrintAs", "->", "\"\<\[Alpha]\>\""}]}], "]"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"DefConstantSymbol", "[", 
+   RowBox[{"Coupling2", ",", 
+    RowBox[{"PrintAs", "->", "\"\<\[Beta]\>\""}]}], "]"}], ";"}]}], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{{3.957953739091133*^9, 
+  3.957953740509153*^9}},ExpressionUUID->"7c012896-8f06-49a4-9c79-\
+78f8c155f235"],
+
+Cell["Next we define the metric perturbation:", "Text",
+ CellChangeTimes->{{3.9579538340889187`*^9, 3.957953834944775*^9}, {
+  3.9579538846470337`*^9, 
+  3.957953897649444*^9}},ExpressionUUID->"c4664b6a-efaf-4cd3-9c23-\
+3a650f3e9941"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"DefField", "[", 
+   RowBox[{
+    RowBox[{"MetricPerturbation", "[", 
+     RowBox[{
+      RowBox[{"-", "a"}], ",", " ", 
+      RowBox[{"-", "b"}]}], "]"}], ",", " ", 
+    RowBox[{"Symmetric", "[", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"-", "a"}], ",", " ", 
+       RowBox[{"-", "b"}]}], "}"}], "]"}], ",", " ", 
+    RowBox[{"PrintAs", " ", "->", " ", "\"\<\[ScriptH]\>\""}], ",", " ", 
+    RowBox[{"PrintSourceAs", " ", "->", " ", "\"\<\[ScriptCapitalT]\>\""}]}], 
+   "]"}], ";"}]], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{{3.957953815516354*^9, 3.957953817102384*^9}, {
+  3.9579539136013927`*^9, 
+  3.957953921869733*^9}},ExpressionUUID->"0b24ebe8-53cb-4f8c-9834-\
+fb657e96b4f7"],
+
+Cell["Next we compute the spectrograph of massive gravity:", "Text",
+ CellChangeTimes->{{3.957953930188555*^9, 
+  3.9579539546046267`*^9}},ExpressionUUID->"bbf952a3-bddf-40c4-9682-\
+289bf533bd98"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ParticleSpectrum", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"Coupling1", "*", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{"1", "/", "2"}], ")"}], "*", 
+         RowBox[{
+          RowBox[{"CD", "[", 
+           RowBox[{"-", "b"}], "]"}], "@", 
+          RowBox[{"MetricPerturbation", "[", 
+           RowBox[{"a", ",", 
+            RowBox[{"-", "a"}]}], "]"}]}], "*", 
+         RowBox[{
+          RowBox[{"CD", "[", "b", "]"}], "@", 
+          RowBox[{"MetricPerturbation", "[", 
+           RowBox[{"c", ",", 
+            RowBox[{"-", "c"}]}], "]"}]}]}], "-", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"CD", "[", "a", "]"}], "@", 
+          RowBox[{"MetricPerturbation", "[", 
+           RowBox[{
+            RowBox[{"-", "a"}], ",", 
+            RowBox[{"-", "b"}]}], "]"}]}], "*", 
+         RowBox[{
+          RowBox[{"CD", "[", "b", "]"}], "@", 
+          RowBox[{"MetricPerturbation", "[", 
+           RowBox[{"c", ",", 
+            RowBox[{"-", "c"}]}], "]"}]}]}], "-", 
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{"1", "/", "2"}], ")"}], "*", 
+         RowBox[{
+          RowBox[{"CD", "[", 
+           RowBox[{"-", "c"}], "]"}], "@", 
+          RowBox[{"MetricPerturbation", "[", 
+           RowBox[{"a", ",", "b"}], "]"}]}], "*", 
+         RowBox[{
+          RowBox[{"CD", "[", "c", "]"}], "@", 
+          RowBox[{"MetricPerturbation", "[", 
+           RowBox[{
+            RowBox[{"-", "a"}], ",", 
+            RowBox[{"-", "b"}]}], "]"}]}]}], "+", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"CD", "[", 
+           RowBox[{"-", "b"}], "]"}], "@", 
+          RowBox[{"MetricPerturbation", "[", 
+           RowBox[{"a", ",", "b"}], "]"}]}], "*", 
+         RowBox[{
+          RowBox[{"CD", "[", "c", "]"}], "@", 
+          RowBox[{"MetricPerturbation", "[", 
+           RowBox[{
+            RowBox[{"-", "a"}], ",", 
+            RowBox[{"-", "c"}]}], "]"}]}]}]}], ")"}]}], "+", 
+     RowBox[{"Coupling2", "*", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"MetricPerturbation", "[", 
+          RowBox[{
+           RowBox[{"-", "a"}], ",", 
+           RowBox[{"-", "b"}]}], "]"}], "*", 
+         RowBox[{"MetricPerturbation", "[", 
+          RowBox[{"a", ",", "b"}], "]"}]}], "-", 
+        RowBox[{
+         RowBox[{"MetricPerturbation", "[", 
+          RowBox[{"a", ",", 
+           RowBox[{"-", "a"}]}], "]"}], "*", 
+         RowBox[{"MetricPerturbation", "[", 
+          RowBox[{"b", ",", 
+           RowBox[{"-", "b"}]}], "]"}]}]}], ")"}]}]}], ",", 
+    RowBox[{"TheoryName", "->", "\"\<MassiveGravity\>\""}], ",", 
+    RowBox[{"MaxLaurentDepth", "->", "3"}]}], "]"}], ";"}]], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{{3.9579539629909153`*^9, 
+  3.957953964278137*^9}},ExpressionUUID->"bccc0b25-d95f-4675-b601-\
+9b4cc3498f47"]
+}, Open  ]]
+},
+WindowSize->{837, 982.5},
+WindowMargins->{{0, Automatic}, {0, Automatic}},
+FrontEndVersion->"14.2 for Linux x86 (64-bit) (December 26, 2024)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"ab3b0216-5d06-4fa9-84da-887d1e3b0d2d"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[576, 22, 153, 3, 96, "Title",ExpressionUUID->"7f56dae8-98e1-4832-8941-449b5bc3b176"],
+Cell[732, 27, 195, 3, 33, "Text",ExpressionUUID->"cfcba61a-7d56-45b5-9222-0ca969faf830"],
+Cell[930, 32, 210, 5, 45, "Input",ExpressionUUID->"bc8f3ee7-e515-4f03-a6ef-5976024d3bdb",
+ InitializationCell->True],
+Cell[1143, 39, 196, 3, 33, "Text",ExpressionUUID->"842d545e-6fdc-4043-826c-6f3b0ba3ff72"],
+Cell[1342, 44, 472, 12, 69, "Input",ExpressionUUID->"7c012896-8f06-49a4-9c79-78f8c155f235",
+ InitializationCell->True],
+Cell[1817, 58, 234, 4, 33, "Text",ExpressionUUID->"c4664b6a-efaf-4cd3-9c23-3a650f3e9941"],
+Cell[2054, 64, 741, 20, 69, "Input",ExpressionUUID->"0b24ebe8-53cb-4f8c-9834-fb657e96b4f7",
+ InitializationCell->True],
+Cell[2798, 86, 196, 3, 33, "Text",ExpressionUUID->"bbf952a3-bddf-40c4-9682-289bf533bd98"],
+Cell[2997, 91, 2900, 82, 203, "Input",ExpressionUUID->"bccc0b25-d95f-4675-b601-9b4cc3498f47",
+ InitializationCell->True]
+}, Open  ]]
+}
+]
+*)
+

@@ -2,7 +2,7 @@
 (*  MatrixToSymbolic  *)
 (*====================*)
 
-MatrixToSymbolic[InputMatrix_]:=Module[{
+MatrixToSymbolic[InputMatrix_]~Y~Module[{
 	TheInputMatrix=InputMatrix,
 	TheUniqueElements,
 	TheSymbolicElements,

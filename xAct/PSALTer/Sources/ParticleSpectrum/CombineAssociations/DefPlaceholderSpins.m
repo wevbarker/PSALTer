@@ -2,7 +2,7 @@
 (*  DefPlaceholderSpins  *)
 (*=======================*)
 
-DefPlaceholderSpins[InputExpr_]:=Module[{
+DefPlaceholderSpins[InputExpr_]~Y~Module[{
 	PlaceholderSpin=<|Even->{},Odd->{}|>,
 	Fields,
 	Spins,
@@ -10,6 +10,6 @@ DefPlaceholderSpins[InputExpr_]:=Module[{
 
 	Fields=Keys@Expr;
 	Spins=Keys@((Expr/@Keys@Expr)~Merge~((Flatten@Join@#)&));
-	Table[If[!((Keys@Expr@Field)~MemberQ~Spin),(Expr@Field)@Spin=PlaceholderSpin;Expr@Field//=KeySort],
+	Table[If[!((Keys@Expr@Field)~MemberQ~Spin),(Expr@Field)@Spin=PlaceholderSpin];(Expr@Field)//=KeySort;,
 		{Spin,Spins},{Field,Fields}];	
 Expr];

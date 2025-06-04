@@ -2,7 +2,7 @@
 (*  CleanNullVector  *)
 (*===================*)
 
-CleanNullVector[NullVector_,CouplingAssumptions_]:=Module[{
+CleanNullVector[NullVector_,CouplingAssumptions_]~Y~Module[{
 	Expr=NullVector,
 	MinimumPower},
 

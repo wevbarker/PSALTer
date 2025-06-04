@@ -5,19 +5,28 @@
 IncludeHeader@"ConstructLightcone";
 IncludeHeader@"ConvertLightcone";
 
-Options@ConstructMasslessAnalysis={
-	MaxLaurentDepth->1
-	};
+
+Options@ConstructMasslessAnalysis={MasslessSpectrum->True,MaxLaurentDepth->1};
 
 ConstructMasslessAnalysis[ClassName_?StringQ,
 	ValuesOfSourceConstraints_,
-	ValuesSaturatedPropagator_,
-	OptionsPattern[]]:=Module[{},
+	OptionsPattern[]]~Y~Module[{},
 
 	$LocalMasslessSpectrum=" ** ConstructMasslessAnalysis...";
-	ConstructLightcone[ClassName,ValuesOfSourceConstraints];
-	ConvertLightcone[ClassName,
-		ValuesSaturatedPropagator,
-		UnscaledNullSpace,
-		MaxLaurentDepth->OptionValue@MaxLaurentDepth];
+	If[OptionValue@MasslessSpectrum,
+		ConstructLightcone[ClassName,
+			ValuesOfSourceConstraints];
+		ConvertLightcone[ClassName,
+			UnscaledNullSpace,
+			MaxLaurentDepth->OptionValue@MaxLaurentDepth];
+	,
+		MasslessAnalysisValue={};
+		QuarticAnalysisValue={};
+		HexicAnalysisValue={};
+		$LocalMasslessSpectrum={{},{},
+			MasslessAnalysisValue,
+			QuarticAnalysisValue,
+			HexicAnalysisValue,
+			{SecularEquationValue}};
+	];
 ];

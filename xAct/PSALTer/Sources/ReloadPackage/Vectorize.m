@@ -6,13 +6,14 @@ VectorizeEPS[InputExpr_]:=Module[{TemporaryFileNameEPS,TemporaryFileNamePDF,Expr
 
 	TemporaryFileNamePDF=CreateFile[];
 	TemporaryFileNamePDF//=(#~RenameFile~(#<>".pdf"))&;
-	Export[TemporaryFileNamePDF,InputExpr,"PDF",AllowRasterization->False];
+	UsingFrontEnd@Export[TemporaryFileNamePDF,InputExpr,"PDF",AllowRasterization->False];
 
 	TemporaryFileNameEPS=CreateFile[];
 	TemporaryFileNameEPS//=(#~RenameFile~(#<>".eps"))&;
-	RunProcess@{"inkscape",TemporaryFileNamePDF,"--export-eps="<>TemporaryFileNameEPS};
+	Run[$InkscapePath<>" --export-eps="<>TemporaryFileNameEPS<>" "<>TemporaryFileNamePDF<>" > /dev/null 2>&1"];
+	(*RunProcess@{$InkscapePath,TemporaryFileNamePDF,"--export-eps="<>TemporaryFileNameEPS};*)
 	TemporaryFileNamePDF//DeleteFile;
-	Expr=TemporaryFileNameEPS~Import~{"EPS","Graphics"};
+	Expr=UsingFrontEnd@(TemporaryFileNameEPS~Import~{"EPS","Graphics"});
 	TemporaryFileNameEPS//DeleteFile;
 Expr];
 
@@ -20,15 +21,14 @@ VectorizePDF[InputExpr_]:=Module[{TemporaryFileNameEPS,TemporaryFileNamePDF,Expr
 
 	TemporaryFileNamePDF=CreateFile[];
 	TemporaryFileNamePDF//=(#~RenameFile~(#<>".pdf"))&;
-	Export[TemporaryFileNamePDF,InputExpr,"PDF",AllowRasterization->False];
+	UsingFrontEnd@Export[TemporaryFileNamePDF,InputExpr,"PDF",AllowRasterization->False];
 
-	Expr=TemporaryFileNamePDF~Import~{"PDF","PageGraphics"};
+	Expr=UsingFrontEnd@(TemporaryFileNamePDF~Import~{"PDF","PageGraphics"});
 	TemporaryFileNamePDF//DeleteFile;
 	Expr//=First;
 Expr];
 
 Vectorize[InputExpr_]:=Module[{TemporaryFileNameEPS,TemporaryFileNamePDF,Expr=InputExpr},
-
 
 	Which[
 		($OperatingSystem==="Unix")||($OperatingSystem==="MacOSX")

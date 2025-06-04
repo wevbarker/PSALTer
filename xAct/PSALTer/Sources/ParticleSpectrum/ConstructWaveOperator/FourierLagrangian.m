@@ -2,13 +2,14 @@
 (*  FourierLagrangian  *)
 (*=====================*)
 
-FourierLagrangian[ClassName_?StringQ,Expr_,Tensors_]:=Module[{
+FourierLagrangian[ClassName_?StringQ,Expr_,Tensors_,OmittedSectors_]~Y~Module[{
 	Class,
 	CrossingRules,
 	NewExpr,
 	ToMomentumExpr,
 	Tensors1,
-	Tensors2},
+	Tensors2,
+	OmittedTensors},
 
 	$LocalWaveOperator=" ** FourierLagrangian...";
 
@@ -65,6 +66,25 @@ FourierLagrangian[ClassName_?StringQ,Expr_,Tensors_]:=Module[{
 	Diagnostic@ToMomentumExpr;
 	ToMomentumExpr=ToMomentumExpr/.ToV;
 	ToMomentumExpr//=Class@DecomposeFields;
+	Diagnostic@ToMomentumExpr;
+
+	ToMomentumExpr=ToMomentumExpr/.ToEps;
+	Diagnostic@ToMomentumExpr;
+	ToMomentumExpr//=ToNewCanonical;
+	ToMomentumExpr//=CollectTensors;
+	Diagnostic@ToMomentumExpr;
+
+	$ParityTranslate=<|1->Even,-1->Odd|>;
+	Diagnostic@$ParityTranslate;
+	Diagnostic@OmittedSectors;
+	OmittedTensors=((Class@FieldSpinParityTensorHeads)[Field][#[[1]]][($ParityTranslate@(#[[2]]))]~Table~{Field,Tensors})&/@OmittedSectors;
+	Diagnostic@OmittedTensors;
+	OmittedTensors//=Flatten;
+	Diagnostic@OmittedTensors;
+	OmittedTensors//=((#->Zero)&/@#)&;
+	Diagnostic@OmittedTensors;
+
+	ToMomentumExpr=ToMomentumExpr/.OmittedTensors;
 	Diagnostic@ToMomentumExpr;
 
 ToMomentumExpr];

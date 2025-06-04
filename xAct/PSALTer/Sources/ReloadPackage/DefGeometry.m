@@ -57,6 +57,10 @@ xAct`PSALTer`Private`ToV=MakeRule[{P[-i],Def V[-i]},
 	MetricOn->All,ContractMetrics->True];
 xAct`PSALTer`Private`ToP=MakeRule[{V[-i],P[-i]/Def},
 	MetricOn->All,ContractMetrics->True];
+xAct`PSALTer`Private`ToEps=MakeRule[{epsilonG[-a,-b,-c,-d]*V[d],Eps[-a,-b,-c]},
+	MetricOn->All,ContractMetrics->True];
+xAct`PSALTer`Private`FromEps=MakeRule[{Eps[-a,-b,-c],epsilonG[-a,-b,-c,-d]*V[d]},
+	MetricOn->All,ContractMetrics->True];
 DefBasis[cartesian,TangentM4,{0,1,2,3},BasisColor->RGBColor[0,1,0]];
 DefConstantSymbol[En,PrintAs->"\[ScriptCapitalE]"];
 DefConstantSymbol[Mo,PrintAs->"\[ScriptP]"];
@@ -64,6 +68,59 @@ AllComponentValues[P[{a,cartesian}],{En,0,0,Mo}];
 AllComponentValues[P[{-a,-cartesian}],{En,0,0,-Mo}];
 AllComponentValues[G[{a,cartesian},{b,cartesian}],DiagonalMatrix@{1,-1,-1,-1}];
 AllComponentValues[G[{-a,-cartesian},{-b,-cartesian}],DiagonalMatrix@{1,-1,-1,-1}];
-(*DefConstantSymbol[PoleResidue,PrintAs->"\[Lambda]"];*)
+AllComponentValues[epsilonG[{a,cartesian},{b,cartesian},{c,cartesian},{d,cartesian}],-$epsilonSign*Normal@LeviCivitaTensor@4];
+AllComponentValues[epsilonG[{-a,-cartesian},{-b,-cartesian},{-c,-cartesian},{-d,-cartesian}],$epsilonSign*Normal@LeviCivitaTensor@4];
+Begin["xAct`PSALTer`Private`"];
+DefConstantSymbol[Symbol@StringJoin["Abbreviation",ToString@#],
+	PrintAs->"\!\(\*SubscriptBox[\(\[CurlyCapitalUpsilon]\), \("<>ToString@#<>"\)]\)"]&/@Range@$AbbreviationConstants;
+DefConstantSymbol[PseudoDeterminantSpin0ParityEven,
+	PrintAs->"\!\(Det(\*SuperscriptBox[\(0\),\(+\)])\)"];
+DefConstantSymbol[PseudoDeterminantSpin0ParityOdd,
+	PrintAs->"\!\(Det(\*SuperscriptBox[\(0\),\(-\)])\)"];
+DefConstantSymbol[PseudoDeterminantSpin0ParityMixed,
+	PrintAs->"\!\(Det(\(0\))\)"];
+DefConstantSymbol[PseudoDeterminantSpin1ParityEven,
+	PrintAs->"\!\(Det(\*SuperscriptBox[\(1\),\(+\)])\)"];
+DefConstantSymbol[PseudoDeterminantSpin1ParityOdd,
+	PrintAs->"\!\(Det(\*SuperscriptBox[\(1\),\(-\)])\)"];
+DefConstantSymbol[PseudoDeterminantSpin1ParityMixed,
+	PrintAs->"\!\(Det(\(1\))\)"];
+DefConstantSymbol[PseudoDeterminantSpin2ParityEven,
+	PrintAs->"\!\(Det(\*SuperscriptBox[\(2\),\(+\)])\)"];
+DefConstantSymbol[PseudoDeterminantSpin2ParityOdd,
+	PrintAs->"\!\(Det(\*SuperscriptBox[\(2\),\(-\)])\)"];
+DefConstantSymbol[PseudoDeterminantSpin2ParityMixed,
+	PrintAs->"\!\(Det(\(2\))\)"];
+DefConstantSymbol[PseudoDeterminantSpin3ParityEven,
+	PrintAs->"\!\(Det(\*SuperscriptBox[\(3\),\(+\)])\)"];
+DefConstantSymbol[PseudoDeterminantSpin3ParityOdd,
+	PrintAs->"\!\(Det(\*SuperscriptBox[\(3\),\(-\)])\)"];
+DefConstantSymbol[PseudoDeterminantSpin3ParityMixed,
+	PrintAs->"\!\(Det(\(3\))\)"];
+
+PseudoDeterminantSymbols=<|
+	0-><|
+		Even->PseudoDeterminantSpin0ParityEven,
+		Odd->PseudoDeterminantSpin0ParityOdd,
+		Mixed->PseudoDeterminantSpin0ParityMixed
+	|>,
+	1-><|
+		Even->PseudoDeterminantSpin1ParityEven,
+		Odd->PseudoDeterminantSpin1ParityOdd,
+		Mixed->PseudoDeterminantSpin1ParityMixed
+	|>,
+	2-><|
+		Even->PseudoDeterminantSpin2ParityEven,
+		Odd->PseudoDeterminantSpin2ParityOdd,
+		Mixed->PseudoDeterminantSpin2ParityMixed
+	|>,
+	3-><|
+		Even->PseudoDeterminantSpin3ParityEven,
+		Odd->PseudoDeterminantSpin3ParityOdd,
+		Mixed->PseudoDeterminantSpin3ParityMixed
+	|>
+|>;
+DefConstantSymbol[NeglectedElement,PrintAs->"(?)"];
+End[];
 $CVVerbose=True;
 $DefInfoQ=True;

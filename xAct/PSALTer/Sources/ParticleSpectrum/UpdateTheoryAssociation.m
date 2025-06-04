@@ -2,9 +2,7 @@
 (*  UpdateTheoryAssociation  *)
 (*===========================*)
 
-Options@UpdateTheoryAssociation={Advertise->False,ExportTheory->False};
-
-UpdateTheoryAssociation[Name_?StringQ,AssocKey_,Val_,OptionsPattern[]]:=Module[{
+UpdateTheoryAssociation[Name_?StringQ,AssocKey_,Val_]~Y~Module[{
 	TheoryAssociation},
 
 	If[!(AssociationQ@Evaluate@Symbol@Name),(Evaluate@Symbol@Name)=<||>];

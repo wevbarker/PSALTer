@@ -3,7 +3,7 @@
 (*=====================*)
 
 DefField::NotTraceless="The reduced-index mode `1`, when expanded in terms of the fundamental fields, appears not to be traceless over slots at positions `2`.";
-ValidateTraceless[InputExpr_,Reduced_]:=Module[{
+ValidateTraceless[InputExpr_,Reduced_]~Y~Module[{
 	FreeIndices,
 	MetricsToContract,
 	Contraction

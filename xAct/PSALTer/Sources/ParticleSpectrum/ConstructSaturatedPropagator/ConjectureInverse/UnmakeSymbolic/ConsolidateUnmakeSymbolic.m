@@ -5,7 +5,7 @@
 IncludeHeader@"GrabExpression";
 IncludeHeader@"SimplifyIfSmall";
 
-ConsolidateUnmakeSymbolic[ListOfFileNames_]:=Module[{
+ConsolidateUnmakeSymbolic[ListOfFileNames_]~Y~Module[{
 	ListOfNumeratorFileNames,
 	ListOfDenominatorFileNames,
 	FullElement,

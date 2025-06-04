@@ -3,7 +3,7 @@
 (*==========================*)
 
 $SecularEquationTime=10;
-ExtractSecularEquation[InputMatrix_,LaurentDepth_]:=Module[{
+ExtractSecularEquation[InputMatrix_,LaurentDepth_]~Y~Module[{
 	TheInputMatrix=InputMatrix,
 	TheSecularEquation,
 	TheSymbolicToUnique,
@@ -16,7 +16,7 @@ ExtractSecularEquation[InputMatrix_,LaurentDepth_]:=Module[{
 	Diagnostic@TheSymbolicInputMatrix;
 
 	SecularSystemValue@LaurentDepth=TheSymbolicInputMatrix;
-
+(*
 	TimeConstrained[
 	(
 		TheSecularEquation=(
@@ -51,9 +51,12 @@ ExtractSecularEquation[InputMatrix_,LaurentDepth_]:=Module[{
 		Diagnostic@TheSecularEquation;
 	),
 	$SecularEquationTime,
+*)
 	(
 		TheSecularEquation="(Timeout)";
 	)
+(*
 	];
+*)
 
 TheSecularEquation];

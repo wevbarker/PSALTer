@@ -3,7 +3,7 @@
 (*==============================*)
 
 DefField::MakeTraceless="Can't remove trace `1`.";
-MakeAutomaticallyTraceless[InputExpr_?xTensorQ]:=Module[{
+MakeAutomaticallyTraceless[InputExpr_?xTensorQ]~Y~Module[{
 	TensorName=InputExpr,
 	TensorIndexed=InputExpr,
 	NumberOfIndices=Length@SlotsOfTensor@InputExpr

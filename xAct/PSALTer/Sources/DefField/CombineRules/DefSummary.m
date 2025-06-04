@@ -2,7 +2,7 @@
 (*  DefSummary  *)
 (*==============*)
 
-DefSummary[]:=Module[{
+DefSummary[]~Y~Module[{
 	Class,
 	TensorsValue,
 	SourcesValue,

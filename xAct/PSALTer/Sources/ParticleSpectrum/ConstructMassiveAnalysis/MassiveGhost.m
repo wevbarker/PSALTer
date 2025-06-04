@@ -2,7 +2,7 @@
 (*  MassiveGhost  *)
 (*================*)
 
-MassiveGhost[InverseBMatrix_,SquareMassesValue_,Couplings_]:=Module[{
+MassiveGhost[InverseBMatrix_,SquareMassesValue_,Couplings_]~Y~Module[{
 	NotZero,
 	CouplingAssumptions,
 	InverseBMatrixTrace,

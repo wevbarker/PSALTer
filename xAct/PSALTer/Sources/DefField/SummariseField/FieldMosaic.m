@@ -3,11 +3,11 @@
 (*===============*)
 
 FieldMosaic[
-		TheDecompositionTable_]:=Module[{
+		TheDecompositionTable_]~Y~Module[{
 	DecompositionGroup=TheDecompositionTable,
 	FinalGraphic},
 
-	If[!$NoExport,DecompositionGroup//=Vectorize;];	
+	(*If[!$NoExport,DecompositionGroup//=Vectorize;];	*)
 	
 	FinalGraphic={
 			DecompositionGroup

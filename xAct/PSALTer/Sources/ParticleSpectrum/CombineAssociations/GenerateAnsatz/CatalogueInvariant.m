@@ -2,6 +2,8 @@
 (*  CatalogueInvariant  *)
 (*======================*)
 
+IncludeHeader@"IsNegativeParitySpinTwo";
+
 Options@CatalogueInvariant={Mixed->False};
 CatalogueInvariant[
 	TheoryContext_,
@@ -9,7 +11,7 @@ CatalogueInvariant[
 	LeftTensorConstantSymbol_,
 	RightTensor_,
 	RightTensorConstantSymbol_,
-	OptionsPattern[]]:=Module[{
+	OptionsPattern[]]~Y~Module[{
 	Class,
 	TensorContraction},
 	
@@ -18,13 +20,22 @@ CatalogueInvariant[
 		Off[$RecursionLimit::reclim];
 		Off[$IterationLimit::itlim];
 		Off[ToCanonical::noident];
-		If[OptionValue@Mixed,
-		If[Head@#===List,TensorContraction=First@#,TensorContraction=#]&@AllContractions[
-				IndexFree@((LeftTensor~Times~RightTensor)~Times~xAct`PSALTer`Eps),
-				Parallelization->False];,
-		If[Head@#===List,TensorContraction=First@#,TensorContraction=#]&@AllContractions[
-				IndexFree@(LeftTensor~Times~RightTensor),
-				Parallelization->False];
+		If[OptionValue@Mixed,	
+			If[(IsNegativeParitySpinTwo@LeftTensor)||(IsNegativeParitySpinTwo@RightTensor),
+				If[IsNegativeParitySpinTwo@LeftTensor,
+					TensorContraction=RightTensor[-xAct`PSALTer`a,-xAct`PSALTer`b]*xAct`PSALTer`Eps[xAct`PSALTer`a,-xAct`PSALTer`c,-xAct`PSALTer`d]*LeftTensor[xAct`PSALTer`c,xAct`PSALTer`d,xAct`PSALTer`b];
+				];
+				If[IsNegativeParitySpinTwo@RightTensor,
+					TensorContraction=LeftTensor[-xAct`PSALTer`a,-xAct`PSALTer`b]*xAct`PSALTer`Eps[xAct`PSALTer`a,-xAct`PSALTer`c,-xAct`PSALTer`d]*RightTensor[xAct`PSALTer`c,xAct`PSALTer`d,xAct`PSALTer`b];
+				];
+				,
+				If[Head@#===List,TensorContraction=First@Reverse@#,TensorContraction=#]&@AllContractions[
+						IndexFree@((LeftTensor~Times~RightTensor)~Times~xAct`PSALTer`Eps),
+						Parallelization->False];
+			];,
+			If[Head@#===List,TensorContraction=First@#,TensorContraction=#]&@AllContractions[
+					IndexFree@(LeftTensor~Times~RightTensor),
+					Parallelization->False];
 		];
 		On[ToCanonical::noident];
 		On[$IterationLimit::itlim];

@@ -2,7 +2,7 @@
 (*  GetHermitianPart  *)
 (*====================*)
 
-GetHermitianPart[InputMatrix_]:=Module[{
+GetHermitianPart[InputMatrix_]~Y~Module[{
 	ImaginaryPart,
 	RealPart,
 	MatrixExpr=InputMatrix},

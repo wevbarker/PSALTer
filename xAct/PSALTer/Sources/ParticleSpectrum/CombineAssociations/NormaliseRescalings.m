@@ -2,7 +2,7 @@
 (*  NormaliseRescalings  *)
 (*=======================*)
 
-NormaliseRescalings[TheoryContext_]:=Module[{
+NormaliseRescalings[TheoryContext_]~Y~Module[{
 	Class,
 	Expr,
 	SystemOfEquations,

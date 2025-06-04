@@ -2,7 +2,7 @@
 (*  FullyExpandSources  *)
 (*======================*)
 
-FullyExpandSources[ClassName_?StringQ,RawSector_]:=Module[{
+FullyExpandSources[ClassName_?StringQ,RawSector_]~Y~Module[{
 	Class,
 	Sector=RawSector},
 

@@ -2,7 +2,7 @@
 (*  ExtractReparameterisationMatrix  *)
 (*===================================*)
 
-ExtractReparameterisationMatrix[InputMatrix_]:=Module[{ReparameterisationMatrix},
+ExtractReparameterisationMatrix[InputMatrix_]~Y~Module[{ReparameterisationMatrix},
 
 	ReparameterisationMatrix=InputMatrix;
 	ReparameterisationMatrix//=Diagonal;

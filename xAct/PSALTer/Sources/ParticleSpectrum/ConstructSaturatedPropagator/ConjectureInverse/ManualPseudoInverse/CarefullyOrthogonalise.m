@@ -2,7 +2,7 @@
 (*  CarefullyOrthogonalise  *)
 (*==========================*)
 
-CarefullyOrthogonalise[InputNullSpace_]:=Module[{
+CarefullyOrthogonalise[InputNullSpace_]~Y~Module[{
 	Expr=InputNullSpace,
 	ParameterisedNullVectors,
 	NonParameterisedNullVectors

@@ -4,7 +4,7 @@
 
 IncludeHeader@"DefFreeSourceVariables";
 
-MakeFreeSourceVariables[NullSpace_List,SourceComponents_List]:=Module[{
+MakeFreeSourceVariables[NullSpace_List,SourceComponents_List]~Y~Module[{
 	NullSpaceDimension,
 	FreeSourceVariables,
 	SourceComponentsAsFreeSourceVariables,

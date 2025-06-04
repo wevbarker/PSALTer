@@ -3,7 +3,7 @@
 (*=======================*)
 
 MakeUniqueQuadratic::MakeQuadratic="Can't restore unique quadratic invariant `1`.";
-MakeUniqueQuadratic[FieldSpinParityName_]:=Module[{
+MakeUniqueQuadratic[FieldSpinParityName_]~Y~Module[{
 	MultiTermSymmetry,
 	VanishingInvariant,
 	ReplacingExpression,

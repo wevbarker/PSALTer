@@ -12,11 +12,14 @@ UnmakeSymbolic[InverseSymbolicMatrix_,
 	ReduceFirstIntermediateSymbols_,
 	FirstIntermediateSymbolsToSecondIntermediateSymbols_,
 	SecondIntermediateSymbolsToCouplingConstants_,
-	CouplingAssumptions_]:=Module[{
+	CouplingAssumptions_,
+	ParityPartition_]~Y~Module[{
 		RankOfMatrix,
 		SubTaskFileNames,
 		GraduallyExpandedSubTasks,
+		DeterminantSymbolicValue,
 		InverseMatrix,
+		AdjugateMatrix,
 		CombinedRules,
 		TheInverseSymbolicMatrix},
 
@@ -67,7 +70,12 @@ UnmakeSymbolic[InverseSymbolicMatrix_,
 	DeleteFile/@Flatten@SubTaskFileNames;
 	Diagnostic@InverseMatrix;
 
-	InverseMatrix=InverseMatrix[[1;;RankOfMatrix,1;;RankOfMatrix]]/InverseMatrix[[RankOfMatrix+1,RankOfMatrix+1]];
+	DeterminantSymbolicValue=InverseMatrix[[RankOfMatrix+1,RankOfMatrix+1]];
+	AdjugateMatrix=InverseMatrix[[1;;RankOfMatrix,1;;RankOfMatrix]];
+	InverseMatrix=AdjugateMatrix/DeterminantSymbolicValue;
+	InverseMatrix//={#,{{DeterminantSymbolicValue//Evaluate}},AdjugateMatrix}&;
+	InverseMatrix//=BlockDiagonalMatrix;
+	InverseMatrix//=Normal;
 
 	$LocalPropagator=" ** ConsolidateFinalElement...";
 	InverseMatrix=Map[
@@ -77,14 +85,20 @@ UnmakeSymbolic[InverseSymbolicMatrix_,
 	Diagnostic@InverseMatrix;
 
 	$LocalPropagator=" ** Conjugate...";
+	Diagnostic@ParityPartition;
 	Table[
 		If[j<i,
-			InverseMatrix[[i,j]]=Assuming[
-					CouplingAssumptions,
-					Conjugate@Evaluate@(InverseMatrix[[j,i]])]
+			If[((RankOfMatrix>=i>ParityPartition)&&(j<=ParityPartition))||((i>(RankOfMatrix+1+ParityPartition))&&(j<=(RankOfMatrix+1+ParityPartition))),
+				InverseMatrix[[i,j]]=-Assuming[
+						CouplingAssumptions,
+						Conjugate@Evaluate@(InverseMatrix[[j,i]])],
+				InverseMatrix[[i,j]]=Assuming[
+						CouplingAssumptions,
+						Conjugate@Evaluate@(InverseMatrix[[j,i]])]
+			];
 		],
-	{i,RankOfMatrix},
-	{j,RankOfMatrix}];
+	{i,2*RankOfMatrix+1},
+	{j,2*RankOfMatrix+1}];
 
 	$LocalPropagator=" ** ConsolidateFinalElement...";
 	InverseMatrix=Map[

@@ -2,6 +2,9 @@
 (*  ReloadPackage  *)
 (*=================*)
 
+IncludeHeader@"StackSetDelayed";
+IncludeHeader@"CallStackBegin";
+IncludeHeader@"CallStackEnd";
 IncludeHeader@"ToNewCanonical";
 IncludeHeader@"NewParallelSubmit";
 IncludeHeader@"Colours";

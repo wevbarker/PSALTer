@@ -2,12 +2,12 @@
 (*  AppendToField  *)
 (*=================*)
 
-AppendToField[KinematicContext_,AssocKey_,InputValue_]:=Module[{
+AppendToField[KinematicContext_,AssocKey_,InputValue_]~Y~Module[{
 	FieldAssociationValue},
 
-	(!(AssociationQ@FieldAssociation@KinematicContext))~If~(FieldAssociation@KinematicContext:=<||>);
+	(!(AssociationQ@FieldAssociation@KinematicContext))~If~(FieldAssociation@KinematicContext~Y~<||>);
 	FieldAssociationValue=FieldAssociation@KinematicContext;
 	Clear@KinematicContext;
 	FieldAssociationValue@AssocKey=InputValue;
-	FieldAssociation@KinematicContext:=FieldAssociationValue;
+	FieldAssociation@KinematicContext~Y~FieldAssociationValue;
 ];

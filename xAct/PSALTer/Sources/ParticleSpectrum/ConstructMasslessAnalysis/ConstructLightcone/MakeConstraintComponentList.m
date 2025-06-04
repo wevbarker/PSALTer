@@ -2,7 +2,7 @@
 (*  MakeConstraintComponentList  *)
 (*===============================*)
 
-MakeConstraintComponentList[ClassName_?StringQ,PropagatorConstraints_List,ManualConstraints_List:{}]:=Module[{
+MakeConstraintComponentList[ClassName_?StringQ,PropagatorConstraints_List,ManualConstraints_List:{}]~Y~Module[{
 	Class,
 	AllConstraints,
 	ConstraintComponents},

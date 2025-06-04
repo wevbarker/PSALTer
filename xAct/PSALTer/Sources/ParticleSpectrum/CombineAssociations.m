@@ -7,14 +7,15 @@ IncludeHeader@"NormaliseRescalings";
 IncludeHeader@"CacheContexts";
 IncludeHeader@"DefPlaceholderSpins";
 
-CombineAssociations[Lagrangian_,TheoryContext_]:=Module[{
+CombineAssociations[Lagrangian_,TheoryContext_]~Y~Module[{
 		Expr=Lagrangian,
 		LagrangianCouplingsValue,
 		FieldSpinParityTensorHeadsValue,
 		SourceSpinParityTensorHeadsValue,
 		FieldToFiducialFieldValue,
 		ExpandFieldsRulesValue,
-		ExpandSourcesRulesValue
+		ExpandSourcesRulesValue,
+		ScalarSourceRulesValue
 		},
 
 	Expr=Expr/.{Plus->List};
@@ -25,6 +26,7 @@ CombineAssociations[Lagrangian_,TheoryContext_]:=Module[{
 	Expr=Expr.Table[0.1*Exp@ii,{ii,Length@Expr}];
 	Expr//=Variables;	
 	Expr//=DeleteDuplicates;
+	Expr=DeleteElements[Expr,{epsilonG}];
 
 	LagrangianCouplingsValue=DeleteCases[Expr,_?xTensorQ];
 	AppendToField[TheoryContext,LagrangianCouplings,LagrangianCouplingsValue];
@@ -41,12 +43,14 @@ CombineAssociations[Lagrangian_,TheoryContext_]:=Module[{
 	FieldSpinParityTensorHeadsValue=FieldSpinParityTensorHeadsValue~Merge~((Flatten@Join@#)&);
 	(FieldSpinParityTensorHeadsValue@#=First@Evaluate@FieldSpinParityTensorHeadsValue@#)&/@(Keys@FieldSpinParityTensorHeadsValue);
 	FieldSpinParityTensorHeadsValue//=DefPlaceholderSpins;
+	Diagnostic@FieldSpinParityTensorHeadsValue;
 	AppendToField[TheoryContext,FieldSpinParityTensorHeads,FieldSpinParityTensorHeadsValue];
 
 	SourceSpinParityTensorHeadsValue=(#@SourceSpinParityTensorHeads)&/@Expr;
 	SourceSpinParityTensorHeadsValue=SourceSpinParityTensorHeadsValue~Merge~((Flatten@Join@#)&);
 	(SourceSpinParityTensorHeadsValue@#=First@Evaluate@SourceSpinParityTensorHeadsValue@#)&/@(Keys@SourceSpinParityTensorHeadsValue);
 	SourceSpinParityTensorHeadsValue//=DefPlaceholderSpins;
+	Diagnostic@SourceSpinParityTensorHeadsValue;
 	AppendToField[TheoryContext,SourceSpinParityTensorHeads,SourceSpinParityTensorHeadsValue];
 
 	FieldToFiducialFieldValue=(#@FieldToFiducialField)&/@Expr;
@@ -79,18 +83,22 @@ CombineAssociations[Lagrangian_,TheoryContext_]:=Module[{
 	SpinsValue//=Sort;
 	AppendToField[TheoryContext,Spins,SpinsValue];
 
-	ExpandFieldsValue[InputExpr_]:=Module[{Expr=InputExpr},
+	ScalarSourceRulesValue=(#@ScalarSourceRules)&/@Expr;
+	ScalarSourceRulesValue//=Flatten;
+	AppendToField[TheoryContext,ScalarSourceRules,ScalarSourceRulesValue];
+
+	ExpandFieldsValue[InputExpr_]~Y~Module[{Expr=InputExpr},
 		Expr=Expr/.ExpandFieldsRulesValue;
 		Expr//=xAct`PSALTer`Private`ToNewCanonical;
 		Expr//=CollectTensors;
 	Expr];
 
-	ExpandSourcesValue[InputExpr_]:=Module[{Expr=InputExpr},
+	ExpandSourcesValue[InputExpr_]~Y~Module[{Expr=InputExpr},
 		Expr=Expr/.ExpandSourcesRulesValue;
 		Expr//=xAct`PSALTer`Private`ToNewCanonical;
 	Expr];
 
-	DecomposeFieldsValue[InputExpr_]:=Module[{Expr=InputExpr},
+	DecomposeFieldsValue[InputExpr_]~Y~Module[{Expr=InputExpr},
 		Expr//=xAct`PSALTer`Private`ToNewCanonical;
 		Expr=Expr/.DecomposeFieldsRulesValue;
 		Expr//=xAct`PSALTer`Private`ToNewCanonical;

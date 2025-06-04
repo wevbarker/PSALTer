@@ -2,15 +2,21 @@
 (*  IsolatePoles  *)
 (*================*)
 
-ParticleSpectrum::MultiMass="One of the SO(3) sectors appears to have multiple massive poles.";
-IsolatePoles[InputDenominator_,CouplingAssumptions_]:=Module[{
+IncludeHeader@"StripPoly";
+IncludeHeader@"IrrationalQ";
+IncludeHeader@"PartitionDeterminant";
+
+ParticleSpectrum::MultiMass="One of the spin sectors appears to contain multiple massive particles.";
+ParticleSpectrum::IrrationalMass="One of the particles appears to have a square mass which is not a rational function of the Lagrangian coupling coefficients.";
+IsolatePoles[InputDenominator_,CouplingAssumptions_]~Y~Module[{
 	Poly=InputDenominator,
-	NewCouplingAssumptions=CouplingAssumptions},
-	Poly=Poly/.{Def->Sqrt@xAct`PSALTer`Private`DefSquared};
+	NewCouplingAssumptions=CouplingAssumptions,
+	RationalRoots},
 
 	NewCouplingAssumptions=NewCouplingAssumptions~Join~{xAct`PSALTer`Private`DefSquared~Element~Reals};
-	Assuming[NewCouplingAssumptions,Poly//=Simplify];
+	Poly//=StripPoly[#,NewCouplingAssumptions]&;
 	Diagnostic@Poly;
+
 	ListOfRoots=Assuming[NewCouplingAssumptions,Roots[Poly==0,xAct`PSALTer`Private`DefSquared]];
 	Diagnostic@ListOfRoots;
 	If[!(ListOfRoots===False),
@@ -24,9 +30,15 @@ IsolatePoles[InputDenominator_,CouplingAssumptions_]:=Module[{
 		ListOfRoots//=DeleteCases[#,0,Infinity]&;
 		Diagnostic@ListOfRoots;
 		ListOfRoots//=DeleteCases[#,_?NumericQ]&;
-		Diagnostic@ListOfRoots;,
-		ListOfRoots={};
+		Diagnostic@ListOfRoots;
+		RationalRoots=ListOfRoots~DeleteCases~_?IrrationalQ;
+		If[(Length@RationalRoots)<(Length@ListOfRoots),
+			Message@ParticleSpectrum::IrrationalMass;
+			RationalRoots~AppendTo~(Poly~PartitionDeterminant~RationalRoots);
+		];
+	,
+		RationalRoots={};
 	];
-	If[Length@ListOfRoots>=2,Message@ParticleSpectrum::MultiMass;];
-	Diagnostic@ListOfRoots;
-ListOfRoots];
+	If[Length@RationalRoots>=2,Message@ParticleSpectrum::MultiMass;];
+	Diagnostic@RationalRoots;
+RationalRoots];

@@ -1,0 +1,29 @@
+(*=====================*)
+(*  RemoveContraction  *)
+(*=====================*)
+
+DefField::MakeNotAntisymmetric="Can't remove antisymmetric part `1`.";
+RemoveContraction[TensorContraction_,TensorName_]~Y~Module[{TensorAntisymmetric=TensorContraction,DaggerTensorAntisymmetric},
+	
+	Diagnostic@TensorAntisymmetric;
+	DaggerTensorAntisymmetric=Dagger@TensorAntisymmetric;
+	Diagnostic@DaggerTensorAntisymmetric;
+	Quiet@AutomaticRules[
+		Evaluate@(Dagger@TensorName),
+		MakeRule[{Evaluate@DaggerTensorAntisymmetric,0},
+		MetricOn->All,
+		ContractMetrics->True]];
+	Quiet@AutomaticRules[
+		Evaluate@TensorName,
+		MakeRule[{Evaluate@TensorAntisymmetric,0},
+		MetricOn->All,
+		ContractMetrics->True]];
+	If[!(ToCanonical@TensorAntisymmetric===0),
+		Throw[Message[DefField::MakeNotAntisymmetric,TensorAntisymmetric],
+			HaltBuild]
+		];
+	If[!(ToCanonical@DaggerTensorAntisymmetric===0),
+		Throw[Message[DefField::MakeNotAntisymmetric,DaggerTensorAntisymmetric],
+			HaltBuild]
+		];
+];

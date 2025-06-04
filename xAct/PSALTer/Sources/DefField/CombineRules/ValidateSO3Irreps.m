@@ -9,14 +9,14 @@ IncludeHeader@"ValidateSymmetryField";
 IncludeHeader@"ValidateInverseMode";
 IncludeHeader@"ValidateSymmetryMode";
 
-ValidateSO3Irreps[]:=Catch@Module[{
+ValidateSO3Irreps[]~Y~Catch@Module[{
 	Class,
 	FieldSpinParityTensorHeadsValue,
 	ListOfModes},
 
 	Class=FieldAssociation@Context[];
 
-	DecomposeAndExpandFields[InputExpr_]:=Catch@Module[{
+	DecomposeAndExpandFields[InputExpr_]~Y~Catch@Module[{
 		Fundamental=InputExpr,
 		Decomposed,
 		Expanded
@@ -31,7 +31,7 @@ ValidateSO3Irreps[]:=Catch@Module[{
 		ValidateSymmetryField[InputExpr,Decomposed,Fundamental];
 	];
 
-	ExpandAndDecomposeFields[InputExpr_]:=Catch@Module[{
+	ExpandAndDecomposeFields[InputExpr_]~Y~Catch@Module[{
 		Reduced=InputExpr,
 		Decomposed,
 		Expanded

@@ -2,11 +2,14 @@
 (*  NullResidue  *)
 (*===============*)
 
-NullResidue[LightconePropagator_,LaurentDepth_]:=Module[{
-	MasslessPropagaor=LightconePropagator,
-	MasslessPropagaorResidue},
+IncludeHeader@"AssistedResidue";
 
-	MasslessPropagaor//=Together;
-	MasslessPropagaorResidue=((2*Mo)^LaurentDepth)*Residue[MasslessPropagaor*((En-Mo)^(LaurentDepth-1)),{En,Mo}]//Simplify;
-	MasslessPropagaorResidue//=Expand;
-MasslessPropagaorResidue];
+NullResidue[InputExpr_,LaurentDepth_]~Y~Module[{Expr=InputExpr},
+	(*Expr//=Together;*)
+	Expr*=(En-Mo)^(LaurentDepth-1);
+	Expr//=(#/.{En->Mo+Parameter})&;
+	Expr//=AssistedResidue;
+	(*Expr//=Residue[#,{Parameter,0}]&;*)
+	Expr*=((2*Mo)^LaurentDepth);
+	(*Expr//=Expand;*)
+Expr];

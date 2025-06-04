@@ -8,7 +8,7 @@ IncludeHeader@"AllIndependentComponents";
 IncludeHeader@"RescaleNullVector";
 IncludeHeader@"MakeFreeSourceVariables";
 
-ConstructLightcone[ClassName_?StringQ,ValuesOfSourceConstraints_]:=Module[{	
+ConstructLightcone[ClassName_?StringQ,ValuesOfSourceConstraints_]~Y~Module[{	
 	SourceComponents,
 	RescaledNullSpace
 	},
@@ -24,6 +24,7 @@ ConstructLightcone[ClassName_?StringQ,ValuesOfSourceConstraints_]:=Module[{
 	Diagnostic@ConstraintComponentList;
 	ConstraintComponentList=DeleteCases[ConstraintComponentList,True];
 	Diagnostic@ConstraintComponentList;
+
 	SourceComponents=AllIndependentComponents[ClassName];
 	Diagnostic@SourceComponents;
 	If[ConstraintComponentList==={},	

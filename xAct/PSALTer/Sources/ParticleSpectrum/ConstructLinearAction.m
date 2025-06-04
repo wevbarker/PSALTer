@@ -2,7 +2,7 @@
 (*  ConstructLinearAction  *)
 (*=========================*)
 
-ConstructLinearAction[ClassName_?StringQ,Expr_]:=Module[{
+ConstructLinearAction[ClassName_?StringQ,Expr_]~Y~Module[{
 	Class,
 	NewExpr,
 	TheTensors,

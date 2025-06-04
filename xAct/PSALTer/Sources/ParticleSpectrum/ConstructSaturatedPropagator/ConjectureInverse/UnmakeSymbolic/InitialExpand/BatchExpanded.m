@@ -2,7 +2,7 @@
 (*  BatchExpanded  *)
 (*=================*)
 
-BatchExpanded[InputExpr_,Prefix_,SymbolicRules_,MatrixElementFileName_]:=Module[{
+BatchExpanded[InputExpr_,Prefix_,SymbolicRules_,MatrixElementFileName_]~Y~Module[{
 	Expr,
 	CouplingAssumptions,
 	NumberOfSubTasks,

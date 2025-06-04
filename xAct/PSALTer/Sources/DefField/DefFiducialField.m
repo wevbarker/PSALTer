@@ -2,9 +2,9 @@
 (*  DefFiducialField  *)
 (*====================*)
 
-DefFiducialField[FiducialFieldName_[FiducialFieldInds___]]:=DefFiducialField[FiducialFieldName[FiducialFieldInds],GenSet[]];
+DefFiducialField[FiducialFieldName_[FiducialFieldInds___]]~Y~DefFiducialField[FiducialFieldName[FiducialFieldInds],GenSet[]];
 
-DefFiducialField[FiducialFieldName_[FiducialFieldInds___],SymmExpr_]:=Module[{
+DefFiducialField[FiducialFieldName_[FiducialFieldInds___],SymmExpr_]~Y~Module[{
 	SourceFiducialFieldName,
 	FieldName},
 

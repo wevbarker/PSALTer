@@ -2,7 +2,7 @@
 (*  GrabExpression  *)
 (*==================*)
 
-GrabExpression[MatrixElementSubTaskFileName_]:=Module[{SubTaskExpr},
+GrabExpression[MatrixElementSubTaskFileName_]~Y~Module[{SubTaskExpr},
 	Get@MatrixElementSubTaskFileName;
 	SubTaskExpr=ToExpression@"xAct`PSALTer`Private`MatrixElementSubTask";	
 SubTaskExpr];

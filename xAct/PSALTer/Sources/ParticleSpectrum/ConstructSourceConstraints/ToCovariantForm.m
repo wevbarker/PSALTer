@@ -2,7 +2,7 @@
 (*  ToCovariantForm  *)
 (*===================*)
 
-ToCovariantForm[ClassName_?StringQ,InputExpr_,SourceSpinParityTensorHeadsValue_]:=Module[{
+ToCovariantForm[ClassName_?StringQ,InputExpr_,SourceSpinParityTensorHeadsValue_]~Y~Module[{
 	MomentumToDerivativeRules,
 	Expr=InputExpr,
 	Class},

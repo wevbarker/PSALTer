@@ -4,7 +4,7 @@
 
 IncludeHeader@"IndependentComponents";
 
-AllIndependentComponents[ClassName_?StringQ]:=Module[{
+AllIndependentComponents[ClassName_?StringQ]~Y~Module[{
 	Class,
 	Tensors,
 	ComponentsList},

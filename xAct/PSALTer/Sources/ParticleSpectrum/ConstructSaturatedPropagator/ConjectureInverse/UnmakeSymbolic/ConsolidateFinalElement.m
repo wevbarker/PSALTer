@@ -2,8 +2,8 @@
 (*  ConsolidateFinalElement  *)
 (*===========================*)
 
-$ConsolidateFinalElementTime=500;
-ConsolidateFinalElement[FinalElement_]:=Module[{
+$ConsolidateFinalElementTime=20;
+ConsolidateFinalElement[FinalElement_]~Y~Module[{
 	CouplingAssumptions,
 	FullElement},
 

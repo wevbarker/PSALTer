@@ -2,11 +2,29 @@
 (*  ExtractDenominator  *)
 (*======================*)
 
-ExtractDenominator[InputMatrix_]:=Module[{OverallDenominator,Expr},
+IncludeHeader@"DenominatorOfElement";
 
-	OverallDenominator=InputMatrix;
+ExtractDenominator[InputMatrix_]~Y~Module[{OverallDenominator=InputMatrix},
+
 	OverallDenominator//=Flatten;
-	OverallDenominator//=Total;
-	OverallDenominator//=Together;
-	OverallDenominator//=Denominator;
+
+	(*OverallDenominator//=(Denominator/@#)&;*)
+	OverallDenominator=Map[
+		(xAct`PSALTer`Private`NewParallelSubmit@(DenominatorOfElement@#))&,
+		OverallDenominator];
+	OverallDenominator//=MonitorParallel;
+
+	OverallDenominator//=DeleteDuplicates;
+
+	(*OverallDenominator//=(FactorTermsList/@#)&;*)
+	OverallDenominator=Map[
+		(xAct`PSALTer`Private`NewParallelSubmit@(FactorTermsList@#))&,
+		OverallDenominator];
+	OverallDenominator//=MonitorParallel;
+	
+	OverallDenominator//=DeleteCases[#,{_?NumericQ,_?NumericQ},Infinity]&;
+	OverallDenominator//=Flatten;
+	OverallDenominator//=DeleteDuplicates;
+	OverallDenominator//=DeleteCases[#,_?NumericQ]&;
+	OverallDenominator//=Times@@#&;
 OverallDenominator];

@@ -2,7 +2,7 @@
 (*  ExpressInLightcone  *)
 (*======================*)
 
-ExpressInLightcone[ClassName_?StringQ,RawSector_]:=Module[{
+ExpressInLightcone[ClassName_?StringQ,RawSector_]~Y~Module[{
 	Class,
 	Sector=RawSector},
 
@@ -13,6 +13,7 @@ ExpressInLightcone[ClassName_?StringQ,RawSector_]:=Module[{
 	Sector//=xAct`xCoba`TraceBasisDummy;
 	Sector=Sector/.xAct`xCoba`TensorValues[P];
 	Sector=Sector/.xAct`xCoba`TensorValues[G];
+	Sector=Sector/.xAct`xCoba`TensorValues[epsilonG];
 	(Sector=Sector/.xAct`xCoba`TensorValues[#])&/@(Class@Sources);
 	(Sector=Sector/.xAct`xCoba`TensorValues[#])&/@(Dagger/@(Class@Sources));
 	Sector=Sector/.{Def->Sqrt[En^2-Mo^2]};

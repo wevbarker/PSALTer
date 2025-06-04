@@ -2,7 +2,7 @@
 (*  IndependentComponents  *)
 (*=========================*)
 
-IndependentComponents[ClassName_?StringQ,Tensors_List]:=Module[{
+IndependentComponents[ClassName_?StringQ,Tensors_List]~Y~Module[{
 	Class,
 	ComponentsList},
 

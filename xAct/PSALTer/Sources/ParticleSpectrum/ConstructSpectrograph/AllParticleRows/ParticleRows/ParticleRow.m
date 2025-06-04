@@ -1,0 +1,53 @@
+(*===============*)
+(*  ParticleRow  *)
+(*===============*)
+
+IncludeHeader@"GetDiagram";
+IncludeHeader@"NRoot";
+
+ParticleRow[
+	PoleResidue_,
+	SquareMass_,
+	Spin_,
+	Parity_,
+	Polarisations_,
+	LaurentDepth_]:=Module[{
+		Expr,
+		ParityString=Switch[Parity,1,"Even",-1,"Odd",0,"None"]},
+	If[SquareMass===0,
+		Switch[LaurentDepth,
+			1,	
+			Expr={
+				GetDiagram@"FeynmanDiagramQuadratic.pdf",
+				Text@Polarisations,
+				Text@ShowIfSmall@SquareMass,
+				Text@ShowIfSmall@PoleResidue
+			};,
+			2,
+			Expr={
+				GetDiagram@"FeynmanDiagramQuartic.pdf",
+				Text@Polarisations,
+				Text@ShowIfSmall@SquareMass,
+				Text@ShowIfSmall@PoleResidue
+			};,
+			3,
+			Expr={
+				GetDiagram@"FeynmanDiagramHexic.pdf",
+				Text@Polarisations,
+				Text@ShowIfSmall@SquareMass,
+				Text@ShowIfSmall@PoleResidue
+			};
+		];
+	,
+		Expr=MapThread[
+			{
+				GetDiagram@("FeynmanDiagramSpin"<>(ToString@Spin)<>"Parity"<>ParityString<>"Resolved.pdf"),
+				Text@(2*Spin+1),
+				Text@ShowIfSmall@#1,
+				Text@ShowIfSmall@#2
+			}&
+		,
+			{SquareMass,PoleResidue}
+		];
+	];
+Expr];

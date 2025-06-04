@@ -4,7 +4,7 @@
 
 IncludeHeader@"BatchExpanded";
 
-InitialExpand[SymbolicRules_,MatrixElementFileName_]:=Module[{
+InitialExpand[SymbolicRules_,MatrixElementFileName_]~Y~Module[{
 	ReducedNumerator,
 	ReducedDenominator,
 	FullElement,

@@ -2,7 +2,7 @@
 (*  ConstraintComponentToLightcone  *)
 (*==================================*)
 
-ConstraintComponentToLightcone[ClassName_?StringQ,ConstraintComponent_]:=Module[{
+ConstraintComponentToLightcone[ClassName_?StringQ,ConstraintComponent_]~Y~Module[{
 	Class,
 	Constraint=ConstraintComponent},
 

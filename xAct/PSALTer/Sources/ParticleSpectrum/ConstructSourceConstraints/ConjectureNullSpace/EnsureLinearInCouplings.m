@@ -2,7 +2,7 @@
 (*  EnsureLinearInCouplings  *)
 (*===========================*)
 
-EnsureLinearInCouplings[NullVector_]:=Module[{
+EnsureLinearInCouplings[NullVector_]~Y~Module[{
 	Expr=NullVector,
 	LinearNullVector=NullVector},
 

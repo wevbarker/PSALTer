@@ -2,7 +2,7 @@
 (*  ConstrainInLightcone  *)
 (*========================*)
 
-ConstrainInLightcone[RawSector_,SourceComponentsToFreeSourceVariables_List]:=Module[{
+ConstrainInLightcone[RawSector_,SourceComponentsToFreeSourceVariables_List]~Y~Module[{
 	Sector=RawSector},
 
 	Sector//=GradualExpand[CouplingAssumptions,#,SourceComponentsToFreeSourceVariables]&;

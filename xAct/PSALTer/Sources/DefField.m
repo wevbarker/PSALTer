@@ -7,6 +7,7 @@ IncludeHeader@"DefFiducialField";
 IncludeHeader@"DefSO3Irrep";
 IncludeHeader@"CombineRules";
 IncludeHeader@"SummariseField";
+IncludeHeader@"PreComputeComponents";
 ReadAtRuntime@"RegisterFieldRank0";
 ReadAtRuntime@"RegisterFieldRank1";
 ReadAtRuntime@"RegisterFieldRank2";
@@ -28,13 +29,20 @@ Off[SetDelayed::write];
 Options@DefFieldActual={PrintAs->"\[Zeta]",PrintSourceAs->"\[ScriptJ]"};
 
 DefField::UnstudiedKinetics="The SO(3) decomposition of tensors with indices `1` and symmetry `2` has not yet been implemented.";
-DefFieldActual[InputField_[Inds___],Opts___?OptionQ]:=Catch@DefFieldActual[InputField[Inds],GenSet[],Opts];
-DefFieldActual[InputField_[Inds___],SymmExpr_,OptionsPattern[]]:=Catch@Module[{
+DefFieldActual[InputField_[Inds___],Opts___?OptionQ]~Y~Catch@DefFieldActual[InputField[Inds],GenSet[],Opts];
+DefFieldActual[InputField_[Inds___],SymmExpr_,OptionsPattern[]]~Y~Catch@Module[{
 	Rank=Length@{Inds},
 	Type=Head@SymmExpr,
 	Pair,
-	FieldContext="xAct`PSALTer`"<>ToString@InputField<>"`"
+	FieldContext="xAct`PSALTer`"<>ToString@InputField<>"`",
+	CallStack
 	},
+
+	If[!$CLI,
+		CallStack=PrintTemporary@Dynamic@Refresh[
+			GUICallStack@$CallStack,
+			TrackedSymbols->{$CallStack}];
+	];
 
 	If[Type==GenSet,Pair={},
 		Pair=First/@(First/@(Position[{Inds},#]&/@(Identity@@SymmExpr))),
@@ -79,16 +87,22 @@ DefFieldActual[InputField_[Inds___],SymmExpr_,OptionsPattern[]]:=Catch@Module[{
 		True,
 		Throw@Message[DefField::UnstudiedKinetics,{Inds},SymmExpr]
 	];
+	PreComputeComponents[FieldContext];
 	SummariseField[];
 	End[];
+
+	If[!$CLI,
+		FinishDynamic[];
+		NotebookDelete@CallStack;
+	];
 ];
 On[Set::write];
 On[SetDelayed::write];
 
 Unprotect@DefField;
 Options@DefField={PrintAs->"\[Zeta]",PrintSourceAs->"\[ScriptJ]"};
-DefField[InputField_[Inds___],Opts___?OptionQ]:=DefField[InputField[Inds],GenSet[],Opts];
-DefField[InputField_[Inds___],SymmExpr_,Opts:OptionsPattern[]]:=If[False,
+DefField[InputField_[Inds___],Opts___?OptionQ]~Y~DefField[InputField[Inds],GenSet[],Opts];
+DefField[InputField_[Inds___],SymmExpr_,Opts:OptionsPattern[]]~Y~If[$Disabled,
 	DefTensor[InputField[Inds],M4,SymmExpr,PrintAs->OptionValue@PrintAs],
 	DefFieldActual[InputField[Inds],SymmExpr,Opts]
 ];

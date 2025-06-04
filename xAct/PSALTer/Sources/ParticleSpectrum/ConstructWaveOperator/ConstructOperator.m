@@ -4,7 +4,7 @@
 
 IncludeHeader@"GetHermitianPart";
 
-ConstructOperator[ClassName_?StringQ,Expr_,Couplings_]:=Module[{
+ConstructOperator[ClassName_?StringQ,Expr_,Couplings_,OmittedSectors_]~Y~Module[{
 	Class,
 	SourceSpinParityTensorHeadsValue,
 	SymbolicLagrangian,
@@ -17,8 +17,9 @@ ConstructOperator[ClassName_?StringQ,Expr_,Couplings_]:=Module[{
 	RealParts,
 	NullSpaces,
 	MatrixPropagator,
-	InverseBMatricesValues,
-	CombinedSectors},
+	CombinedSectors,
+	DummySectors,
+	EmptyDeterminants},
 
 	$LocalWaveOperator=" ** ConstructOperator...";
 	
@@ -28,7 +29,9 @@ ConstructOperator[ClassName_?StringQ,Expr_,Couplings_]:=Module[{
 	Class=Evaluate@Symbol@ClassName;
 	FieldSpinParityTensorHeadsValue=Class@FieldSpinParityTensorHeads;
 	SourceSpinParityTensorHeadsValue=Class@SourceSpinParityTensorHeads;
-	SymbolicLagrangian=Expr/.Class@InvariantToConstantRules;
+	SymbolicLagrangian=Expr;
+	SymbolicLagrangian//=ToCanonical;
+	SymbolicLagrangian=SymbolicLagrangian/.Class@InvariantToConstantRules;
 	Diagnostic@(Class@InvariantToConstantRules);
 	Diagnostic@SymbolicLagrangian;
 
@@ -52,6 +55,14 @@ ConstructOperator[ClassName_?StringQ,Expr_,Couplings_]:=Module[{
 		];
 	)~Table~{Spin,Class@Spins};
 	Diagnostic@Symbols;
+	DummySectors=<||>;
+	(
+		DummySectors[Spin]=<|
+				Even->((#.((Evaluate@Dagger[#])&/@#))&@Flatten@(SpinParityConstantSymbols[Tensor][Spin][Even]~Table~{Tensor,Class@Tensors})),
+				Odd->((#.((Evaluate@Dagger[#])&/@#))&@Flatten@(SpinParityConstantSymbols[Tensor][Spin][Odd]~Table~{Tensor,Class@Tensors}))
+				|>;
+	)~Table~{Spin,Class@Spins};
+	Diagnostic@DummySectors;
 	Rescalings=<||>;
 	(
 		Rescalings[Spin]=Flatten@(((1/#)&)/@Join[
@@ -96,6 +107,22 @@ ConstructOperator[ClassName_?StringQ,Expr_,Couplings_]:=Module[{
 	FieldsTop=Values@LoweredIndexFields;
 	SourcesLeft=Dagger/@Values@RaisedIndexSources;
 	SourcesTop=Values@LoweredIndexSources;
+
+	CombinedSectors=Map[Flatten,Merge[#,Identity]&/@Merge[Values@FieldSpinParityTensorHeadsValue,Identity],{2}];
+	Sizes=Map[Length,Values@(Values/@(CombinedSectors)),{2}];
+	TheSpins=Keys@CombinedSectors;
+	$Neglect=<||>;
+	($Neglect@#=<|Even->False,Odd->False|>)&/@TheSpins;
+	Module[{Assoc},
+		Assoc=Evaluate[$Neglect@(#[[1]])];
+		Assoc@($ParityTranslate@(#[[2]]))=True;
+		$Neglect@(#[[1]])=Assoc;]&/@OmittedSectors;
+	Diagnostic@$Neglect;
+	(
+		If[($Neglect@Spin)@Even,SymbolicLagrangian+=(DummySectors@Spin)@Even];
+		If[($Neglect@Spin)@Odd,SymbolicLagrangian+=(DummySectors@Spin)@Odd];
+	)~Table~{Spin,Class@Spins};
+	Diagnostic@SymbolicLagrangian;
 	MatrixLagrangian=<||>;
 	(
 		MatrixLagrangian@Spin=(#[[1;;(1/2)Length@#,(1/2)Length@#+1;;Length@#]])&@If[
@@ -107,26 +134,37 @@ ConstructOperator[ClassName_?StringQ,Expr_,Couplings_]:=Module[{
 	Diagnostic@MatrixLagrangian;
 	MatrixLagrangian=GetHermitianPart/@MatrixLagrangian;
 	Diagnostic@MatrixLagrangian;
+	$RawBMatricesValues=MatrixLagrangian;
 	MatrixLagrangian=MapThread[
 		MapThread[(#1*#2)&,{#1,#2}]&,
 			{MatrixLagrangian,
 			Class@InverseRescalingMatrix}
 	];
+	Diagnostic@(Class@InverseRescalingMatrix);
 	Diagnostic@MatrixLagrangian;
 	MatrixLagrangian=MatrixLagrangian/.Class@RescalingSolutions;
 	Diagnostic@MatrixLagrangian;
 	MatrixLagrangian=((#)~FullSimplify~CouplingAssumptions)&/@MatrixLagrangian;
 	Diagnostic@MatrixLagrangian;
-	BMatricesValues=MatrixLagrangian;
+	$BMatricesValues=MatrixLagrangian;
 	AntiMaskMatrixValue=Class@AntiMaskMatrix;
-	BMatricesValues=MapThread[
-			({MapThread[Times,{#1@Even,#2}],MapThread[Times,{#1@Odd,#2}]})&,
+
+	Diagnostic@AntiMaskMatrixValue;
+	$BMatricesValues=MapThread[
+			(
+			If[DeleteCases[Flatten@FullSimplify@(#2-MapThread[Times,{#1@Even,#2}]-MapThread[Times,{#1@Odd,#2}]),0,Infinity]=={},
+				{MapThread[Times,{#1@Even,#2}],MapThread[Times,{#1@Odd,#2}]},
+				{#2}]	
+			)&,
 			{AntiMaskMatrixValue,
-			BMatricesValues}];
-	Diagnostic@BMatricesValues;
-	ValuesAllMatrices=Flatten[Values@BMatricesValues,{1,2}];
-	CombinedSectors=Map[Flatten,Merge[#,Identity]&/@Merge[Values@FieldSpinParityTensorHeadsValue,Identity],{2}];
-	Sizes=Map[Length,Values@(Values/@(CombinedSectors)),{2}];
-	TheSpins=Keys@CombinedSectors;
-	$LocalWaveOperator={((Plus@@#)&/@Partition[ValuesAllMatrices,2]),Sizes,TheSpins,FieldsLeft,FieldsTop};
+			$BMatricesValues}];
+	Diagnostic@$BMatricesValues;
+
+	$ValuesAllMatrices=(If[Length@#==2,Plus@@#,First@#])&/@Values@$BMatricesValues;
+	Diagnostic@$ValuesAllMatrices;
+			
+	EmptyDeterminants=({})&/@TheSpins;
+	Diagnostic@EmptyDeterminants;
+
+	$LocalWaveOperator={$ValuesAllMatrices,Sizes,TheSpins,FieldsLeft,FieldsTop,EmptyDeterminants};
 ];

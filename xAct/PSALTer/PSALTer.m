@@ -6,9 +6,18 @@
 (*  Version  *)
 (*===========*)
 
-xAct`PSALTer`Private`$Version={"1.0.2",{2024,7,2}};
+xAct`PSALTer`Private`$Version={"2.0.0",{2025,6,4}};
 If[Unevaluated[xAct`xCore`Private`$LastPackage]===xAct`xCore`Private`$LastPackage,xAct`xCore`Private`$LastPackage="xAct`PSALTer`"];
 Off@(Solve::fulldim);
+Off@(General::shdw);
+
+(*This became necessary since Wolfram 14.1*)
+Unprotect@Print;
+Print[Expr___]:=Null/;!($KernelID==0);
+Protect@Print;
+Unprotect@Message;
+Message[Expr___]:=Null/;!($KernelID==0);
+Protect@Message;
 
 (*=================*)
 (*  xAct`PSALTer`  *)
@@ -18,13 +27,12 @@ BeginPackage["xAct`PSALTer`",{"xAct`xTensor`","xAct`SymManipulator`","xAct`xPerm
 ParallelNeeds["xAct`PSALTer`"];
 Print[xAct`xCore`Private`bars];
 Print["Package xAct`PSALTer` version ",xAct`PSALTer`Private`$Version[[1]],", ",xAct`PSALTer`Private`$Version[[2]]];
-Print["CopyRight \[Copyright] 2022, Will Barker, Carlo Marzo and Claire Rigouzzo, under the General Public License."];
+Print["CopyRight \[Copyright] 2022, Will Barker, Giorgos Karananas, Carlo Marzo, Claire Rigouzzo and Haochen Tu, under the General Public License."];
 
 (*====================*)
 (*  Package settings  *)
 (*====================*)
 
-SetOptions[$FrontEndSession,EvaluationCompletionAction->"ScrollToOutput"];
 $DefInfoQ=False;
 Unprotect@AutomaticRules;
 Options[AutomaticRules]={Verbose->False};
@@ -40,6 +48,7 @@ If[$FrontEnd==Null,
 	xAct`PSALTer`Private`$CLI=False];
 Quiet@If[xAct`PSALTer`Private`$CLI,
 	xAct`PSALTer`Private`$WorkingDirectory=Directory[],
+	SetOptions[$FrontEndSession,EvaluationCompletionAction->"ScrollToOutput"];
 	If[NotebookDirectory[]==$Failed,
 		xAct`PSALTer`Private`$WorkingDirectory=Directory[],
 		xAct`PSALTer`Private`$WorkingDirectory=NotebookDirectory[],
@@ -51,7 +60,6 @@ If[xAct`PSALTer`Private`$CLI,
 				"Logos","ASCIILogo.txt"},
 	Print@Magnify[Import@FileNameJoin@{xAct`PSALTer`Private`$InstallDirectory,
 				"Logos","GitLabLogo.png"},0.3]];
-$ReadOnly=False;
 
 (*==============*)
 (*  Disclaimer  *)
@@ -72,6 +80,18 @@ PrintSourceAs::usage="PrintSourceAs is an option for DefField which acts as the 
 ParticleSpectrum::usage="ParticleSpectrum[L,Options] performs the whole propagator analysis on a scalar Lagrangian density L, which is quadratic in the perturbed fields and their derivatives, and linear in the couplings. Options are TheoryName, Method and MaxLaurentDepth.";
 TheoryName::usage="TheoryName is a mandatory option for ParticleSpectrum which associates a name with the linearised Lagrangian density. The option must be passed as a (string) name for the new theory.";
 MaxLaurentDepth::usage="MaxLaurentDepth is an option for ParticleSpectrum which sets the maximum positive integer n for which the 1/k^(2n) null pole residues are requested. The default is 1, from which the massless spectrum can be obtained. Setting higher n naturally leads to longer wallclock times, but also allows potential (pathological) higher-order/non-simple propagator poles to be identified, down to the requested depth.";
+Neglect::usage="Neglect is an option for ParticleSpectrum which specifies the spins and parities which should be neglected in the analysis. The default is {}.";
+MasslessSpectrum::usage="MasslessSpectrum is an option for ParticleSpectrum which specifies whether the analysis should be performed only so far as to obtain the massive particle spectrum, or extended also to the massless spectrum. The default is True.";
+Portrait::usage="Portrait is an value for the option AspectRatio which specifies that the output should be in portrait mode.";
+Landscape::usage="Landscape is an value for the option AspectRatio which specifies that the output should be in landscape mode.";
+ShowPropagator::usage="ShowPropagator is an option for ParticleSpectrum which specifies whether the saturated propagator should be displayed in the output. The default is True.";
+
+(*===================================*)
+(*  Declaration of association keys  *)
+(*===================================*)
+
+WaveOperator::usage="WaveOperator is the association key for the wave operator.";
+PseudoDeterminant::usage="PseudoDeterminants is the association key for the pseudo determinants.";
 
 (*===========================*)
 (*  Declaration of geometry  *)
@@ -90,7 +110,7 @@ Mo::usage="Mo is the constant symbol which represents the relativistic momentum,
 (*  Declaration of global variables  *)
 (*===================================*)
 
-$ReadOnly::usage="$ReadOnly is a boolean variable which controls whether the analysis is actually performed or simply read in from a binary file. Default is False.";
+(*$ReadOnly::usage="$ReadOnly is a boolean variable which controls whether the analysis is actually performed or simply read in from a binary file. Default is False.";*)
 
 (*=========================*)
 (*  xAct`PSALTer`Private`  *)
@@ -101,7 +121,26 @@ $DiagnosticMode=False;
 $MonitorParallel=False;
 $Disabled=False;
 $MatricesOnly=False;
+$ReadOnly=False;
 $NoExport=False;
+$MaxDeterminantSize=10;
+$SystemTesting=False;
+$InkscapePath="inkscape";
+$NumericalSampleRange=500;
+$MinimalExamples=10;
+$NullResidueReductionMinimalExamples=5;
+$MaxSeriesTerms=20;
+$UnitarityTime=20;
+$SomeHighPower=10;
+$AspectRatio=Landscape;
+$ShowPropagator=True;
+$NoSourceConstraints=False;
+$NoParticles=False;
+$NoUnitarityConditions=False;
+$MaxCoefficientLength=1;
+$AbbreviationConstants=500;
+$MaxAbbreviationRoot=100;
+$SimplifyIfSmallLength=100;
 IncludeHeader[FunctionName_]:=Module[{PathName},
 	PathName=$InputFileName~StringDrop~(-2);
 	PathName=FileNameJoin@{PathName,FunctionName<>".m"};

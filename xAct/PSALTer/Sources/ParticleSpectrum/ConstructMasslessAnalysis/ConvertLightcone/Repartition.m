@@ -6,7 +6,7 @@ Options@Repartition={
 	ExpandAll->True
 	};
 
-Repartition[InputExpr_List,PartitionLength_Integer,OptionsPattern[]]:=Module[{
+Repartition[InputExpr_List,PartitionLength_Integer,OptionsPattern[]]~Y~Module[{
 	Expr=InputExpr},
 
 	Expr//=Flatten;

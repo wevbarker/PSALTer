@@ -2,7 +2,7 @@
 (*  ParameterisedNullVectorQ  *)
 (*============================*)
 
-ParameterisedNullVectorQ[NullVector_]:=Module[{
+ParameterisedNullVectorQ[NullVector_]~Y~Module[{
 	VariablesPresent,
 	Finding},
 

@@ -4,7 +4,7 @@
 
 IncludeHeader@"GradualExpand";
 
-GradualExpandSubTask[MatrixElementSubTaskFileName_]:=Module[{
+GradualExpandSubTask[MatrixElementSubTaskFileName_]~Y~Module[{
 		ReduceFirstIntermediateSymbols,
 		FirstIntermediateSymbolsToSecondIntermediateSymbols,
 		SecondIntermediateSymbolsToCouplingConstants,

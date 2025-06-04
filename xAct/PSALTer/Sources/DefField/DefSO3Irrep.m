@@ -5,6 +5,7 @@
 IncludeHeader@"MakeAutomaticallyTraceless";
 IncludeHeader@"MakeAutomaticallyNotAntisymmetric";
 IncludeHeader@"MakeUniqueQuadratic";
+IncludeHeader@"MakeUniquePartialDual";
 IncludeHeader@"DefSymbol";
 
 Options@DefSO3Irrep={
@@ -13,10 +14,10 @@ Options@DefSO3Irrep={
 	Parity->Even};
 
 DefSO3Irrep[SO3IrrepName_[SO3IrrepInds___],
-		Opts___?OptionQ]:=DefSO3Irrep[SO3IrrepName[SO3IrrepInds],GenSet[],Opts];
+		Opts___?OptionQ]~Y~DefSO3Irrep[SO3IrrepName[SO3IrrepInds],GenSet[],Opts];
 
 DefSO3Irrep[SO3IrrepName_[SO3IrrepInds___],
-		SymmExpr_,OptionsPattern[]]:=Module[{
+		SymmExpr_,OptionsPattern[]]~Y~Module[{
 	Symb,
 	SourceSO3IrrepName,
 	FiducialFieldName,
@@ -41,6 +42,7 @@ DefSO3Irrep[SO3IrrepName_[SO3IrrepInds___],
 	MakeAutomaticallyTraceless@SO3IrrepName;	
 	MakeAutomaticallyNotAntisymmetric@SO3IrrepName;
 	MakeUniqueQuadratic@SO3IrrepName;
+	MakeUniquePartialDual@SO3IrrepName;
 
 	SourceSO3IrrepName=ToExpression@((ToString@SO3IrrepName)~StringReplace~("Rank"->"SourceRank"));
 	MultiTermSymmetriesOf@SourceSO3IrrepName^=((OptionValue@MultiTermSymmetries)/.{SO3IrrepName->SourceSO3IrrepName});
@@ -61,4 +63,5 @@ DefSO3Irrep[SO3IrrepName_[SO3IrrepInds___],
 	MakeAutomaticallyTraceless@SourceSO3IrrepName;
 	MakeAutomaticallyNotAntisymmetric@SourceSO3IrrepName;
 	MakeUniqueQuadratic@SourceSO3IrrepName;
+	MakeUniquePartialDual@SourceSO3IrrepName;
 ];

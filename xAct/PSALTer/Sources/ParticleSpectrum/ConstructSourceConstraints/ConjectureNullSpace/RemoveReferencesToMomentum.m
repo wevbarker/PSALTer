@@ -2,7 +2,9 @@
 (*  RemoveReferencesToMomentum  *)
 (*==============================*)
 
-RemoveReferencesToMomentum[InputMatrix_,Couplings_]:=Module[{
+IncludeHeader@"CreateList";
+
+RemoveReferencesToMomentum[InputMatrix_,Couplings_]~Y~Module[{
 	FieldRescaledMatrix=InputMatrix,
 	ConstantRescalingPowers,
 	ConstantRescalingRules,

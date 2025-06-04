@@ -3,7 +3,7 @@
 (*==========================================*)
 
 xAct`PSALTer`Private`DefFiducialField[Rank3TotallyAntisymmetric[-a,-b,-c],Antisymmetric[{-a,-b,-c}]];
-xAct`PSALTer`Private`DefSO3Irrep[Rank3TotallyAntisymmetricPara0m[],xAct`PSALTer`Private`Spin->0,xAct`PSALTer`Private`Parity->xAct`PSALTer`Private`Odd];
+xAct`PSALTer`Private`DefSO3Irrep[Rank3TotallyAntisymmetricPara0m[-a,-b,-c],Antisymmetric[{-a,-b,-c}],xAct`PSALTer`Private`Spin->0,xAct`PSALTer`Private`Parity->xAct`PSALTer`Private`Odd];
 xAct`PSALTer`Private`DefSO3Irrep[Rank3TotallyAntisymmetricPerp1p[-a,-b],Antisymmetric[{-a,-b}],xAct`PSALTer`Private`Spin->1,xAct`PSALTer`Private`Parity->xAct`PSALTer`Private`Even];
 
 DefTensor[ProjPerp[-a,-b],M4,Symmetric[{-a,-b}]];
@@ -26,13 +26,13 @@ ProjRank3TotallyAntisymmetricPerpParaToVG=Join[
 		V[d]G[-a,e]/.ProjPerpParaToVG//ToCanonical]},MetricOn->All,ContractMetrics->True],
 	MakeRule[{ProjFPara[-a,-b,d,e],Evaluate[
 		ProjPara[-a,d]G[-b,e]/.ProjPerpParaToVG//ToCanonical]},MetricOn->All,ContractMetrics->True]];
-DefTensor[ProjRank3TotallyAntisymmetric0m[d,e,f],M4];
+DefTensor[ProjRank3TotallyAntisymmetric0m[-a,-b,-c,d,e,f],M4];
 DefTensor[ProjRank3TotallyAntisymmetric1p[-a,-b,c,d],M4];
 ProjRank3TotallyAntisymmetricSpinParityToVG=Join[
 	MakeRule[{ProjRank3TotallyAntisymmetric1p[-a,-b,c,d],Evaluate[
 		ProjPara[-a,i]ProjPara[-b,j]ProjPara[c,-k]ProjPara[d,-l]Antisymmetrize[G[-i,k]G[-j,l],{-i,-j}]/.ProjPerpParaToVG//ToCanonical]},MetricOn->All,ContractMetrics->True],
-	MakeRule[{ProjRank3TotallyAntisymmetric0m[d,e,f],Evaluate[
-		ProjPara[-i,d]ProjPara[-j,e]ProjPara[-k,f]epsilonG[i,j,k,g]V[-g]/.ProjPerpParaToVG//ToCanonical]},MetricOn->All,ContractMetrics->True]];
+	MakeRule[{ProjRank3TotallyAntisymmetric0m[-a,-b,-c,d,e,f],Evaluate[
+		-(1/6)*ProjPara[-u,-a]ProjPara[-v,-b]ProjPara[-w,-c]epsilonG[u,v,w,x]V[-x]ProjPara[-i,d]ProjPara[-j,e]ProjPara[-k,f]epsilonG[i,j,k,g]V[-g]/.ProjPerpParaToVG//ToCanonical]},MetricOn->All,ContractMetrics->True]];
 DefTensor[Rank3TotallyAntisymmetricPara[-a,-b,-c],M4,Antisymmetric[{-a,-b}],OrthogonalTo->{V[c]},Dagger->Complex];
 DefTensor[Rank3TotallyAntisymmetricPerp[-a,-b],M4,Antisymmetric[{-a,-b}],Dagger->Complex];
 Rank3TotallyAntisymmetricToRank3TotallyAntisymmetricPerpPara=Join[
@@ -64,20 +64,20 @@ SourceRank3TotallyAntisymmetricPerpParaToSourceRank3TotallyAntisymmetric=Join[
 	MakeRule[{Evaluate@Dagger@SourceRank3TotallyAntisymmetricPerp[-a,-e],Evaluate[Dagger@(
 		V[c]SourceRank3TotallyAntisymmetric[-a,-e,-c])]},MetricOn->All,ContractMetrics->True]];
 Rank3TotallyAntisymmetricParaSpinParityToRank3TotallyAntisymmetric=Join[
-	MakeRule[{Rank3TotallyAntisymmetricPara0m[],Scalar[Evaluate[
-		ProjRank3TotallyAntisymmetric0m[d,e,f]ProjRank3TotallyAntisymmetricPara[-d,-e,-f,a,b,c]Rank3TotallyAntisymmetricPara[-a,-b,-c]]]},MetricOn->All,ContractMetrics->True],
-	MakeRule[{Evaluate@Dagger@Rank3TotallyAntisymmetricPara0m[],Scalar[Evaluate[Dagger@(
-		ProjRank3TotallyAntisymmetric0m[d,e,f]ProjRank3TotallyAntisymmetricPara[-d,-e,-f,a,b,c]Rank3TotallyAntisymmetricPara[-a,-b,-c])]]},MetricOn->All,ContractMetrics->True]];
+	MakeRule[{Rank3TotallyAntisymmetricPara0m[-a,-b,-c],Evaluate[
+		ProjRank3TotallyAntisymmetric0m[-a,-b,-c,d,e,f]ProjRank3TotallyAntisymmetricPara[-d,-e,-f,u,v,w]Rank3TotallyAntisymmetricPara[-u,-v,-w]]},MetricOn->All,ContractMetrics->True],
+	MakeRule[{Evaluate@Dagger@Rank3TotallyAntisymmetricPara0m[-a,-b,-c],Evaluate[Dagger@(
+		ProjRank3TotallyAntisymmetric0m[-a,-b,-c,d,e,f]ProjRank3TotallyAntisymmetricPara[-d,-e,-f,u,v,w]Rank3TotallyAntisymmetricPara[-u,-v,-w])]},MetricOn->All,ContractMetrics->True]];
 Rank3TotallyAntisymmetricPerpSpinParityToRank3TotallyAntisymmetric=Join[
 	MakeRule[{Rank3TotallyAntisymmetricPerp1p[-n,-m],Evaluate[
 		ProjPara[-n,a]ProjPara[-m,b]Rank3TotallyAntisymmetricPerp[-a,-b]]},MetricOn->All,ContractMetrics->True],
 	MakeRule[{Evaluate@Dagger@Rank3TotallyAntisymmetricPerp1p[-n,-m],Evaluate[Dagger@(
 		ProjPara[-n,a]ProjPara[-m,b]Rank3TotallyAntisymmetricPerp[-a,-b])]},MetricOn->All,ContractMetrics->True]];
 SourceRank3TotallyAntisymmetricParaSpinParityToSourceRank3TotallyAntisymmetric=Join[
-	MakeRule[{SourceRank3TotallyAntisymmetricPara0m[],Scalar[Evaluate[
-		ProjRank3TotallyAntisymmetric0m[d,e,f]ProjRank3TotallyAntisymmetricPara[-d,-e,-f,a,b,c]SourceRank3TotallyAntisymmetricPara[-c,-a,-b]]]},MetricOn->All,ContractMetrics->True],
-	MakeRule[{Evaluate@Dagger@SourceRank3TotallyAntisymmetricPara0m[],Scalar[Evaluate[Dagger@(
-		ProjRank3TotallyAntisymmetric0m[d,e,f]ProjRank3TotallyAntisymmetricPara[-d,-e,-f,a,b,c]SourceRank3TotallyAntisymmetricPara[-c,-a,-b])]]},MetricOn->All,ContractMetrics->True]];
+	MakeRule[{SourceRank3TotallyAntisymmetricPara0m[-a,-b,-c],Evaluate[
+		ProjRank3TotallyAntisymmetric0m[-a,-b,-c,d,e,f]ProjRank3TotallyAntisymmetricPara[-d,-e,-f,u,v,w]SourceRank3TotallyAntisymmetricPara[-u,-v,-w]]},MetricOn->All,ContractMetrics->True],
+	MakeRule[{Evaluate@Dagger@SourceRank3TotallyAntisymmetricPara0m[-a,-b,-c],Evaluate[Dagger@(
+		ProjRank3TotallyAntisymmetric0m[-a,-b,-c,d,e,f]ProjRank3TotallyAntisymmetricPara[-d,-e,-f,u,v,w]SourceRank3TotallyAntisymmetricPara[-u,-v,-w])]},MetricOn->All,ContractMetrics->True]];
 SourceRank3TotallyAntisymmetricPerpSpinParityToSourceRank3TotallyAntisymmetric=Join[
 	MakeRule[{SourceRank3TotallyAntisymmetricPerp1p[-n,-m],Evaluate[
 		ProjPara[-n,a]ProjPara[-m,b]SourceRank3TotallyAntisymmetricPerp[-a,-b]]},MetricOn->All,ContractMetrics->True],
@@ -87,11 +87,11 @@ Rank3TotallyAntisymmetricParaToRank3TotallyAntisymmetricParaSpinParity=Join[
 	MakeRule[{Rank3TotallyAntisymmetricPara[-n,-m,-o],Evaluate[
 		(Antisymmetrize[
 		2Antisymmetrize[V[-n]Rank3TotallyAntisymmetricPerp1p[-m,-o],{-n,-m}]+
-		(-1/6)ProjRank3TotallyAntisymmetric0m[-n,-m,-o]Rank3TotallyAntisymmetricPara0m[],{-n,-m}])/.ProjRank3TotallyAntisymmetricSpinParityToVG/.ProjPerpParaToVG//xAct`PSALTer`Private`ToNewCanonical]},MetricOn->All,ContractMetrics->True],
+		Rank3TotallyAntisymmetricPara0m[-n,-m,-o],{-n,-m}])/.ProjRank3TotallyAntisymmetricSpinParityToVG/.ProjPerpParaToVG//xAct`PSALTer`Private`ToNewCanonical]},MetricOn->All,ContractMetrics->True],
 	MakeRule[{Evaluate@Dagger@Rank3TotallyAntisymmetricPara[-n,-m,-o],Evaluate[Dagger@(
 		(Antisymmetrize[
 		2Antisymmetrize[V[-n]Rank3TotallyAntisymmetricPerp1p[-m,-o],{-n,-m}]+
-		(-1/6)ProjRank3TotallyAntisymmetric0m[-n,-m,-o]Rank3TotallyAntisymmetricPara0m[],{-n,-m}])/.ProjRank3TotallyAntisymmetricSpinParityToVG/.ProjPerpParaToVG//xAct`PSALTer`Private`ToNewCanonical)]},MetricOn->All,ContractMetrics->True]];
+		Rank3TotallyAntisymmetricPara0m[-n,-m,-o],{-n,-m}])/.ProjRank3TotallyAntisymmetricSpinParityToVG/.ProjPerpParaToVG//xAct`PSALTer`Private`ToNewCanonical)]},MetricOn->All,ContractMetrics->True]];
 Rank3TotallyAntisymmetricPerpToRank3TotallyAntisymmetricPerpSpinParity=Join[
 	MakeRule[{Rank3TotallyAntisymmetricPerp[-n,-m],Evaluate[Rank3TotallyAntisymmetricPerp1p[-n,-m]]},MetricOn->All,ContractMetrics->True],
 	MakeRule[{Evaluate@Dagger@Rank3TotallyAntisymmetricPerp[-n,-m],Evaluate[Dagger@(Rank3TotallyAntisymmetricPerp1p[-n,-m])]},MetricOn->All,ContractMetrics->True]];
@@ -99,11 +99,11 @@ SourceRank3TotallyAntisymmetricParaToSourceRank3TotallyAntisymmetricParaSpinPari
 	MakeRule[{SourceRank3TotallyAntisymmetricPara[-o,-n,-m],Evaluate[
 		(Antisymmetrize[
 		2Antisymmetrize[V[-n]SourceRank3TotallyAntisymmetricPerp1p[-m,-o],{-n,-m}]+
-		(-1/6)ProjRank3TotallyAntisymmetric0m[-n,-m,-o]SourceRank3TotallyAntisymmetricPara0m[],{-n,-m}])/.ProjRank3TotallyAntisymmetricSpinParityToVG/.ProjPerpParaToVG//xAct`PSALTer`Private`ToNewCanonical]},MetricOn->All,ContractMetrics->True],
+		SourceRank3TotallyAntisymmetricPara0m[-n,-m,-o],{-n,-m}])/.ProjRank3TotallyAntisymmetricSpinParityToVG/.ProjPerpParaToVG//xAct`PSALTer`Private`ToNewCanonical]},MetricOn->All,ContractMetrics->True],
 	MakeRule[{Evaluate@Dagger@SourceRank3TotallyAntisymmetricPara[-o,-n,-m],Evaluate[Dagger@(
 		(Antisymmetrize[
 		2Antisymmetrize[V[-n]SourceRank3TotallyAntisymmetricPerp1p[-m,-o],{-n,-m}]+
-		(-1/6)ProjRank3TotallyAntisymmetric0m[-n,-m,-o]SourceRank3TotallyAntisymmetricPara0m[],{-n,-m}])/.ProjRank3TotallyAntisymmetricSpinParityToVG/.ProjPerpParaToVG//xAct`PSALTer`Private`ToNewCanonical)]},MetricOn->All,ContractMetrics->True]];
+		SourceRank3TotallyAntisymmetricPara0m[-n,-m,-o],{-n,-m}])/.ProjRank3TotallyAntisymmetricSpinParityToVG/.ProjPerpParaToVG//xAct`PSALTer`Private`ToNewCanonical)]},MetricOn->All,ContractMetrics->True]];
 SourceRank3TotallyAntisymmetricPerpToSourceRank3TotallyAntisymmetricPerpSpinParity=Join[
 	MakeRule[{SourceRank3TotallyAntisymmetricPerp[-n,-m],Evaluate[SourceRank3TotallyAntisymmetricPerp1p[-n,-m]]},MetricOn->All,ContractMetrics->True],
 	MakeRule[{Evaluate@Dagger@SourceRank3TotallyAntisymmetricPerp[-n,-m],Evaluate[Dagger@(SourceRank3TotallyAntisymmetricPerp1p[-n,-m])]},MetricOn->All,ContractMetrics->True]];
@@ -129,7 +129,7 @@ ExpandFieldsRules=Flatten@Map[MakeRule[{#,Evaluate@Module[{Expr=#},
 	Expr//=xAct`PSALTer`Private`ToNewCanonical;
 	Expr//=CollectTensors;
 	Expr]},
-	MetricOn->All,ContractMetrics->True]&,{Rank3TotallyAntisymmetricPara0m[],Rank3TotallyAntisymmetricPerp1p[-a,-b],Dagger@Rank3TotallyAntisymmetricPara0m[],Dagger@Rank3TotallyAntisymmetricPerp1p[-a,-b]}];
+	MetricOn->All,ContractMetrics->True]&,{Rank3TotallyAntisymmetricPara0m[-a,-b,-c],Rank3TotallyAntisymmetricPerp1p[-a,-b],Dagger@Rank3TotallyAntisymmetricPara0m[-a,-b,-c],Dagger@Rank3TotallyAntisymmetricPerp1p[-a,-b]}];
 
 ExpandSourcesRules=Flatten@Map[MakeRule[{#,Evaluate@Module[{Expr=#},
 	Expr//=xAct`PSALTer`Private`ToNewCanonical;
@@ -148,7 +148,7 @@ ExpandSourcesRules=Flatten@Map[MakeRule[{#,Evaluate@Module[{Expr=#},
 	Expr//=xAct`PSALTer`Private`ToNewCanonical;
 	Expr//=CollectTensors;
 	Expr]},
-	MetricOn->All,ContractMetrics->True]&,{SourceRank3TotallyAntisymmetricPara0m[],SourceRank3TotallyAntisymmetricPerp1p[-a,-b],Dagger@SourceRank3TotallyAntisymmetricPara0m[],Dagger@SourceRank3TotallyAntisymmetricPerp1p[-a,-b]}];
+	MetricOn->All,ContractMetrics->True]&,{SourceRank3TotallyAntisymmetricPara0m[-a,-b,-c],SourceRank3TotallyAntisymmetricPerp1p[-a,-b],Dagger@SourceRank3TotallyAntisymmetricPara0m[-a,-b,-c],Dagger@SourceRank3TotallyAntisymmetricPerp1p[-a,-b]}];
 
 DecomposeFieldsRules=Flatten@Map[MakeRule[{#,Evaluate@Module[{Expr=#},
 	Expr//=xAct`PSALTer`Private`ToNewCanonical;

@@ -6,7 +6,7 @@ IncludeHeader@"ExpansionTable";
 IncludeHeader@"DecompositionTable";
 IncludeHeader@"FieldMosaic";
 
-SummariseField[]:=Module[{
+SummariseField[]~Y~Module[{
 	Class,
 	BasicInfo,
 	FieldSpinParityTensors,
@@ -81,15 +81,11 @@ SummariseField[]:=Module[{
 		Dividers->Center,
 		Alignment->{Left,Center}];
 
-	If[!$CLI,
-		TheFieldMosaic=FieldMosaic[
-					DecompositionExpansionTable
-					];
-		If[!$NoExport,
-			Export[FileNameJoin@{$WorkingDirectory,"FieldKinematics"<>(StringReplace[Context[],{"xAct"->"","PSALTer"->"","`"->""}])<>".pdf"},
-				TheFieldMosaic
-			];
-		];
-		Print@TheFieldMosaic;
+	TheFieldMosaic=FieldMosaic@DecompositionExpansionTable;
+	UsingFrontEnd@Export[FileNameJoin@{$WorkingDirectory,"FieldKinematics"<>(StringReplace[Context[],{"xAct"->"","PSALTer"->"","`"->""}])<>".pdf"},
+		TheFieldMosaic
+	];
+	If[(!$CLI),
+		Quiet@Print@TheFieldMosaic;
 	];
 ];

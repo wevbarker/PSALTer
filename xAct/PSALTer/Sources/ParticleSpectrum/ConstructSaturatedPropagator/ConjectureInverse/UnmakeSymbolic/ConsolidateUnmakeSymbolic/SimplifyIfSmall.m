@@ -2,13 +2,11 @@
 (*  SimplifyIfSmall  *)
 (*===================*)
 
-$SimplifyIfSmallLength=500;
-SimplifyIfSmall[InputAssume_,InputExpr_]:=Module[{
+SimplifyIfSmall[InputAssume_,InputExpr_]~Y~Module[{
 	Expr=InputExpr,
 	Numer,
 	Denom,
 	ExprLength},
-
 
 	Expr//=Together;
 

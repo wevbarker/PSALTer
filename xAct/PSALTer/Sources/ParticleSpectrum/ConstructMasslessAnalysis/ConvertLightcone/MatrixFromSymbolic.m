@@ -5,7 +5,7 @@
 MatrixFromSymbolic[
 			InputSymbolicMatrix_,
 			InputSymbolicElements_,
-			InputUniqueElements_]:=Module[{
+			InputUniqueElements_]~Y~Module[{
 	TheSymbolicToUnique,
 	TheUniqueMatrix
 	},

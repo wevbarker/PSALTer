@@ -2,7 +2,7 @@
 (*  RescaleNullVector  *)
 (*=====================*)
 
-RescaleNullVector[ClassName_?StringQ,SourceComponents_List,NullVector_List]:=Module[{
+RescaleNullVector[ClassName_?StringQ,SourceComponents_List,NullVector_List]~Y~Module[{
 	Class,
 	TrialPower,
 	RescaledNullVector=NullVector,
@@ -16,6 +16,7 @@ RescaleNullVector[ClassName_?StringQ,SourceComponents_List,NullVector_List]:=Mod
 	TrialPower=10;
 	Rescaled=False;
 	Diagnostic@RescaledNullVector;
+
 	While[TrialPower>0&&!Rescaled,
 		Diagnostic@TrialPower;
 		If[DeleteDuplicates@(Abs/@Residue[#,{En,Mo}]&/@Evaluate[RescaledNullVector*(En-Mo)^(TrialPower-1)])=={0},
@@ -25,6 +26,7 @@ RescaleNullVector[ClassName_?StringQ,SourceComponents_List,NullVector_List]:=Mod
 		];
 		TrialPower--
 	];
+
 	SourceEngineeringDimensionsList=(0)&/@SourceComponents;
 	Diagnostic@SourceEngineeringDimensionsList;
 	UltravioletNullVector=FullSimplify@Total@MapThread[(Abs@((#1/(Mo^#2))/.{En->Pi Mo}))&,

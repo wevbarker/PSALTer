@@ -2,13 +2,13 @@
 (*  ConjectureNullSpace  *)
 (*=======================*)
 
-IncludeHeader@"CommonNullVector";
 IncludeHeader@"RemoveReferencesToMomentum";
-IncludeHeader@"CreateList";
+IncludeHeader@"SymbolicNullSpace";
 IncludeHeader@"CleanNullVector";
 IncludeHeader@"EnsureLinearInCouplings";
 
-ConjectureNullSpace[InputMatrix_,Couplings_,CouplingAssumptions_]:=Module[{	
+ConjectureNullSpace[InputMatrix_,Couplings_,CouplingAssumptions_,Side_:Right]~Y~Module[{	
+	TheInputMatrix=InputMatrix,
 	FieldRescaledMatrix,
 	ConstantDescalingRules,
 	FieldRescalingMatrix,
@@ -17,18 +17,33 @@ ConjectureNullSpace[InputMatrix_,Couplings_,CouplingAssumptions_]:=Module[{
 	DescaledNullSpace
 	},
 
+	If[Side===Left,
+		TheInputMatrix//=Transpose;
+		Diagnostic@TheInputMatrix;
+		TheInputMatrix//=Conjugate;
+		Diagnostic@TheInputMatrix;
+		Assuming[CouplingAssumptions,TheInputMatrix//=FullSimplify];
+		Diagnostic@TheInputMatrix;
+	];
+
+	TheInputMatrix//=Map[DistributeConjugate[#,CouplingAssumptions]&,#,{2}]&;
+	Diagnostic@TheInputMatrix;
 	{FieldRescaledMatrix,
 	ConstantDescalingRules,
 	FieldRescalingMatrix,
-	ScalingSolutions}=RemoveReferencesToMomentum[InputMatrix,Couplings];
-	Diagnostic@(MatrixForm@FieldRescaledMatrix);
+	ScalingSolutions}=RemoveReferencesToMomentum[TheInputMatrix,Couplings];
+	Diagnostic@FieldRescaledMatrix;
 	Diagnostic@ConstantDescalingRules;
-	Diagnostic@(MatrixForm@FieldRescalingMatrix);
+	Diagnostic@FieldRescalingMatrix;
 	Diagnostic@ScalingSolutions;
-	RescaledNullSpace=NullSpace@FieldRescaledMatrix;
+	RescaledNullSpace=SymbolicNullSpace@FieldRescaledMatrix;
+	Diagnostic@RescaledNullSpace;
 	DescaledNullSpace=((FieldRescalingMatrix.#)/.ConstantDescalingRules/.ScalingSolutions)&/@RescaledNullSpace;
+	Diagnostic@DescaledNullSpace;
 	CouplingAssumptions~Assuming~(DescaledNullSpace//=FullSimplify);
+	Diagnostic@DescaledNullSpace;
 	DescaledNullSpace//=(CleanNullVector[#,CouplingAssumptions]&/@#)&;
+	Diagnostic@DescaledNullSpace;
 	DescaledNullSpace=EnsureLinearInCouplings/@DescaledNullSpace;
-
+	Diagnostic@DescaledNullSpace;
 DescaledNullSpace];

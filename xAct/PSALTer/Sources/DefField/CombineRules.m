@@ -8,7 +8,7 @@ IncludeHeader@"DefAllComponentValues";
 
 CombineRules[ExpandFieldsRulesInput_,
 		ExpandSourcesRulesInput_,
-		DecomposeFieldsRulesInput_]:=Module[{
+		DecomposeFieldsRulesInput_]~Y~Module[{
 		ExpandFieldsValue,
 		ExpandSourcesValue,
 		DecomposeFieldsValue},
@@ -17,18 +17,18 @@ CombineRules[ExpandFieldsRulesInput_,
 	AppendToField[Context[],ExpandSourcesRules,ExpandSourcesRulesInput];
 	AppendToField[Context[],DecomposeFieldsRules,DecomposeFieldsRulesInput];
 
-	ExpandFieldsValue[InputExpr_]:=Module[{Expr=InputExpr},
+	ExpandFieldsValue[InputExpr_]~Y~Module[{Expr=InputExpr},
 		Expr=Expr/.ExpandFieldsRulesInput;
 		Expr//=xAct`PSALTer`Private`ToNewCanonical;
 		Expr//=CollectTensors;
 	Expr];
 
-	ExpandSourcesValue[InputExpr_]:=Module[{Expr=InputExpr},
+	ExpandSourcesValue[InputExpr_]~Y~Module[{Expr=InputExpr},
 		Expr=Expr/.ExpandSourcesRulesInput;
 		Expr//=xAct`PSALTer`Private`ToNewCanonical;
 	Expr];
 
-	DecomposeFieldsValue[InputExpr_]:=Module[{Expr=InputExpr},
+	DecomposeFieldsValue[InputExpr_]~Y~Module[{Expr=InputExpr},
 		Expr//=xAct`PSALTer`Private`ToNewCanonical;
 		Expr=Expr/.DecomposeFieldsRulesInput;
 		Expr//=xAct`PSALTer`Private`ToNewCanonical;
@@ -40,6 +40,6 @@ CombineRules[ExpandFieldsRulesInput_,
 	AppendToField[Context[],DecomposeFields,DecomposeFieldsValue];
 
 	DefSummary[];
-	ValidateSO3Irreps[];
+	(*ValidateSO3Irreps[];*)
 	DefAllComponentValues[];
 ];

@@ -2,9 +2,10 @@
 (*  DefAllComponentValues  *)
 (*=========================*)
 
-DefAllComponentValues[]:=Module[{
+DefAllComponentValues[]~Y~Module[{
 	Class,
-	TensorsWhoseComponentsWeNeed},
+	TensorsWhoseComponentsWeNeed,
+	ReducedIndexSources},
 
 	Class=FieldAssociation@Context[];
 	TensorsWhoseComponentsWeNeed=Flatten@Map[Values,Evaluate@(Class@SourceSpinParityTensorHeads),{0,2}];
@@ -23,7 +24,7 @@ DefAllComponentValues[]:=Module[{
 
 	Block[{Print},
 		Unprotect@Print;
-		Print[Expr_]:=NoPrint[Expr];
+		Print[Expr_]~Y~NoPrint[Expr];
 		(AllComponentValues@FreeToBasis[xAct`PSALTer`cartesian]@#;)&/@TensorsWhoseComponentsWeNeed;
 		Protect@Print;
 	];
