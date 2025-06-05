@@ -11,18 +11,10 @@
 <img src="xAct/PSALTer/Logos/GitHubLogo.png" width="1000">
 
 # _PSALTer_: Particle Spectrum for Any Tensor Lagrangian
-## Version 2.0.0
+## Version 2.0.1
 
-- New release to accompany pre-print.
-- New functionality to support parity-violating theories.
-- Improved performance scaling to more complicated theories.
-- Improved field kinematics format.
-- Improved spectrograph format.
-- Removed large documentation PDF, replaced large notebook with smaller example notebook.
-- Breaking change: the option `Method->"Easy"` now uses the same algorithm as `Method->"Hard"` in `ParticleSpectrum`, non-linear parameterisation by Lagrangian coupling coefficients is no longer supported.
-- Breaking change: the global variable `` xAct`PSALTer`Private`$NoExport `` is deprecated.
-- Dependency removed: _RectanglePacking_.
-- Dependency removed: _Inkscape_.
+- Removed _RectanglePacking_ from package dependencies.
+- Updated `README.md`.
 
 ## License
 
@@ -43,7 +35,7 @@ If _PSALTer_ was useful to your research, please **cite us** using the following
     month = "6",
     year = "2024"
 }
-@article{Barker:2025,
+@article{Barker:2025qmw,
     author = "Barker, Will and Karananas, Georgios K. and Tu, Haochen",
     title = "{The particle spectra of parity-violating theories: A less radical approach and an upgrade of PSALTer}",
     eprint = "2506.02111",
@@ -118,9 +110,10 @@ The output should look like:
 
 ## Documentation 
 
-The package includes a notebook with the basic example above. You can open it from the front end (notebook) or from the command line via:
+The package includes a notebook with the basic example above. This notebook will try to save PDF graphics files to the directory in which it is saved, so it is better not to run it from within your actual installation. For instance, to copy the file to your home directory and run it there using the front end (notebook), you can use:
 ```console, bash
-[user@system PSALTer]$ cd xAct/PSALTer/Documentation/English
+[user@system PSALTer]$ cp xAct/PSALTer/Documentation/English/Examples.nb ~/Examples.nb
+[user@system PSALTer]$ cd
 [user@system English]$ wolframnb Examples.nb &
 ```
 The theory underlying the package is developed across two papers:

@@ -6,7 +6,7 @@
 (*  Version  *)
 (*===========*)
 
-xAct`PSALTer`Private`$Version={"2.0.0",{2025,6,4}};
+xAct`PSALTer`Private`$Version={"2.0.1",{2025,6,5}};
 If[Unevaluated[xAct`xCore`Private`$LastPackage]===xAct`xCore`Private`$LastPackage,xAct`xCore`Private`$LastPackage="xAct`PSALTer`"];
 Off@(Solve::fulldim);
 Off@(General::shdw);
@@ -23,7 +23,7 @@ Protect@Message;
 (*  xAct`PSALTer`  *)
 (*=================*)
 
-BeginPackage["xAct`PSALTer`",{"xAct`xTensor`","xAct`SymManipulator`","xAct`xPerm`","xAct`xCore`","xAct`xTras`","xAct`xCoba`","JasonB`RectanglePacking`"}];
+BeginPackage["xAct`PSALTer`",{"xAct`xTensor`","xAct`SymManipulator`","xAct`xPerm`","xAct`xCore`","xAct`xTras`","xAct`xCoba`"}];
 ParallelNeeds["xAct`PSALTer`"];
 Print[xAct`xCore`Private`bars];
 Print["Package xAct`PSALTer` version ",xAct`PSALTer`Private`$Version[[1]],", ",xAct`PSALTer`Private`$Version[[2]]];
