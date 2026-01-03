@@ -1,4 +1,12 @@
+<img src="xAct/PSALTer/Logos/GitHubLogo.png" width="1000">
+
 ![license](https://img.shields.io/github/license/wevbarker/PSALTer)
+![Mathematica](https://img.shields.io/badge/Mathematica-14.0+-blue.svg)
+![xAct](https://img.shields.io/badge/xAct-1.2.0+-blue.svg)
+
+[![Paper](https://img.shields.io/badge/Documentation-2406.09500-blue?style=for-the-badge)](https://arxiv.org/abs/2406.09500)
+[![Paper](https://img.shields.io/badge/Documentation-2506.02111-blue?style=for-the-badge)](https://arxiv.org/abs/2506.02111)
+
 [![arXiv](https://img.shields.io/badge/arXiv-2311.11790-b31b1b.svg)](https://arxiv.org/abs/2311.11790)
 [![arXiv](https://img.shields.io/badge/arXiv-2402.07641-b31b1b.svg)](https://arxiv.org/abs/2402.07641)
 [![arXiv](https://img.shields.io/badge/arXiv-2402.14917-b31b1b.svg)](https://arxiv.org/abs/2402.14917)
@@ -7,13 +15,14 @@
 [![arXiv](https://img.shields.io/badge/arXiv-2412.15329-b31b1b.svg)](https://arxiv.org/abs/2412.15329)
 [![arXiv](https://img.shields.io/badge/arXiv-2505.23894-b31b1b.svg)](https://arxiv.org/abs/2505.23894)
 [![arXiv](https://img.shields.io/badge/arXiv-2506.02111-b31b1b.svg)](https://arxiv.org/abs/2506.02111)
-
-<img src="xAct/PSALTer/Logos/GitHubLogo.png" width="1000">
+[![arXiv](https://img.shields.io/badge/arXiv-2506.21662-b31b1b.svg)](https://arxiv.org/abs/2506.21662)
+[![arXiv](https://img.shields.io/badge/arXiv-2507.05349-b31b1b.svg)](https://arxiv.org/abs/2507.05349)
+[![arXiv](https://img.shields.io/badge/arXiv-2507.09228-b31b1b.svg)](https://arxiv.org/abs/2507.09228)
 
 # _PSALTer_: Particle Spectrum for Any Tensor Lagrangian
-## Version 2.0.1
+## Version 2.0.2
 
-- Removed _RectanglePacking_ from package dependencies.
+- Updated logos.
 - Updated `README.md`.
 
 ## License
@@ -298,7 +307,7 @@ There are several ways to get help:
 
 ## Acknowledgements
 
-_PSALTer_ was improved by many useful discussions with Jaakko Annala, Stephanie Buttigieg, Dražen Glavan, Will Handley, Mike Hobson, Manuel Hohmann, Damianos Iosifidis, Georgios Karananas, Anthony Lasenby, Yun-Cherng Lin, Oleg Melichev, Yusuke Mikura, Vijay Nenmeli, Roberto Percacci, Syksy Räsänen, Cillian Rew, Ignacy Sawicki, Zhiyuan Wei, David Yallup, Haoyang Ye, and Sebastian Zell.
+_PSALTer_ was improved by many useful discussions with Jaakko Annala, Stephanie Buttigieg, Dražen Glavan, Will Handley, Mike Hobson, Manuel Hohmann, Damianos Iosifidis, Anthony Lasenby, Yun-Cherng Lin, Oleg Melichev, Yusuke Mikura, Vijay Nenmeli, Roberto Percacci, Syksy Räsänen, Cillian Rew, Ignacy Sawicki, Zhiyuan Wei, David Yallup, Haoyang Ye, and Sebastian Zell.
 
 This work used the DiRAC Data Intensive service (CSD3 [www.csd3.cam.ac.uk](www.csd3.cam.ac.uk)) at the University of Cambridge, managed by the University of Cambridge University Information Services on behalf of the STFC DiRAC HPC Facility ([www.dirac.ac.uk](www.dirac.ac.uk)). The DiRAC component of CSD3 at Cambridge was funded by BEIS, UKRI and STFC capital funding and STFC operations grants. DiRAC is part of the UKRI Digital Research Infrastructure.
 
